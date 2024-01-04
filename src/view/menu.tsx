@@ -22,8 +22,7 @@ const Menu = (): JSX.Element => {
                 {/*cards*/}
                 <h1 className={'ml-9 text-xl w-full font-round font-[500] cursor-default'}>Coffee Menu</h1>
 
-                <div
-                    className={'w-full h-[71.3vh] flex flex-wrap items-start justify-start mt-2 overflow-y-scroll pl-[40px]'}>
+                <div className={'w-full h-[71.3vh] flex flex-wrap items-start justify-start mt-2 overflow-y-scroll pl-[40px]'}>
                     <div className={'w-[380px] h-[240px] bg-white rounded-2xl m-5 flex'}>
                         {/*pic div*/}
                         <div className={'w-[38%] h-full p-3 '}>
