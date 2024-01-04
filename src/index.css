@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=PT+Sans+Caption&family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kodchasan&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .animation-btn {
+        @apply transition: all 0.5s;
+    }
+}
+
+.animation{
+    transition: all 0.5s;
+}
