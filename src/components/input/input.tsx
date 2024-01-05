@@ -1,37 +1,38 @@
-import React from "react";
 
-/*interface Props {
+interface Props {
+    id:number;
     type: string;
     name: string;
     placeholder?: string;
-    label: string;
-    optional: boolean
+    errorMsg: string;
+    option: boolean
     callBack: Function;
-}*/
+}
 
-class Input extends React.Component<any, any> {
+const Input = (props: Props): JSX.Element => {
 
     /*handleInput = (e:object): void => {
         console.log(e.target.value);
     }*/
 
-    render() {
-        return (
+    return (
 
-            <div className={'mb-2 w-full'}>
-                <label htmlFor={this.props.name}
-                       className={'block text-gray-400 text-[14px] mb-0.5'}>
-                    {this.props.label}</label>
-
-                <input
-                    /*placeholder={this.props.placeholder}
-                    type={this.props.type}
-                    id={this.props.name}
-                    onChange={event => this.props.callBack(event, this.props.name)}*/
-                    className={'w-full h-[35px] rounded-[5px] px-3 block border border-green-300 outline-none focus:border-green-600'}/>
-            </div>
-        );
-    }
+        <div className={'relative py-3'}>
+            <label className={'font-round text-[12px] text-gray-600 absolute top-[2px]  left-2 bg-white'}>
+                {props.name}
+            </label>
+            <input
+                placeholder={props.placeholder}
+                type={props.type}
+                id={props.name}
+                onChange={event => props.callBack(event, props.name)}
+                className={'w-full h-[38px] rounded-lg block border border-[#ffcaa9] outline-none focus:border-[#fe7439] font-round px-5 text-sm'}/>
+            {
+                props.option &&
+                <div className={'absolute font-round text-[10px] text-red-500'}>{props.errorMsg}</div>
+            }
+        </div>
+    );
 }
 
 export default Input;
