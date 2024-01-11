@@ -12,41 +12,32 @@ import Login from "./view/login.tsx";
 
 function App(): JSX.Element {
     return (
-
-        <section>
+        <section className={'w-full h-[100vh] flex'}>
             <BrowserRouter>
-
-            <section className={'w-full h-[100vh] flex'}>
-
-                    {/*nav*/}
-                    <div className={'h-full w-[250px]'}>
-                        <NavBar/>
+                {/*nav*/}
+                <div className={'h-full w-[250px]'}>
+                    <NavBar/>
+                </div>
+                <div className={'h-full w-full border-r-gray-400 flex flex-col'}>
+                    {/*header*/}
+                    <div className={'w-full h-[80px]'}>
+                        <Header/>
                     </div>
-                    <div className={'h-full w-full border-r-gray-400 flex flex-col'}>
-                        {/*header*/}
-                        <div className={'w-full h-[80px]'}>
-                            <Header/>
-                        </div>
-                        {/*content*/}
-                        <div className={'w-full h-full'}>
-                            <Routes>
-                                <Route path={'/'} element={<Home/>}/>
-                                <Route path={'/menu'} element={<Menu/>}/>
-                                <Route path={'/item'} element={<Item/>}/>
-                                <Route path={'/profile'} element={<Profile/>}/>
-                                <Route path={'/employee'} element={<Employee/>}/>
-                                <Route path={'/history'} element={<History/>}/>
-                            </Routes>
-                        </div>
+                    {/*content*/}
+                    <div className={'w-full h-full'}>
+                        <Routes>
+                            <Route path={'/'} element={<Home/>}/>
+                            <Route path={'/menu'} element={<Menu/>}/>
+                            <Route path={'/item'} element={<Item/>}/>
+                            <Route path={'/profile'} element={<Profile/>}/>
+                            <Route path={'/employee'} element={<Employee/>}/>
+                            <Route path={'/history'} element={<History/>}/>
+                            <Route path={'/login'} element={<Login/>}/>
+                        </Routes>
                     </div>
-
-            </section>
-                <Routes>
-                    <Route path={'/login'} element={<Login/>}/>
-                </Routes>
+                </div>
             </BrowserRouter>
         </section>
-
     );
 }
 

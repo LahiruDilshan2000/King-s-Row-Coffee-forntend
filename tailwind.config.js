@@ -10,7 +10,8 @@ export default {
       abc:['PT Sans Caption', 'ns-serif' ],
       cde: ['Roboto', 'sans-serif'],
       AA: ['Kodchasan', 'sans-serif'],
-      round:['Baloo 2', 'sans-serif']
+      round:['Baloo 2', 'sans-serif'],
+      pop:['Poppins', 'sans-serif']
     }
   },
   plugins: [],

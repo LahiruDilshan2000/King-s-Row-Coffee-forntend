@@ -32,15 +32,15 @@ const NavBar = (): JSX.Element => {
 
                 <div className={'mt-[80px] h-[230px] font-round border-b-2 border-gray-150'}>
                     <ul className={'w-full'}>
-                        <Link to={'/employee'}>
-                            <li className={`w-full h-[50px] flex pl-8 items-center  hover:bg-gray-100 cursor-pointer transition-all relative ${myArray[0] ? 'text-[#FFA16C]' : 'text-gray-500'}`}
+                        <Link to={'/item'}>
+                            <li className={`bg-gradient-to-r from-[#fff4ed] ... w-full h-[50px] flex pl-8 items-center  hover:bg-gray-100 cursor-pointer transition-all relative ${myArray[0] ? 'text-[#FFA16C]' : 'text-gray-500'}`}
                                 onClick={() => handleSelectStyle(0)}><RiHome6Line className="mr-5 text-2xl"/>Home
                                 page{myArray[0] &&
                                     <span
                                         className={'bg-[#FFA16C] rounded-tl-3xl rounded-bl-3xl w-[5px] h-full absolute right-0'}></span>}
                             </li>
                         </Link>
-                        <Link to={'/menu'}>
+                        <Link to={'/employee'}>
                             <li className={`w-full h-[50px] flex pl-8 items-center border-[#FFA16C] hover:bg-gray-100 cursor-pointer transition-all relative ${myArray[1] ? 'text-[#FFA16C]' : 'text-gray-500'}`}
                                 onClick={() => handleSelectStyle(1)}><AiOutlineAppstore
                                 className="mr-5 text-2xl"/>Menu{myArray[1] && <span
