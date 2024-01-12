@@ -1,10 +1,30 @@
-import {HiMinusSmall} from "react-icons/hi2";
-import {IoAdd} from "react-icons/io5";
+
 import ItemCard from "../components/card/itemCard.tsx";
 import SecondButton from "../components/buttons/secondButton.tsx";
+import {useState} from "react";
+import AddCoffee from "../components/layout/add.coffee.tsx";
+import AddDessert from "../components/layout/add.dessert.tsx";
+
 
 
 const Item = ():JSX.Element => {
+
+    const [coffeeState, setCoffeeState] = useState(true);
+    const [dessertState, setDessertState] = useState(false);
+
+
+    const changeButton = (event:any):void => {
+        switch (event.target.innerText){
+            case 'Coffee':
+                setCoffeeState(true);
+                setDessertState(false);
+                break;
+            case 'Dessert':
+                setCoffeeState(false);
+                setDessertState(true);
+                break;
+        }
+    }
     return (
         <section className={'w-full h-full bg-gray-100 flex'}>
             <div className={'w-[75%] h-full'}>
@@ -22,15 +42,22 @@ const Item = ():JSX.Element => {
 
             <div className={'w-[25%] h-full border-l-2 border-gray-200 bg-white px-5 py-2'}>
                 <div className={'w-full flex'}>
-                    <SecondButton
+                <SecondButton
                         text={'Coffee'}
-                        br_color={''}
-                        br_reduce={20}
-                        bg_active={''}
-                        bg_hover={'#363636'}
-                        bg_color={'#ffa16c'}
-                        is_active={false}/>
+                        bg_color={'#3C3C3C'}
+                        is_active={coffeeState}
+                        onClick={changeButton}/>
+                    <SecondButton
+                        text={'Dessert'}
+                        bg_color={'#3C3C3C'}
+                        is_active={dessertState}
+                        onClick={changeButton}/>
                 </div>
+                {
+                    coffeeState ? <AddCoffee/>: <AddDessert/>
+                }
+
+
             </div>
 
         </section>

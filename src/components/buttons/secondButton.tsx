@@ -2,19 +2,21 @@
 
 interface customButtonProps {
     text:string;
-    br_color:string;
-    br_reduce:number;
-    bg_active:string;
-    bg_hover:string;
     bg_color:string;
     is_active:boolean;
+    onClick:Function;
 }
 const SecondButton = (props: customButtonProps):JSX.Element => {
+
+
     return (
         <button
+            onClick={ event => props.onClick(event)}
             type={'button'}
-            className={`text-[13px] bg-[${props.is_active ? props.bg_color: '#fffff'}] font-normal mx-1 px-4 text-center py-1.5 font-round rounded-[${props.br_reduce}px]  
-            hover:bg-[${props.bg_hover}] active:border-[${props.bg_hover}] hover:text-white active:bg-[${props.bg_active}] active:border-[${props.bg_active}] cursor-default text-${props.is_active ? 'white': 'gray-500'} border-[1px] border-[${props.br_color}] my-2`}>
+            className={`text-[13px] bg-white bg-[${props.is_active && props.bg_color}] 
+            font-normal mx-1 px-4 text-center py-1.5 font-round rounded-3xl  
+            hover:${!props.is_active && 'bg-gray-200'} active:border-gray-300 
+            active:${!props.is_active && 'bg-gray-300'} cursor-default text-${props.is_active ? 'white': 'gray-500'} border-[1px] border-gray-300 my-2`}>
             {props.text}
         </button>
     );

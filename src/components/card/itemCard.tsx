@@ -55,11 +55,13 @@ const ItemCard = ():JSX.Element => {
                     ,codaw consectetur adipisicing elitsdaadsa. Accusamus. </p>
                 <div className={'w-full flex items-center py-1 text-sm text-gray-400 '}>
                     <div className={'w-[60%]'}>
-                        <div className={'w-full flex my-1'}><span className={'border-[1px] border-gray-300 rounded-xl px-3 py-1'}>Large</span>
-                            <div className={'text-end w-[60%] text-[#FFA16C] py-1'}>$ <span> 3.00</span></div>
+                        <div className={'w-full flex my-1'}>
+                            <span className={'text-[12px] bg-[#888888] rounded-3xl text-white cursor-default px-3 py-1'}>Large</span>
+                            <div className={'text-end w-[55%] text-[#FFA16C] py-1'}>$ <span> 3.00</span></div>
                         </div>
-                        <div className={'w-full flex my-1'}><span className={'border-[1px] border-gray-300 rounded-xl px-3 py-1'}>Small</span>
-                            <div className={'text-end w-[60%] text-[#FFA16C] py-1'}>$ <span> 3.00</span></div>
+                        <div className={'w-full flex my-1'}>
+                            <span className={'text-[12px] bg-[#888888] rounded-3xl text-white cursor-default  px-3 py-1'}>Small</span>
+                            <div className={'text-end w-[55%] text-[#FFA16C] py-1'}>$ <span> 3.00</span></div>
                         </div>
                     </div>
                     <div className={'w-[40%] text-center  text-sm flex flex-col'}>
