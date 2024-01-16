@@ -27,3 +27,26 @@ export const validateContact = (contact:string):boolean => {
 export const validatePassword = (password:string):boolean => {
     return password.length >= 8;
 }
+
+export const validateItemName = (value:string) : string | null => {
+    if (!value)
+        return "Name field is required. !"
+    if (value.length < 3 )
+        return "Please enter at least 3 characters."
+    if (value.length > 15 )
+        return "Please enter no more than 15 characters.";
+    return null;
+}
+export const validateDes = (value:string) : string | null => {
+    if (!value)
+        return "Desc field is required. !"
+    if (value.length < 3 )
+        return "Please enter at least 3 characters."
+    return null;
+}
+export const validateNumber= (value:number) : string | null => {
+    if (!value || value < 0)
+        return "This field is required. !"
+    return null;
+}
+

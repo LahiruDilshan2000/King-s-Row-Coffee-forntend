@@ -2,13 +2,12 @@ import EmployeeCard from "../components/card/employeeCard.tsx";
 import Input from "../components/input/input.tsx";
 import {useRef, useState} from "react";
 import * as validator from '../util/validator.ts'
-import { GrUpload } from "react-icons/gr";
+import {GrUpload} from "react-icons/gr";
 
 const Employee = (): JSX.Element => {
 
     const [errorSate, setErrorSate] = useState([false, false, false, false, false]);
 
-    const [file, setFile] = useState(undefined);
     const [name, setName] = useState('');
     const [mail, setMail] = useState('');
     const [address, setAddress] = useState('');
@@ -16,36 +15,22 @@ const Employee = (): JSX.Element => {
     const [contact, setContact] = useState('');
     const [previewImage, setPreviewImage] = useState(null);
 
-    const fileInputRef = useRef(undefined);
+    const fileInputRef = useRef();
 
     // Function to trigger click on file input
     const handleClick = () => {
+        // @ts-ignore
         fileInputRef.current.click();
     };
 
     // Function to handle file selection
-    const handleFileChange = (event:any) => {
-
-        setFile(event.target.files[0]);
-
-        if (file) {
-
-        }
-            // Use FileReader to read the file as a data URL
-            const reader = new FileReader();
-
-            reader.onload = (e) => {
-                // Set the data URL as the src attribute of the img element
-                const dataURL = e.target.result;
-                setPreviewImage(dataURL);
-            };
-
-            reader.readAsDataURL(file);
+    const handleFileChange = (event: any) => {
+        setPreviewImage(event.target.files[0]);
     };
 
     const handleInput = (e: any, type: string): void => {
 
-        switch (type){
+        switch (type) {
             case "Name":
                 setName(e.target.value);
                 break;
@@ -62,10 +47,9 @@ const Employee = (): JSX.Element => {
                 setContact(e.target.value);
                 break;
         }
-        console.log(errorSate)
     }
 
-    const showError = (index:number) => {
+    const showError = (index: number) => {
 
         setErrorSate(prevState => {
             const newArray = [...prevState];
@@ -74,7 +58,7 @@ const Employee = (): JSX.Element => {
         });
     }
 
-    const handleAddEmployee = ():void => {
+    const handleAddEmployee = (): void => {
 
         setErrorSate([false, false, false, false, false]);
 
@@ -99,14 +83,14 @@ const Employee = (): JSX.Element => {
         <section className={'w-full h-full bg-gray-100 flex'}>
 
             {/*bg-[#fff4ed]*/}
-            <div className={'w-[70%] px-[100px] pt-5'}>
+            <div className={'w-[75%] px-[100px] pt-5'}>
 
                 <div className={'w-full bg-white font-abc flex items-center flex-col py-5 rounded-t-[15px]'}>
                     <h1 className={'text-3xl text-gray-500'}>Employee's</h1>
                     <h3 className={'text-[14px] my-1 text-gray-400'}>Manage your employee's</h3>
                     <input type={'text'} placeholder={'Search name / mail / address...'}
-                    className={'w-[80%] mt-3 rounded-[4px] px-8 py-2.5 bg-gray-50 shadow-inner outline-none font-[200] ' +
-                        'text-[14px] placeholder-gray-400 placeholder:font-[200] text-gray-500 border-[1px] focus:border-[#fe7439]'}/>
+                           className={'w-[80%] mt-3 rounded-[4px] px-8 py-2.5 bg-gray-50 shadow-inner outline-none font-[200] ' +
+                               'text-[14px] placeholder-gray-400 placeholder:font-[200] text-gray-500 border-[1px] focus:border-[#fe7439]'}/>
                 </div>
                 <div className={'w-full min-h-[62.5vh] flex flex-col overflow-y-scroll pt-2'}>
                     <EmployeeCard/>
@@ -114,17 +98,17 @@ const Employee = (): JSX.Element => {
                 </div>
             </div>
 
-            <div className={'w-[30%] h-full border-l-2 bg-white border-gray-200 '}>
+            <div className={'w-[25%] h-full border-l-2 bg-white border-gray-200 '}>
                 <div className={'w-full h-[22vh] bg-[#ffcaa9] py-2 px-8'}>
                     {
-                        previewImage ? <img src={previewImage} alt="profile"
+                        previewImage ? <img src={URL.createObjectURL(previewImage)} alt="profile"
                                             onClick={handleClick}
                                             className={'cursor-pointer w-full h-full rounded-xl object-cover'}/>
 
                             : <div className={'cursor-pointer w-full h-full rounded-xl border-dashed border-2 ' +
                                 'border-white flex justify-center items-center flex-col text-white'}
                                    onClick={handleClick}>
-                            <h1 className={'font-round text-sm my-2'}>Upload profile</h1>
+                                <h1 className={'font-round text-sm my-2'}>Upload profile</h1>
                                 <GrUpload className={'text-2xl'}/></div>
                     }
 
@@ -154,12 +138,15 @@ const Employee = (): JSX.Element => {
                     <div className={'w-full flex flex-col pt-4'}>
                         <button
                             onClick={handleAddEmployee}
-                            className={'w-full h-[45px] font-round text-sm bg-[#ffcaa9] hover:bg-[#ffa16c] text-white rounded-3xl my-1 active:bg-[#fe7439]'}>Add
-                            to stock
+                            className={`w-full h-[40px] font-round text-sm bg-[#3C3C3C] ` +
+                                `hover:bg-[#5d5d5d] text-white rounded-full my-2 ` +
+                                `active:bg-[#262626]`}>Add to stock
                         </button>
                         <button
-                            className={'w-full h-[40px] font-round text-sm border-[1px] border-gray-400 font-[400] text-gray-600 rounded-3xl my-2 active:bg-[#e7e7e7]'}>Dismiss
-                            All
+                          /*  onClick={clearAll}*/
+                            className={`w-full h-[38px] font-round text-sm  ` +
+                                ` border-[1px] border-gray-400 rounded-full  ` +
+                                `active:bg-[#b0b0b0]`}>Dismiss All
                         </button>
                     </div>
                 </div>
