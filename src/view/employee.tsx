@@ -1,8 +1,23 @@
 import EmployeeCard from "../components/card/employeeCard.tsx";
 import Input from "../components/input/input.tsx";
-import {useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import * as validator from '../util/validator.ts'
 import {GrUpload} from "react-icons/gr";
+import axios from "axios";
+import Swal from 'sweetalert2'
+
+
+
+interface Data {
+    _id:string;
+    name: string;
+    email: string;
+    address: string;
+    age:number;
+    contact:string;
+    image:string;
+}
+
 
 const Employee = (): JSX.Element => {
 
@@ -14,6 +29,29 @@ const Employee = (): JSX.Element => {
     const [age, setAge] = useState(0);
     const [contact, setContact] = useState('');
     const [previewImage, setPreviewImage] = useState(null);
+    const [data, setData] = useState<Data[]>([]);
+
+
+    const fetchData = (): void => {
+
+        // 'http://localhost:8080/emplaoyee?size=100&page=1'
+        axios.get('http://localhost:8080/employee/getAll')
+            .then(response => {
+
+                console.log(`http://localhost:8080/images/${response.data.data[0].image}`)
+                console.log(response.data.data[0])
+                setData(response.data.data);
+
+            })
+            .catch(err => {
+                console.log(err);
+
+            });
+    }
+    useEffect(() => {
+        fetchData();
+
+    }, []);
 
     const fileInputRef = useRef();
 
@@ -58,25 +96,92 @@ const Employee = (): JSX.Element => {
         });
     }
 
-    const handleAddEmployee = (): void => {
+    const handleValidation = (): boolean => {
 
         setErrorSate([false, false, false, false, false]);
 
-        if (!validator.validateName(name))
+        if (!validator.validateName(name)) {
             showError(0);
+            return false;
 
-        if (!validator.validateEmail(mail))
+        }
+
+
+        if (!validator.validateEmail(mail)) {
             showError(1);
+            return false;
+        }
 
-        if (!validator.validateAddress(address))
+
+        if (!validator.validateAddress(address)) {
             showError(2);
+            return false;
+        }
 
-        if (!validator.validateAge(age))
+        if (!validator.validateAge(age)) {
             showError(3);
+            return false;
+        }
 
-        if (!validator.validateContact(contact))
-            showError(4)
+        if (!validator.validateContact(contact)) {
+            showError(4);
+            return false;
+        }
+        return true;
 
+    }
+
+    const handleAddEmployee = () => {
+
+        //  'Authorization': Cookies.get('token')
+
+        if (handleValidation()) {
+
+            const config = {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                }
+            };
+
+
+            let data = JSON.stringify({
+                name: name,
+                email: mail,
+                address: address,
+                age:age,
+                contact:contact
+            });
+
+            const formData = new FormData();
+
+            // @ts-ignore
+            formData.append('file', previewImage);
+            formData.append('employee',  data);
+
+            console.log(formData.get('image'))
+
+            axios.post('http://localhost:8080/employee', formData, config)
+                .then(res => {
+                    console.log(res)
+                    //navigate('/');
+                    Swal.fire({
+                        title: "Success !",
+                        text: res.data.message,
+                        icon: "success"
+                    });
+
+                })
+
+                .catch(err => {
+                    console.log(err)
+                    Swal.fire({
+                        title: err.response.data.status,
+                        text: err.response.data.message,
+                        icon: 'error',
+                        confirmButtonText: 'Cool'
+                    })
+                });
+        }
     }
 
     return (
@@ -93,8 +198,22 @@ const Employee = (): JSX.Element => {
                                'text-[14px] placeholder-gray-400 placeholder:font-[200] text-gray-500 border-[1px] focus:border-[#fe7439]'}/>
                 </div>
                 <div className={'w-full min-h-[62.5vh] flex flex-col overflow-y-scroll pt-2'}>
-                    <EmployeeCard/>
-                    <EmployeeCard/>
+
+                    {
+                        data.length > 0 &&
+                        data.map((value) => {
+                            return  <EmployeeCard
+                                key={value._id}
+                                _id={value._id}
+                                name={value.name}
+                                email={value.email}
+                                address={value.address}
+                                age={value.age}
+                                contact={value.contact}
+                                image={`http://localhost:8080/images/${value.image}`}/>
+                        })
+
+                    }
                 </div>
             </div>
 
@@ -140,10 +259,10 @@ const Employee = (): JSX.Element => {
                             onClick={handleAddEmployee}
                             className={`w-full h-[40px] font-round text-sm bg-[#3C3C3C] ` +
                                 `hover:bg-[#5d5d5d] text-white rounded-full my-2 ` +
-                                `active:bg-[#262626]`}>Add to stock
+                                `active:bg-[#262626]`}>Add
                         </button>
                         <button
-                          /*  onClick={clearAll}*/
+                            /*  onClick={clearAll}*/
                             className={`w-full h-[38px] font-round text-sm  ` +
                                 ` border-[1px] border-gray-400 rounded-full  ` +
                                 `active:bg-[#b0b0b0]`}>Dismiss All
