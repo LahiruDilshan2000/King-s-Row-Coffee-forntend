@@ -3,7 +3,7 @@ import {IoAdd} from "react-icons/io5";
 
 const MenuCard = (): JSX.Element => {
     return (
-        <div className={'w-[330px] h-[220px] bg-white rounded-2xl m-4 flex'}>
+        <div className={'w-[330px] h-[220px] bg-white rounded-2xl m-4 flex border-[1px] border-gray-200'}>
             {/*bg-[#202225]*/}
             {/*pic div*/}
             <div className={'w-[35%] h-full p-3 '}>
@@ -39,7 +39,7 @@ const MenuCard = (): JSX.Element => {
                     </div>
                 </div>
                 <button
-                    className={'mt-2 w-full py-2.5 rounded-3xl font-round text-[13px] text-gray-600 border-[1px] font-normal border-[#FFA16C] active:bg-[#FFA16C] active:text-white hover:bg-[#262626]transition-all duration-100 ease-linear'}>Add
+                    className={'mt-2 w-full py-2.5 rounded-3xl font-round text-[13px] text-gray-600 border-[2px] border-opacity-40 font-normal border-[#FFA16C] active:bg-[#FFA16C] active:text-white hover:bg-[#262626]transition-all duration-100 ease-linear'}>Add
                     to Cart
                 </button>
             </div>

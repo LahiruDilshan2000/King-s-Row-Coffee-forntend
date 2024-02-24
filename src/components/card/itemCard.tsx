@@ -110,7 +110,7 @@ const ItemCard = (props: Props):JSX.Element => {
 
 
     return (
-        <div  className={'w-[340px] h-[220px] bg-white rounded-2xl m-4 flex relative'}>
+        <div  className={'w-[340px] h-[220px] bg-white rounded-2xl m-4 flex relative border-[1px] border-gray-200'}>
             <div ref={iconRef}>
                 <FiMoreVertical
                     onClick={() => setOpenOption(!openOption)}
