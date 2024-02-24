@@ -1,4 +1,4 @@
-const Profile = ():JSX.Element => {
+const Dashboard = ():JSX.Element => {
     return (
         <section className={'w-full h-full bg-purple-100 flex'}>
 
@@ -6,4 +6,4 @@ const Profile = ():JSX.Element => {
     );
 }
 
-export default Profile;
+export default Dashboard;

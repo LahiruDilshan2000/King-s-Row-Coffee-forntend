@@ -7,13 +7,10 @@ interface Props {
     errorMsg: string;
     option: boolean
     callBack: Function;
+    value:string | number;
 }
 
 const Input = (props: Props): JSX.Element => {
-
-    /*handleInput = (e:object): void => {
-        console.log(e.target.value);
-    }*/
 
     return (
 
@@ -21,7 +18,7 @@ const Input = (props: Props): JSX.Element => {
             <label className={'font-round text-[12px] text-gray-600 absolute top-[2px]  left-2 bg-white'}>
                 {props.name}
             </label>
-            <input
+            <input value={props.value}
                 placeholder={props.placeholder}
                 type={props.type}
                 id={props.name}

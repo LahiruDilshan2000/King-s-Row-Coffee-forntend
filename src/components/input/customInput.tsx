@@ -5,6 +5,7 @@ interface Props {
     placeholder?: string;
     errorMsg: string | null;
     callBack: (event: string| number, name: string) => void;
+    value:string | number;
 }
 const CustomInput = (props: Props): JSX.Element => {
     return (
@@ -14,6 +15,7 @@ const CustomInput = (props: Props): JSX.Element => {
                 {props.name}
             </label>
             <input
+                value={props.value}
                 placeholder={props.placeholder}
                 type={props.type}
                 id={props.name}

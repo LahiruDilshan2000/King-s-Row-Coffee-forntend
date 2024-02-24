@@ -1,11 +1,13 @@
 import {IoSettingsOutline} from "react-icons/io5";
 import {AiOutlineAppstore} from "react-icons/ai";
 import {RiHome6Line,} from "react-icons/ri";
-import {LuArchiveRestore} from "react-icons/lu";
+import { BsPersonAdd } from "react-icons/bs";
 import {TiDocumentText} from "react-icons/ti";
 import {HiOutlineLogout} from "react-icons/hi";
-import {useState} from "react";
+import {PiCoffee} from "react-icons/pi";
+import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
+import SidebarIcon from "../icon/sidebarIcon.tsx";
 
 
 const NavBar = (): JSX.Element => {
@@ -24,60 +26,65 @@ const NavBar = (): JSX.Element => {
         setMyArray(newArray);
     }
 
+    useEffect(() => {
+        handleSelectStyle(0);
+    }, []);
+
     return (
         <aside>
-            <nav className={'w-[250px] h-[100vh] pt-6 border-r-2 border-gray-150 relative'}>
-                <h1 className={'text-3xl text-[#FFA16C] font-[800] text-center font-AA '}>King's <span
-                    className={'text-black'}>Row</span></h1>
+            <nav className={'w-20 h-screen pt-6 border-r-[1px] border-gray-700 relative bg-[#202225]'}>
+                {/*<h1 className={'text-[1.9rem] text-[#FFA16C] font-[800] text-center font-head'}>King's <span
+                    className={'text-black'}>Row</span></h1>*/}
 
-                <div className={'mt-[80px] h-[230px] font-round border-b-2 border-gray-150'}>
-                    <ul className={'w-full'}>
-                        <Link to={'/item'}>
-                            <li className={`bg-gradient-to-r from-[#fff4ed] ... w-full h-[50px] flex pl-8 items-center  hover:bg-gray-100 cursor-pointer transition-all relative ${myArray[0] ? 'text-[#FFA16C]' : 'text-gray-500'}`}
-                                onClick={() => handleSelectStyle(0)}><RiHome6Line className="mr-5 text-2xl"/>Home
-                                page{myArray[0] &&
-                                    <span
-                                        className={'bg-[#FFA16C] rounded-tl-3xl rounded-bl-3xl w-[5px] h-full absolute right-0'}></span>}
-                            </li>
-                        </Link>
-                        <Link to={'/employee'}>
-                            <li className={`w-full h-[50px] flex pl-8 items-center border-[#FFA16C] hover:bg-gray-100 cursor-pointer transition-all relative ${myArray[1] ? 'text-[#FFA16C]' : 'text-gray-500'}`}
-                                onClick={() => handleSelectStyle(1)}><AiOutlineAppstore
-                                className="mr-5 text-2xl"/>Menu{myArray[1] && <span
-                                className={'bg-[#FFA16C] rounded-tl-3xl rounded-bl-3xl w-[5px] h-full absolute right-0'}></span>}
-                            </li>
-                        </Link>
-                        <Link to={'/history'}>
-                            <li className={`w-full h-[50px] flex pl-8 items-center border-[#FFA16C] hover:bg-gray-100 cursor-pointer transition-all relative ${myArray[2] ? 'text-[#FFA16C]' : 'text-gray-500'}`}
-                                onClick={() => handleSelectStyle(2)}><TiDocumentText
-                                className="mr-5 text-2xl"/>History{myArray[2] && <span
-                                className={'bg-[#FFA16C] rounded-tl-3xl rounded-bl-3xl w-[5px] h-full absolute right-0'}></span>}
-                            </li>
-                        </Link>
-                        <Link to={'/menu'}>
-                            <li className={`w-full h-[50px] flex pl-8 items-center border-[#FFA16C] hover:bg-gray-100 cursor-pointer transition-all relative ${myArray[3] ? 'text-[#FFA16C]' : 'text-gray-500'}`}
-                                onClick={() => handleSelectStyle(3)}><LuArchiveRestore
-                                className="mr-5 text-2xl"/>Purchases{myArray[3] && <span
-                                className={'bg-[#FFA16C] rounded-tl-3xl rounded-bl-3xl w-[5px] h-full absolute right-0'}></span>}
-                            </li>
-                        </Link>
-                    </ul>
-                </div>
+                <ul className={'w-full mt-[80px] flex justify-center items-center flex-col'}>
+                    <Link to={'/'}>
+                        <SidebarIcon
+                            icon={<RiHome6Line className="text-2xl"/>}
+                            flag={myArray[0]}
+                            index={0}
+                            handleOption={handleSelectStyle}/>
+                    </Link>
+                    <Link to={'/menu'}>
+                        <SidebarIcon
+                            icon={<AiOutlineAppstore className="text-2xl"/>}
+                            flag={myArray[1]}
+                            index={1}
+                            handleOption={handleSelectStyle}/>
+                    </Link>
+                    <Link to={'/history'}>
+                        <SidebarIcon
+                            icon={<TiDocumentText className="text-2xl"/>}
+                            flag={myArray[2]}
+                            index={2}
+                            handleOption={handleSelectStyle}/>
+                    </Link>
+                    <Link to={'/item'}>
+                        <SidebarIcon
+                            icon={<PiCoffee className="text-2xl"/>}
+                            flag={myArray[3]}
+                            index={3}
+                            handleOption={handleSelectStyle}/>
+                    </Link>
+                    <Link to={'/employee'}>
+                        <SidebarIcon
+                            icon={<BsPersonAdd className="text-2xl"/>}
+                            flag={myArray[4]}
+                            index={4}
+                            handleOption={handleSelectStyle}/>
+                    </Link>
+                    <Link to={'/profile'}>
+                        <SidebarIcon
+                            icon={<IoSettingsOutline className="text-2xl"/>}
+                            flag={myArray[5]}
+                            index={5}
+                            handleOption={handleSelectStyle}/>
+                    </Link>
 
-                <Link to={'/profile'}>
+                </ul>
+                <Link to={'/'}>
                     <div
-                        className={`h-[50px] font-round mt-8 pl-8 flex items-center relative hover:bg-gray-100 cursor-pointer ${myArray[4] ? 'text-[#FFA16C]' : 'text-gray-500'}`}
-                        onClick={() => handleSelectStyle(4)}>
-                        <IoSettingsOutline className="mr-5 text-2xl"/> Profile{myArray[4] &&
-                        <span
-                            className={'bg-[#FFA16C] rounded-tl-3xl rounded-bl-3xl w-[5px] h-full absolute right-0'}></span>}
-                    </div>
-                </Link>
-
-                <Link to={'/login'}>
-                    <div
-                        className={`w-full h-[50px] font-round absolute bottom-[40px] pl-8 flex items-center hover:bg-gray-100 cursor-pointer text-gray-500`}>
-                        <HiOutlineLogout className="mr-5 text-2xl"/>Log out
+                        className={`w-full absolute bottom-[40px] flex items-center cursor-pointer justify-center text-gray-400 rotate-180`}>
+                        <HiOutlineLogout className="text-2xl hover:text-white"/>
                     </div>
                 </Link>
             </nav>

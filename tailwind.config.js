@@ -11,7 +11,8 @@ export default {
       cde: ['Roboto', 'sans-serif'],
       AA: ['Kodchasan', 'sans-serif'],
       round:['Baloo 2', 'sans-serif'],
-      pop:['Poppins', 'sans-serif']
+      pop:['Poppins', 'sans-serif'],
+      head:["Pacifico", 'cursive']
     }
   },
   plugins: [],

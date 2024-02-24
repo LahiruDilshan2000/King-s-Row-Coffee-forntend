@@ -1,15 +1,48 @@
 import ItemCard from "../components/card/itemCard.tsx";
-import SecondButton from "../components/buttons/secondButton.tsx";
-import {useState} from "react";
+import {createRef, useEffect, useState} from "react";
 import AddCoffee from "../components/layout/add.coffee.tsx";
 import AddDessert from "../components/layout/add.dessert.tsx";
+import axios from "axios";
 
-
+interface Data {
+    _id: string;
+    name: string;
+    desc: string;
+    largeSize: number;
+    smallSize: number;
+    qty: number;
+    image: string;
+}
 
 const Item = (): JSX.Element => {
 
+
     const [coffeeState, setCoffeeState] = useState(true);
     const [dessertState, setDessertState] = useState(false);
+
+    const [data, setData] = useState<Data[]>([]);
+    const addCoffeeRef = createRef();
+
+    const setCoffee = (coffee:Data) => {
+        // @ts-ignore
+        addCoffeeRef?.current?.setCoffee(coffee);
+    }
+
+    const fetchData = (): void => {
+
+        // 'http://localhost:8080/emplaoyee?size=100&page=1'
+        axios.get('http://localhost:8080/coffee/getAll')
+            .then(response => {
+                setData(response.data.data);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+
+    useEffect(() => {
+        fetchData();
+    }, []);
 
 
     const changeButton = (event: any): void => {
@@ -25,29 +58,36 @@ const Item = (): JSX.Element => {
         }
     }
 
-    const clearAll = () => {
-        if (coffeeState){
-
-        }
-    }
 
     return (
         <section className={'w-full h-full bg-gray-100 flex'}>
-            <div className={'w-[75%] h-full'}>
+            <div className={'w-[78%] h-full'}>
 
-                <h1 className={'ml-16 mt-5 text-xl w-full font-round font-[500] cursor-default'}>Item Manage</h1>
+                <h1 className={'ml-10 mt-5 text-xl w-full font-round font-[500] cursor-default'}>Item Manage</h1>
 
                 <div
-                    className={'w-full h-[71.3vh] flex flex-wrap items-start justify-start mt-2 overflow-y-scroll pl-[40px]'}>
-                    <ItemCard/>
-                    <ItemCard/>
-                    <ItemCard/>
-                    <ItemCard/>
-                    <ItemCard/>
+                    className={'w-full h-[71.3vh] flex flex-wrap items-start justify-start mt-2 overflow-y-scroll pl-[10px]'}>
+
+                    {
+                        data.length > 0 &&
+                        data.map(value => {
+                            return <ItemCard
+                                onLoadAction={fetchData}
+                                setCoffee={setCoffee}
+                                qty={value.qty}
+                                key={value._id}
+                                smallSize={value.smallSize}
+                                largeSize={value.largeSize}
+                                name={value.name}
+                                _id={value._id}
+                                desc={value.desc}
+                                image={`http://localhost:8080/images/${value.image}`}/>
+                        })
+                    }
                 </div>
             </div>
 
-            <div className={'w-[25%] h-full border-l-2 border-gray-200 bg-white px-5 py-2'}>
+            <div className={'w-[22%] h-full border-l-2 border-gray-200 bg-white px-5 py-2'}>
                 <div className={'w-full flex'}>
                     <button
                         onClick={changeButton}
@@ -67,19 +107,8 @@ const Item = (): JSX.Element => {
                     </button>
                 </div>
                 {
-                    coffeeState ? <AddCoffee/> : <AddDessert/>
+                    coffeeState ? <AddCoffee ref={addCoffeeRef} onLoadAction={fetchData} onSetCoffee={setCoffee}/> : <AddDessert/>
                 }
-                <div className={'w-full px-2'}>
-                    <button
-                        onClick={clearAll}
-                        className={`w-full h-[38px] font-round text-sm  ` +
-                            ` border-[1px] border-gray-400 rounded-full  ` +
-                            `active:bg-[#b0b0b0]`}>Clear All
-                    </button>
-                </div>
-
-
-
             </div>
 
         </section>

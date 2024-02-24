@@ -19,15 +19,9 @@ const EmployeeCard = (props: Props): JSX.Element => {
 
     const handleGetEmployeeById = (_id: string):void => {
 
-        /*const config = {
-            headers: {
-                'Authorization': Cookies.get('token')
-            }
-        };*/
-
         axios.get(`http://localhost:8080/employee/getById/${_id}`)
             .then(response => {
-                console.log(response.data.data)
+                console.log("get")
                 navigate('/employee', {state: {employee: response.data.data}})
 
             })
@@ -46,7 +40,7 @@ const EmployeeCard = (props: Props): JSX.Element => {
 
         Swal.fire({
             title: "Are you sure?",
-            text: "Are you sure do you to delete this article !",
+            text: "Are you sure do you to delete this Employee !",
             icon: "question",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
@@ -65,7 +59,7 @@ const EmployeeCard = (props: Props): JSX.Element => {
                     .then(res => {
                         Swal.fire({
                             title: "Deleted!",
-                            text: "Your file has been deleted.",
+                            text: "Your employee has been deleted.",
                             icon: "success"
                         });
                         //handleGetMyArticles();
@@ -81,7 +75,6 @@ const EmployeeCard = (props: Props): JSX.Element => {
 
             }
         });
-
     }
 
     return (
@@ -102,21 +95,21 @@ const EmployeeCard = (props: Props): JSX.Element => {
             </div>
             <div className={'absolute right-4 '}>
                 <button
+                    onClick={() => handleDeleteEmployee(props._id)}
+                    type={'button'}
+                    className={'text-[13px] font-normal mx-1 px-4 my-2 py-1.5 text-center border-[1px] ' +
+                        'border-red-400 rounded-[6px] hover:bg-red-500 transition-all duration-100 ease-linear ' +
+                        'active:bg-blue-600  cursor-default text-red-500 hover:text-white'}>
+                    Remove
+                </button>
+                <button
                     onClick={() => handleGetEmployeeById(props._id)}
                     // onClick={() => navigate('/employee', {state: {_id: props._id}})}
                     type={'button'}
-                    className={' text-[13px] font-normal mx-1 px-4 text-center text-orange-400 py-1.5 font-round ' +
-                        'rounded-[6px]  hover:bg-[#ffcaa9] hover:text-white ' +
-                        'active:bg-gray-200  active:border-gray-200 cursor-default text-gray-500 border-[1px] border-[#ffcaa9] my-2'}>
+                    className={'text-[13px] font-normal mx-1 px-4 my-2 py-1.5 text-center text-white bg-gray-400  ' +
+                        'rounded-[6px]  hover:bg-blue-500 transition-all duration-100 ease-linear ' +
+                        'active:bg-blue-600  cursor-default'}>
                     Update
-                </button>
-                <button
-                    onClick={() => handleDeleteEmployee(props._id)}
-                    type={'button'}
-                    className={'text-[13px] font-normal px-4 text-red-500 text-center py-1.5 font-round rounded-[6px]' +
-                        ' hover:bg-[#ffcaa9] hover:text-white ' +
-                        'active:bg-gray-200 active:border-gray-200 cursor-default text-gray-500 border-[1px] border-[#ffcaa9] my-2'}>
-                    Remove
                 </button>
             </div>
         </div>
