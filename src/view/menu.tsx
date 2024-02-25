@@ -1,27 +1,42 @@
 import {IoAdd} from "react-icons/io5";
 import {HiMinusSmall} from "react-icons/hi2";
 import MenuCard from "../components/card/menuCard.tsx";
+import {useState} from "react";
 
 
 const Menu = (): JSX.Element => {
 
+    const [options, setOptions] = useState<boolean[]>([true, false, false])
 
+    const showMenu = (index:number) => {
+        const array = [false, false, false];
+        array[index] = true;
+        setOptions(array);
+    }
     return (
-        <section className={'w-full h-full bg-gray-100 flex'}>
-
+        <section className={'w-full h-full bg-[#f2f6fc] flex'}>
             {/*Menu*/}
             <div className={'w-[78%] h-full'}>
+                <div className={'pl-10 py-4 font-Index tracking-wider'}>
+                    <h1 className={'text-2xl font-bold text-[#3c3c3c]'}>Orders</h1>
+                    <h4 className={'text-[12px] text-gray-400'}>Good morning kasun. You 4 pending orders .</h4>
+                </div>
                 {/*nav*/}
-                <div>
-                    <ul className={'w-full h-[12vh] flex gap-3 items-center px-8'}>
-                        <li className={'py-2 px-6 rounded-3xl bg-[#FFA16C] text-white cursor-pointer border-gray-200 font-round text-sm'}>Coffee</li>
-                        <li className={'py-2 px-6 rounded-3xl cursor-pointer font-round text-sm bg-gray-700 text-white transition-all duration-300 ease-linear hover:rounded-xl hover:bg-[#FFA16C]'}>Dessert</li>
+                <div className={'w-full h-10 px-10'}>
+                    <ul className={'w-full h-full border-b-2  border-gray-200 flex pl-4 font-Index text-[13px] text-gray-400'}>
+                        <li onClick={() => showMenu(0)}
+                            className={`w-6 relative top-[2px] h-full flex items-center cursor-pointer justify-center mr-6 border-b-2 ${options[0] && 'text-[#3c3c3c] border-[#3c3c3c]'}`}>All</li>
+                        <li onClick={() => showMenu(1)}
+                            className={`relative top-[2px] h-full flex items-center cursor-pointer justify-center mr-6 border-b-2 ${options[1] && 'text-[#3c3c3c] border-[#3c3c3c]'}`}>Coffee</li>
+                        <li onClick={() => showMenu(2)}
+                            className={`relative top-[2px] h-full flex items-center cursor-pointer justify-center border-b-2 ${options[2] && 'text-[#3c3c3c] border-[#3c3c3c]'}`}>Dessert</li>
                     </ul>
                 </div>
 
                 {/*cards*/}
 
-                <div className={'w-full h-[71.3vh] flex flex-wrap items-start justify-start mt-2 overflow-y-scroll pl-[10px]'}>
+                <div className={'w-full h-[80vh] flex flex-wrap mt-4 overflow-y-scroll px-10 pt-5 pb-12'}>
+                    <MenuCard/>
                     <MenuCard/>
                     <MenuCard/>
                     <MenuCard/>
@@ -32,7 +47,7 @@ const Menu = (): JSX.Element => {
             </div>
 
             {/*Cart*/}
-            <div className={'w-[22%] h-full border-l-2 bg-white border-gray-200 px-5 py-6'}>
+            <div className={'w-[22%] h-full border-l-2 bg-white border-gray-200 px-5 pt-24'}>
                 <div className={'flex w-full font-round'}>
                     <h1 className={'text-xl font-[400] text-gray-800'}>Cart</h1>
                     <h3 className={'w-full text-end  text-[12px] font-[500] text-gray-800 flex items-end justify-end'}>Order#3242</h3>

@@ -34,20 +34,23 @@ const ItemCard = (props: Props):JSX.Element => {
     useEffect(() => {
         if (bottom === -120 && openOption){
             setBottom(0)
-        }else if(bottom === 0 && !openOption){
+        }else if (bottom === 0 && !openOption){
             setBottom(-120);
         }
     }, [openOption])
 
     const handleWindowClick = (e: any): void => {
-        if (iconRef.current && !iconRef.current.contains(e.target)) {
-            setOpenOption(false)
+        if (openOption){
+            if (iconRef.current && !iconRef.current.contains(e.target)) {
+                //console.log("dawdawdawd")
+                resetOption(false);
+               // setOpenOption(false)
+            }
         }
     }
     const handleOptions = (option: string, _id: string) => {
 
-        if (option === "Updatee"){
-
+        if (option === "Update"){
             axios.get(`http://localhost:8080/coffee/getById/${_id}`)
                 .then(response => {
                     props.setCoffee(response.data.data)
@@ -63,7 +66,7 @@ const ItemCard = (props: Props):JSX.Element => {
 
                 });
         }
-        if (option === "Deletee"){
+        if (option === "Delete"){
 
             Swal.fire({
                 title: "Are you sure?",
@@ -103,14 +106,21 @@ const ItemCard = (props: Props):JSX.Element => {
                 }
             });
         }
-        console.log(option)
-        setOpenOption(!openOption);
+        resetOption(!openOption);
     }
     window.addEventListener('click', handleWindowClick);
 
+    const resetOption = (opt:boolean) => {
+        setBottom(-120);
+        setTimeout( () => {
+            setOpenOption(opt);
+        }, 500)
+
+    }
+
 
     return (
-        <div  className={'w-[340px] h-[220px] bg-white rounded-2xl m-4 flex relative border-[1px] border-gray-200'}>
+        <div  className={'w-[330px] h-[225px] bg-white rounded-[20px] m-2 flex relative'}>
             <div ref={iconRef}>
                 <FiMoreVertical
                     onClick={() => setOpenOption(!openOption)}
@@ -120,8 +130,8 @@ const ItemCard = (props: Props):JSX.Element => {
             {
                 openOption &&
                 <ul
-                    className={'w-full bg-black bg-opacity-20 h-full absolute rounded-xl overflow-hidden '}>
-                    <div className={`w-full rounded-tl-xl rounded-tr-xl bg-[#262626] absolute ${bottom === -120 && 'bottom-[-120px]'} ${bottom === 0 && 'bottom-[0px]'} py-2 px-3 flex justify-center items-center flex-col transition-all duration-300 ease-linear`}>
+                    className={'w-full bg-black bg-opacity-20 h-full absolute rounded-[20px] overflow-hidden '}>
+                    <div className={`w-full rounded-tl-2xl rounded-tr-2xl bg-[#3c3c3c]  absolute ${bottom === -120 && 'bottom-[-120px]'} ${bottom === 0 && 'bottom-[0px]'} py-2 px-3 flex justify-center items-center flex-col transition-all duration-300 ease-linear`}>
                         <span className={'w-10 h-[4px] bg-gray-300 rounded-xl'}></span>
                         {
                             options.map(option => {
@@ -142,29 +152,26 @@ const ItemCard = (props: Props):JSX.Element => {
                 {/*button div*/}
             </div>
             {/*content*/}
-            <div className={'w-[62%] h-full py-4 px-1 font-round'}>
+            <div className={'w-[62%] h-full py-2 px-1 font-Robot'}>
                 <div className={'w-full flex'}>
-                    <h3 className={'font-round text-[16px] text-gray-700 font-bold'}>{props.name}</h3>
-                    <h3 className={'font-round text-lg ml-4 text-[#FFA16C]'}>$ <span
-                        className={'lg'}> {props.largeSize}</span></h3>
+                    <h3 className={'font-round text-[18px] text-gray-700 font-bold'}>{props.name}</h3>
                 </div>
-                <p className={'font-round text-gray-400 py-2 leading-5 text-sm min-h-[70px]'}>{props.desc} </p>
+                <div className={'font-cde relative pt-3 text-sm text-black text-[17px]'}>
+                    <div className={'w-full leading-3 py-1'}>$ {props.largeSize}
+                        <span className={'absolute right-[130px] pl-1 text-[11px] text-[#FFA16C]'}>USD</span>
+                    </div>
+                    <div className={'w-full relative '}>$ {props.smallSize}
+                        <span className={'absolute right-[130px] pl-1 text-[11px] text-[#FFA16C]'}>USD</span>
+                    </div>
+                </div>
+                <p className={'font-round text-gray-400 pt-2 leading-5 text-[13px] min-h-[68px] overflow-y-scroll'}>{props.desc} </p>
                 <div className={'w-full flex items-center py-1 text-sm text-gray-400 '}>
-                    <div className={'w-[60%]'}>
-                        <div className={'w-full flex my-1'}>
-                            <span className={'text-[12px] bg-[#888888] rounded-3xl text-white cursor-default px-3 py-1'}>Large</span>
-                            <div className={'text-end w-[55%] text-[#FFA16C] py-1'}>$ <span> {props.largeSize}</span></div>
-                        </div>
-                        <div className={'w-full flex my-1'}>
-                            <span className={'text-[12px] bg-[#888888] rounded-3xl text-white cursor-default  px-3 py-1'}>Small</span>
-                            <div className={'text-end w-[55%] text-[#FFA16C] py-1'}>$ <span> {props.smallSize}</span></div>
+                    <div className={'w-full text-gray-400'}>
+                        <div className={'text-[#FFA16C]'}>Quantity</div>
+                        <div>
+                            <div className={'text-gray-600 text-sm font-Robot'}>{props.qty}</div>
                         </div>
                     </div>
-                    <div className={'w-[40%] text-center text-sm flex flex-col'}>
-                        Qty
-                        <span className={'m-1 text-green-500 text-lg'}>{props.qty}</span>
-                    </div>
-
                 </div>
             </div>
         </div>

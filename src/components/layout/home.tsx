@@ -10,16 +10,14 @@ import History from "../../view/history.tsx";
 const Home = (): JSX.Element => {
 
     return (
-        <section className={'w-full h-[100vh] flex'}>
+        <section className={'w-full h-[100vh] flex bg-[#202225]'}>
             {/*nav*/}
             <div className={'h-full w-20'}>
                 <NavBar/>
             </div>
-            <div className={'h-full w-full relative flex flex-col'}>
-                <div className={'w-full h-[80px]'}>
-                    <Header/>
-                </div>
-                <div className={'w-full h-full'}>
+            <div className={'h-full w-full relative flex flex-col rounded-tl-3xl rounded-bl-3xl overflow-hidden'}>
+                <Header/>
+                <div className={'w-full h-full rounded-2xl'}>
                     <Routes>
                         <Route path={'/'} element={<Dashboard/>}/>
                         <Route path={'/menu'} element={<Menu/>}/>

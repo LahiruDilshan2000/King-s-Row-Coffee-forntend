@@ -12,7 +12,9 @@ export default {
       AA: ['Kodchasan', 'sans-serif'],
       round:['Baloo 2', 'sans-serif'],
       pop:['Poppins', 'sans-serif'],
-      head:["Pacifico", 'cursive']
+      head:["Pacifico", 'cursive'],
+      Robot:['Roboto', 'sans-serif'],
+      Index:["Roboto", 'sans-serif']
     }
   },
   plugins: [],

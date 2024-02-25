@@ -32,49 +32,48 @@ const NavBar = (): JSX.Element => {
 
     return (
         <aside>
-            <nav className={'w-20 h-screen pt-6 border-r-[1px] border-gray-700 relative bg-[#202225]'}>
-                {/*<h1 className={'text-[1.9rem] text-[#FFA16C] font-[800] text-center font-head'}>King's <span
-                    className={'text-black'}>Row</span></h1>*/}
+            <nav className={'w-18 h-screen pt-6 border-r-[1px] border-gray-700 relative bg-[#202225]'}>
+                <h1 className={'text-[1.9rem] text-[#FFA16C] font-[800] text-center font-round'}>Urr</h1>
 
                 <ul className={'w-full mt-[80px] flex justify-center items-center flex-col'}>
                     <Link to={'/'}>
                         <SidebarIcon
-                            icon={<RiHome6Line className="text-2xl"/>}
+                            icon={<RiHome6Line className="text-lg"/>}
                             flag={myArray[0]}
                             index={0}
                             handleOption={handleSelectStyle}/>
                     </Link>
                     <Link to={'/menu'}>
                         <SidebarIcon
-                            icon={<AiOutlineAppstore className="text-2xl"/>}
+                            icon={<AiOutlineAppstore className="text-lg"/>}
                             flag={myArray[1]}
                             index={1}
                             handleOption={handleSelectStyle}/>
                     </Link>
                     <Link to={'/history'}>
                         <SidebarIcon
-                            icon={<TiDocumentText className="text-2xl"/>}
+                            icon={<TiDocumentText className="text-lg"/>}
                             flag={myArray[2]}
                             index={2}
                             handleOption={handleSelectStyle}/>
                     </Link>
                     <Link to={'/item'}>
                         <SidebarIcon
-                            icon={<PiCoffee className="text-2xl"/>}
+                            icon={<PiCoffee className="text-lg"/>}
                             flag={myArray[3]}
                             index={3}
                             handleOption={handleSelectStyle}/>
                     </Link>
                     <Link to={'/employee'}>
                         <SidebarIcon
-                            icon={<BsPersonAdd className="text-2xl"/>}
+                            icon={<BsPersonAdd className="text-lg"/>}
                             flag={myArray[4]}
                             index={4}
                             handleOption={handleSelectStyle}/>
                     </Link>
                     <Link to={'/profile'}>
                         <SidebarIcon
-                            icon={<IoSettingsOutline className="text-2xl"/>}
+                            icon={<IoSettingsOutline className="text-lg"/>}
                             flag={myArray[5]}
                             index={5}
                             handleOption={handleSelectStyle}/>
@@ -84,7 +83,7 @@ const NavBar = (): JSX.Element => {
                 <Link to={'/'}>
                     <div
                         className={`w-full absolute bottom-[40px] flex items-center cursor-pointer justify-center text-gray-400 rotate-180`}>
-                        <HiOutlineLogout className="text-2xl hover:text-white"/>
+                        <HiOutlineLogout className="text-lg hover:text-white"/>
                     </div>
                 </Link>
             </nav>

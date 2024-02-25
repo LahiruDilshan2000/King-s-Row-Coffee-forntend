@@ -8,6 +8,7 @@ import Swal from 'sweetalert2'
 import {useLocation} from "react-router-dom";
 import { GrNext } from "react-icons/gr";
 import { MdOutlineArrowBackIosNew } from "react-icons/md";
+import Search from "../components/search/search.tsx";
 
 
 interface Data {
@@ -304,19 +305,26 @@ const Employee = (): JSX.Element => {
     }
 
     return (
-        <section className={'w-full h-full bg-gray-100 flex'}>
+        <section className={'w-full h-full bg-[#f2f6fc] flex'}>
 
             {/*bg-[#fff4ed]*/}
-            <div className={'w-[78%] px-[100px] pt-5'}>
-
-                <div className={'w-full bg-white font-abc flex items-center flex-col py-5 rounded-t-[15px]'}>
-                    <h1 className={'text-3xl text-gray-500'}>Employee's</h1>
-                    <h3 className={'text-[14px] my-1 text-gray-400'}>Manage your employee's</h3>
-                    <input type={'text'} placeholder={'Search name / mail / address...'}
-                           className={'w-[80%] mt-3 rounded-[4px] px-8 py-2.5 bg-gray-50 shadow-inner outline-none font-[200] ' +
-                               'text-[14px] placeholder-gray-400 placeholder:font-[200] text-gray-500 border-[1px] focus:border-[#fe7439]'}/>
+            <div className={'w-[78%] h-full px-10'}>
+                <div className={'pt-8 font-Index tracking-wider'}>
+                    <h1 className={'text-2xl font-bold text-[#3c3c3c]'}>Employee's</h1>
+                    <h4 className={'text-[12px] text-gray-400'}>Good morning kasun. You have update 4 employee details .</h4>
                 </div>
-                <div className={'w-full min-h-[55vh] flex flex-col overflow-y-scroll pt-2'}>
+                <div className={'flex gap-2 py-3'}>
+                    <div className={' px-4 w-fit pl-2 pr-3 py-2 rounded-xl font-Index text-[12px] text-gray-400 bg-blue-100 '}>You have new 3 orders</div>
+                    <div className={' px-4 w-fit pl-2 pr-3 py-2 rounded-xl font-Index text-[12px] text-gray-400 bg-red-100 '}>No updated employee's</div>
+                </div>
+                <div className={'pb-4 flex'}>
+                    <Search/>
+                    <div className={'w-full mt-2 h-10 flex justify-end items-center font-round text-[12px] text-gray-500 gap-2'}>
+                        <div className={'hover:bg-gray-100 transition-all flex justify-center items-center w-9 h-9 rounded-full bg-white shadow border-[1px] border-gray-200 cursor-pointer'}><MdOutlineArrowBackIosNew /></div>
+                        <div className={'hover:bg-gray-100 transition-all flex justify-center items-center w-9 h-9 rounded-full bg-white shadow border-[1px] border-gray-200 cursor-pointer'}><GrNext /></div>
+                    </div>
+                </div>
+                <div className={'w-full min-h-[70vh] flex flex-col overflow-y-scroll pt-2'}>
 
                     {
                         data.length > 0 &&
@@ -334,13 +342,9 @@ const Employee = (): JSX.Element => {
 
                     }
                 </div>
-                <div className={'w-full mt-2 h-10 flex justify-center items-center font-round text-[12px] text-gray-500'}>
-                    <div className={'flex justify-center items-center mx-5 cursor-pointer hover:text-red-500'}><MdOutlineArrowBackIosNew className={'mr-1 text-lg'}/>Previous</div>
-                    <div className={'flex justify-center items-center mx-5 cursor-pointer'}>Next<GrNext className={'ml-1 text-lg'}/></div>
-                </div>
             </div>
 
-            <div className={'w-[22%] h-full border-l-2 bg-white border-gray-200 '}>
+            <div className={'w-[22%] h-full border-l-2 pt-16 bg-white border-gray-200 '}>
                 <div className={'w-full h-[22vh] bg-[#ffcaa9] py-2 px-8'}>
                     {
                         image || oldImage ? <img src={oldImage ? oldImage : URL.createObjectURL(image)} alt="profile"

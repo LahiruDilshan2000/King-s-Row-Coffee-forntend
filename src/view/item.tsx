@@ -58,16 +58,33 @@ const Item = (): JSX.Element => {
         }
     }
 
-
     return (
-        <section className={'w-full h-full bg-gray-100 flex'}>
+        <section className={'w-full h-full bg-[#f2f6fc] flex'}>
             <div className={'w-[78%] h-full'}>
-
-                <h1 className={'ml-10 mt-5 text-xl w-full font-round font-[500] cursor-default'}>Item Manage</h1>
-
+                <div className={'pl-10 py-4 font-Index tracking-wider'}>
+                    <h1 className={'text-2xl font-bold text-[#3c3c3c]'}>Items</h1>
+                    <h4 className={'text-[12px] text-gray-400'}>Good morning kasun. You have added new 4 items .</h4>
+                </div>
+                <div className={'w-full h-8 flex px-10 gap-2'}>
+                    <button
+                        onClick={changeButton}
+                        type={'button'}
+                        className={`shadow cursor-pointer text-[13px] ${coffeeState ? 'bg-[#3C3C3C]' : 'bg-white'} font-normal px-4 text-center h-full font-round ` +
+                            `rounded-3xl hover:${!coffeeState && 'bg-gray-200'} active:border-gray-300 ` +
+                            `active:${!coffeeState && 'bg-gray-300'} cursor-default text-${coffeeState ? 'white' : 'gray-500'} border-[1px] border-gray-300 `}>
+                        Coffee
+                    </button>
+                    <button
+                        onClick={changeButton}
+                        type={'button'}
+                        className={`shadow cursor-pointer text-[13px] ${dessertState ? 'bg-[#3C3C3C]' : 'bg-white'} font-normal px-4 text-center font-round ` +
+                            `rounded-3xl hover:${!dessertState && 'bg-gray-200'} active:border-gray-300 ` +
+                            `active:${!dessertState && 'bg-gray-300'} cursor-default text-${dessertState ? 'white' : 'gray-500'} border-[1px] border-gray-300`}>
+                        Dessert
+                    </button>
+                </div>
                 <div
-                    className={'w-full h-[71.3vh] flex flex-wrap items-start justify-start mt-2 overflow-y-scroll pl-[10px]'}>
-
+                    className={'w-full h-[80vh] flex flex-wrap mt-4 overflow-y-scroll px-10 pt-5 pb-12'}>
                     {
                         data.length > 0 &&
                         data.map(value => {
@@ -87,25 +104,7 @@ const Item = (): JSX.Element => {
                 </div>
             </div>
 
-            <div className={'w-[22%] h-full border-l-2 border-gray-200 bg-white px-5 py-2'}>
-                <div className={'w-full flex'}>
-                    <button
-                        onClick={changeButton}
-                        type={'button'}
-                        className={`text-[13px] ${coffeeState ? 'bg-[#3C3C3C]' : 'bg-white'} font-normal mx-1 px-4 text-center py-1.5 font-round ` +
-                            `rounded-3xl hover:${!coffeeState && 'bg-gray-200'} active:border-gray-300 ` +
-                            `active:${!coffeeState && 'bg-gray-300'} cursor-default text-${coffeeState ? 'white' : 'gray-500'} border-[1px] border-gray-300 my-2`}>
-                        Coffee
-                    </button>
-                    <button
-                        onClick={changeButton}
-                        type={'button'}
-                        className={`text-[13px] ${dessertState ? 'bg-[#3C3C3C]' : 'bg-white'} font-normal mx-1 px-4 text-center py-1.5 font-round ` +
-                            `rounded-3xl hover:${!dessertState && 'bg-gray-200'} active:border-gray-300 ` +
-                            `active:${!dessertState && 'bg-gray-300'} cursor-default text-${dessertState ? 'white' : 'gray-500'} border-[1px] border-gray-300 my-2`}>
-                        Dessert
-                    </button>
-                </div>
+            <div className={'w-[22%] h-full border-l-2 border-gray-200 bg-white px-5 pt-20'}>
                 {
                     coffeeState ? <AddCoffee ref={addCoffeeRef} onLoadAction={fetchData} onSetCoffee={setCoffee}/> : <AddDessert/>
                 }
