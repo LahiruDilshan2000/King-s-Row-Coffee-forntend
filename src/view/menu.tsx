@@ -59,7 +59,11 @@ const Menu = (): JSX.Element => {
                 <div className={'w-full h-[50vh] py-3 overflow-y-scroll'}>
 
                     {/*card*/}
-                    <div className={'w-full h-[24vh] flex py-4 border-b-2 border-gray-200'}>
+                    <div className={'w-full h-full bg-gray-100 rounded-xl flex justify-center items-center flex-col'}>
+                        <img src="src/assets/Emptycart (2).png" className={'opacity-70'} alt="empty-cart"/>
+                        <h1 className={'font-pop text-[13px] tracking-wide font-bold text-gray-500'}>Opss.. no item's for cart yet .</h1>
+                    </div>
+                    {/*<div className={'w-full h-[24vh] flex py-4 border-b-2 border-gray-200'}>
                         <div className={'w-[40%] h-full bg-gray-100 rounded-xl'}>
                             <img src="" alt=""/>
                         </div>
@@ -96,7 +100,7 @@ const Menu = (): JSX.Element => {
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>*/}
 
                 </div>
                 <div className={'flex w-full font-round py-1'}>

@@ -1,8 +1,7 @@
 import Swal from "sweetalert2";
 import axios from "axios";
-import {useNavigate} from "react-router-dom";
 
-interface Props {
+interface Data {
     _id: string;
     name: string;
     email: string;
@@ -11,19 +10,25 @@ interface Props {
     contact: string;
     image: string;
 }
+interface Props {
+    _id: string;
+    name: string;
+    email: string;
+    address: string;
+    age: number;
+    contact: string;
+    image: string;
+    setEmployee(employee:Data):void;
+    handleOnLoad():void;
+}
 
 const EmployeeCard = (props: Props): JSX.Element => {
-
-
-    const navigate = useNavigate();
 
     const handleGetEmployeeById = (_id: string):void => {
 
         axios.get(`http://localhost:8080/employee/getById/${_id}`)
             .then(response => {
-                console.log("get")
-                navigate('/employee', {state: {employee: response.data.data}})
-
+                props.setEmployee(response.data.data);
             })
             .catch(err => {
                 Swal.fire({
@@ -32,6 +37,7 @@ const EmployeeCard = (props: Props): JSX.Element => {
                     icon: 'error',
                     confirmButtonText: 'Cool'
                 });
+                console.log(err)
 
             });
     }
@@ -46,6 +52,7 @@ const EmployeeCard = (props: Props): JSX.Element => {
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "Yes, delete it!"
+
         }).then((result) => {
             if (result.isConfirmed) {
 
@@ -62,7 +69,8 @@ const EmployeeCard = (props: Props): JSX.Element => {
                             text: "Your employee has been deleted.",
                             icon: "success"
                         });
-                        //handleGetMyArticles();
+                        props.handleOnLoad();
+                        console.log(res)
                     })
                     .catch(err => {
                         Swal.fire({
@@ -71,8 +79,8 @@ const EmployeeCard = (props: Props): JSX.Element => {
                             icon: 'error',
                             confirmButtonText: 'Cool'
                         })
+                        console.log(err.message)
                     });
-
             }
         });
     }
@@ -104,7 +112,6 @@ const EmployeeCard = (props: Props): JSX.Element => {
                 </button>
                 <button
                     onClick={() => handleGetEmployeeById(props._id)}
-                    // onClick={() => navigate('/employee', {state: {_id: props._id}})}
                     type={'button'}
                     className={'text-[13px] font-normal mx-1 px-4 my-2 py-1.5 text-center text-white bg-gray-400  ' +
                         'rounded-[6px]  hover:bg-blue-500 transition-all duration-100 ease-linear ' +

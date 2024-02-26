@@ -11,7 +11,7 @@ interface FormState {
     description: string;
     descriptionError: string | null;
 
-    size: number;
+    size: any;
     sizeError: string | null;
 
     price: number;
@@ -23,7 +23,7 @@ interface FormState {
 
 interface FormFieldSetAction {
     formFieldName: string;
-    formFieldValue: string | number;
+    formFieldValue: any/*string | number*/;
 }
 
 const formFieldSetReducer = (state: FormState, action: FormFieldSetAction): FormState => {
@@ -85,7 +85,7 @@ const AddDessert = (): JSX.Element => {
             description: '',
             descriptionError: null,
 
-            size: +'',
+            size: '',
             sizeError: null,
 
             price: +'',
@@ -108,7 +108,13 @@ const AddDessert = (): JSX.Element => {
         }
     }
 
-    const [dessertImg, setDessertImg] = useState(null)
+    const [dessertImg, setDessertImg] = useState(null);
+
+    const clearAll = () => {
+        console.log(state.dessertName);
+        dispatch({formFieldName: "Size", formFieldValue: undefined});
+        console.log(state.dessertName);
+    }
 
 
     return (
@@ -130,6 +136,7 @@ const AddDessert = (): JSX.Element => {
             <div className={'w-full'}>
 
                 <CustomInput
+                    value={state.dessertName}
                     type={'text'}
                     name={'Dessert'}
                     placeholder={'Cheesecake...'}
@@ -146,6 +153,7 @@ const AddDessert = (): JSX.Element => {
                 <div className={'w-full flex'}>
                     <div className={'w-[50%] pr-1'}>
                         <CustomInput
+                            value={state.size}
                             type={'number'}
                             name={'Size'}
                             placeholder={'100g'}
@@ -175,12 +183,11 @@ const AddDessert = (): JSX.Element => {
                 </button>
 
                 <button
-                    onClick={ () => dispatch({formFieldName: 'Dessert', formFieldValue: ''})}
+                    onClick={ () => clearAll()}
                     className={`w-full h-[38px] font-round text-sm  ` +
                         ` border-[1px] border-gray-400 rounded-full  ` +
                         `active:bg-[#b0b0b0]`}>Clear All
                 </button>
-
             </div>
         </section>
     );

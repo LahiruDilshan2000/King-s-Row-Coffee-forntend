@@ -7,6 +7,9 @@ import Swal from "sweetalert2";
 
 interface FormState {
 
+    coffeeId: string;
+    coffeeIdError: string | null;
+
     coffeeName: string;
     coffeeNameError: string | null;
 
@@ -41,6 +44,13 @@ interface Data {
 const formFieldSetReducer = (state: FormState, action: FormFieldSetAction): FormState => {
 
     switch (action.formFieldName) {
+        case "CoffeeId": {
+            return {
+                ...state,
+                coffeeId: action.formFieldValue + '',
+                coffeeIdError: null
+            };
+        }
         case "Coffee": {
             return {
                 ...state,
@@ -86,12 +96,14 @@ interface Props {
     onLoadAction: () => void;
     onSetCoffee: (coffee: Data) => void;
 }
+
 const AddCoffee = forwardRef((props: Props, ref): JSX.Element => {
 
     useImperativeHandle(ref, () => {
         return {
             setCoffee: (coffee: Data) => {
                 setCoffeeState("Update");
+                dispatch({formFieldName: 'CoffeeId', formFieldValue: coffee._id});
                 dispatch({formFieldName: 'Coffee', formFieldValue: coffee.name});
                 dispatch({formFieldName: 'Desc', formFieldValue: coffee.desc});
                 dispatch({formFieldName: 'Large size', formFieldValue: coffee.largeSize});
@@ -106,6 +118,9 @@ const AddCoffee = forwardRef((props: Props, ref): JSX.Element => {
     const [state, dispatch] = useReducer<(state: FormState, action: FormFieldSetAction) => FormState>(
         formFieldSetReducer,
         {
+            coffeeId: '',
+            coffeeIdError: "",
+
             coffeeName: '',
             coffeeNameError: "",
 
@@ -127,7 +142,7 @@ const AddCoffee = forwardRef((props: Props, ref): JSX.Element => {
     const [coffeeImg, setCoffeeImg] = useState<any>('');
     const [oldCoffeeImg, setOldCoffeeImg] = useState<string | ''>('');
     const fileInputRef = useRef();
-    const [coffeeState, setCoffeeState] = useState<'Add' | 'Update'>( "Add");
+    const [coffeeState, setCoffeeState] = useState<'Add' | 'Update'>("Add");
 
     const handleClick = (): void => {
         fileInputRef.current?.click();
@@ -190,6 +205,7 @@ const AddCoffee = forwardRef((props: Props, ref): JSX.Element => {
             }
         };
         let coffeeData = JSON.stringify({
+            _id: state.coffeeId,
             name: state.coffeeName,
             desc: state.description,
             largeSize: state.largeSize,
@@ -199,10 +215,8 @@ const AddCoffee = forwardRef((props: Props, ref): JSX.Element => {
 
         const formData = new FormData();
 
-
         formData.append('file', coffeeImg);
         formData.append('coffee', coffeeData);
-
 
         axios.put('http://localhost:8080/coffee', formData, config)
             .then(res => {
@@ -234,6 +248,7 @@ const AddCoffee = forwardRef((props: Props, ref): JSX.Element => {
         };
 
         let coffeeData = JSON.stringify({
+            _id: state.coffeeId,
             name: state.coffeeName,
             desc: state.description,
             largeSize: state.largeSize,
@@ -263,15 +278,16 @@ const AddCoffee = forwardRef((props: Props, ref): JSX.Element => {
 
     const handleValidation = () => {
 
-        if (state.coffeeNameError === null && state.descriptionError === null && state.largeSizeError ===
-            null && state.smallSizeError === null && state.qtyError === null){
 
-            if (coffeeState === "Add"){
+        if (state.coffeeNameError === null && state.descriptionError === null && state.largeSizeError ===
+            null && state.smallSizeError === null && state.qtyError === null) {
+
+            if (coffeeState === "Add") {
                 handleAddCoffee();
-            }else {
+            } else {
                 if (coffeeImg) {
                     handleUpdateCoffee();
-                }else {
+                } else {
                     handleUpdateCoffeeWithoutImg();
                 }
             }
@@ -280,6 +296,7 @@ const AddCoffee = forwardRef((props: Props, ref): JSX.Element => {
 
     const clearAll = () => {
 
+        dispatch({formFieldName: "CoffeeId", formFieldValue: ''});
         dispatch({formFieldName: "Coffee", formFieldValue: ''});
         dispatch({formFieldName: "Desc", formFieldValue: ''});
         dispatch({formFieldName: "Large size", formFieldValue: ''});
@@ -295,12 +312,13 @@ const AddCoffee = forwardRef((props: Props, ref): JSX.Element => {
             <div className={'w-full h-[20vh] my-3'}>
                 <input type={"file"} className={'hidden'} ref={fileInputRef} onChange={handleFileChange}/>
                 {
-                     coffeeImg || oldCoffeeImg ?
-                        <img src={!coffeeImg ? oldCoffeeImg : URL.createObjectURL(coffeeImg)} onClick={handleClick} title={'coffee-img'}
+                    coffeeImg || oldCoffeeImg ?
+                        <img src={!coffeeImg ? oldCoffeeImg : URL.createObjectURL(coffeeImg)} onClick={handleClick}
+                             title={'coffee-img'}
                              alt={'coffee-img'} className={'object-cover w-full h-full rounded-xl'}/> :
                         <div onClick={handleClick}
-                            className={'w-full h-full border-dashed border-[2px] border-[#ffcaa9] rounded-xl ' +
-                            'flex justify-center items-center flex-col cursor-pointer'}>
+                             className={'w-full h-full border-dashed border-[2px] border-[#ffcaa9] rounded-xl ' +
+                                 'flex justify-center items-center flex-col cursor-pointer'}>
                             <h1 className={'font-round text-gray-400 text-[12px] m-2'}>Click for Upload</h1>
                             <GrUpload className={'text-gray-400 text-xl'}/>
                         </div>

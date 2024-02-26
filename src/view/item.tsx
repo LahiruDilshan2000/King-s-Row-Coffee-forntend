@@ -3,8 +3,19 @@ import {createRef, useEffect, useState} from "react";
 import AddCoffee from "../components/layout/add.coffee.tsx";
 import AddDessert from "../components/layout/add.dessert.tsx";
 import axios from "axios";
+import EmptyItem from "../components/componet/empty.item.tsx";
 
-interface Data {
+interface CoffeeData {
+    _id: string;
+    name: string;
+    desc: string;
+    largeSize: number;
+    smallSize: number;
+    qty: number;
+    image: string;
+}
+
+interface dessertData {
     _id: string;
     name: string;
     desc: string;
@@ -16,28 +27,40 @@ interface Data {
 
 const Item = (): JSX.Element => {
 
-
     const [coffeeState, setCoffeeState] = useState(true);
     const [dessertState, setDessertState] = useState(false);
 
-    const [data, setData] = useState<Data[]>([]);
+    const [coffeeData, setCoffeeData] = useState<CoffeeData[]>([]);
+    const [dessertData, setDessertData] = useState<dessertData[]>([]);
     const addCoffeeRef = createRef();
 
-    const setCoffee = (coffee:Data) => {
+    const setCoffee = (coffee: CoffeeData) => {
         // @ts-ignore
         addCoffeeRef?.current?.setCoffee(coffee);
     }
 
     const fetchData = (): void => {
 
-        // 'http://localhost:8080/emplaoyee?size=100&page=1'
-        axios.get('http://localhost:8080/coffee/getAll')
-            .then(response => {
-                setData(response.data.data);
-            })
-            .catch(err => {
-                console.log(err);
-            });
+        if (coffeeState) {
+            // 'http://localhost:8080/emplaoyee?size=100&page=1'
+            axios.get('http://localhost:8080/coffee/getAll')
+                .then(response => {
+                    setCoffeeData(response.data.data);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        } else {
+            // 'http://localhost:8080/emplaoyee?size=100&page=1'
+            axios.get('http://localhost:8080/dessert/getAll')
+                .then(response => {
+                    setDessertData(response.data.data);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        }
+
     }
 
     useEffect(() => {
@@ -86,27 +109,49 @@ const Item = (): JSX.Element => {
                 <div
                     className={'w-full h-[80vh] flex flex-wrap mt-4 overflow-y-scroll px-10 pt-5 pb-12'}>
                     {
-                        data.length > 0 &&
-                        data.map(value => {
-                            return <ItemCard
-                                onLoadAction={fetchData}
-                                setCoffee={setCoffee}
-                                qty={value.qty}
-                                key={value._id}
-                                smallSize={value.smallSize}
-                                largeSize={value.largeSize}
-                                name={value.name}
-                                _id={value._id}
-                                desc={value.desc}
-                                image={`http://localhost:8080/images/${value.image}`}/>
-                        })
+                        coffeeState ?
+                                coffeeData.length > 0 ? coffeeData.map(value => {
+                                    return <ItemCard
+                                        onLoadAction={fetchData}
+                                        setCoffee={setCoffee}
+                                        qty={value.qty}
+                                        key={value._id}
+                                        smallSize={value.smallSize}
+                                        largeSize={value.largeSize}
+                                        name={value.name}
+                                        _id={value._id}
+                                        desc={value.desc}
+                                        image={`http://localhost:8080/images/${value.image}`}/>
+                                })
+                                    :
+                                    <EmptyItem/>
+
+                            :
+
+                            dessertData.length > 0 ?
+                            coffeeData.length > 0 && coffeeData.map(value => {
+                                return <ItemCard
+                                    onLoadAction={fetchData}
+                                    setCoffee={setCoffee}
+                                    qty={value.qty}
+                                    key={value._id}
+                                    smallSize={value.smallSize}
+                                    largeSize={value.largeSize}
+                                    name={value.name}
+                                    _id={value._id}
+                                    desc={value.desc}
+                                    image={`http://localhost:8080/images/${value.image}`}/>
+                            })
+                                :
+                                <EmptyItem/>
                     }
                 </div>
             </div>
 
             <div className={'w-[22%] h-full border-l-2 border-gray-200 bg-white px-5 pt-20'}>
                 {
-                    coffeeState ? <AddCoffee ref={addCoffeeRef} onLoadAction={fetchData} onSetCoffee={setCoffee}/> : <AddDessert/>
+                    coffeeState ? <AddCoffee ref={addCoffeeRef} onLoadAction={fetchData} onSetCoffee={setCoffee}/> :
+                        <AddDessert/>
                 }
             </div>
 
