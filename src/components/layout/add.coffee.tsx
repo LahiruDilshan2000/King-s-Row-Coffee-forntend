@@ -47,42 +47,42 @@ const formFieldSetReducer = (state: FormState, action: FormFieldSetAction): Form
         case "CoffeeId": {
             return {
                 ...state,
-                coffeeId: action.formFieldValue + '',
+                coffeeId: String(action.formFieldValue),
                 coffeeIdError: null
             };
         }
         case "Coffee": {
             return {
                 ...state,
-                coffeeName: action.formFieldValue + '',
+                coffeeName: String(action.formFieldValue),
                 coffeeNameError: null
             };
         }
         case "Desc": {
             return {
                 ...state,
-                description: action.formFieldValue + '',
+                description: String(action.formFieldValue),
                 descriptionError: null
             };
         }
         case "Large size": {
             return {
                 ...state,
-                largeSize: +action.formFieldValue,
+                largeSize: action.formFieldValue,
                 largeSizeError: null
             };
         }
         case "Small size": {
             return {
                 ...state,
-                smallSize: +action.formFieldValue,
+                smallSize: action.formFieldValue,
                 smallSizeError: null
             };
         }
         case "Qty": {
             return {
                 ...state,
-                qty: +action.formFieldValue,
+                qty: action.formFieldValue,
                 qtyError: null
             };
         }
@@ -98,6 +98,19 @@ interface Props {
 }
 
 const AddCoffee = forwardRef((props: Props, ref): JSX.Element => {
+
+    const [coffeeImg, setCoffeeImg] = useState<any>('');
+    const [oldCoffeeImg, setOldCoffeeImg] = useState<string>('');
+    const fileInputRef = useRef();
+    const [coffeeState, setCoffeeState] = useState<'Add' | 'Update'>("Add");
+
+    const handleClick = (): void => {
+        fileInputRef.current?.click();
+    };
+
+    const handleFileChange = (event: any) => {
+        setCoffeeImg(event.target.files[0]);
+    };
 
     useImperativeHandle(ref, () => {
         return {
@@ -137,22 +150,6 @@ const AddCoffee = forwardRef((props: Props, ref): JSX.Element => {
             qtyError: ""
         }
     );
-
-
-    const [coffeeImg, setCoffeeImg] = useState<any>('');
-    const [oldCoffeeImg, setOldCoffeeImg] = useState<string | ''>('');
-    const fileInputRef = useRef();
-    const [coffeeState, setCoffeeState] = useState<'Add' | 'Update'>("Add");
-
-    const handleClick = (): void => {
-        fileInputRef.current?.click();
-    };
-
-    // Function to handle file selection
-    const handleFileChange = (event: any) => {
-        //setOldImage('')
-        setCoffeeImg(event.target.files[0]);
-    };
 
     const handleAddCoffee = () => {
         const config = {
@@ -255,6 +252,7 @@ const AddCoffee = forwardRef((props: Props, ref): JSX.Element => {
             smallSize: state.smallSize,
             qty: state.qty
         });
+
         axios.put('http://localhost:8080/coffee/withoutImage', coffeeData, config)
             .then(res => {
                 clearAll();
@@ -278,7 +276,6 @@ const AddCoffee = forwardRef((props: Props, ref): JSX.Element => {
 
     const handleValidation = () => {
 
-
         if (state.coffeeNameError === null && state.descriptionError === null && state.largeSizeError ===
             null && state.smallSizeError === null && state.qtyError === null) {
 
@@ -301,7 +298,7 @@ const AddCoffee = forwardRef((props: Props, ref): JSX.Element => {
         dispatch({formFieldName: "Desc", formFieldValue: ''});
         dispatch({formFieldName: "Large size", formFieldValue: ''});
         dispatch({formFieldName: "Small size", formFieldValue: ''});
-        dispatch({formFieldName: "Qty", formFieldValue: ""});
+        dispatch({formFieldName: "Qty", formFieldValue: ''});
         setCoffeeImg('')
         setOldCoffeeImg('')
         setCoffeeState("Add")
@@ -386,6 +383,6 @@ const AddCoffee = forwardRef((props: Props, ref): JSX.Element => {
             </div>
         </section>
     );
-})
+});
 
 export default AddCoffee;

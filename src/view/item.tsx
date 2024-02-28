@@ -15,12 +15,12 @@ interface CoffeeData {
     image: string;
 }
 
-interface dessertData {
+interface DessertData {
     _id: string;
     name: string;
     desc: string;
-    largeSize: number;
-    smallSize: number;
+    size: number;
+    price:number;
     qty: number;
     image: string;
 }
@@ -31,16 +31,34 @@ const Item = (): JSX.Element => {
     const [dessertState, setDessertState] = useState(false);
 
     const [coffeeData, setCoffeeData] = useState<CoffeeData[]>([]);
-    const [dessertData, setDessertData] = useState<dessertData[]>([]);
-    const addCoffeeRef = createRef();
+    const [dessertData, setDessertData] = useState<DessertData[]>([]);
+    const coffeeRef = createRef();
+    const dessertRef = createRef();
+
+    const setCardDataToRef = (data: CoffeeData | DessertData, cardType: string) => {
+
+        if (cardType === "coffee"){
+            // @ts-ignore
+            coffeeRef?.current?.setCoffee(data);
+            return;
+        }
+        // @ts-ignore
+        dessertRef?.current?.setDessert(data);
+    }
 
     const setCoffee = (coffee: CoffeeData) => {
         // @ts-ignore
-        addCoffeeRef?.current?.setCoffee(coffee);
+        coffeeRef?.current?.setCoffee(coffee);
+    }
+
+    const setDessert = (dessert: DessertData) => {
+        // @ts-ignore
+        dessertRef?.current?.setDessert(dessert);
     }
 
     const fetchData = (): void => {
 
+        console.log(coffeeState)
         if (coffeeState) {
             // 'http://localhost:8080/emplaoyee?size=100&page=1'
             axios.get('http://localhost:8080/coffee/getAll')
@@ -60,12 +78,11 @@ const Item = (): JSX.Element => {
                     console.log(err);
                 });
         }
-
     }
 
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [dessertState, coffeeState]);
 
 
     const changeButton = (event: any): void => {
@@ -92,18 +109,14 @@ const Item = (): JSX.Element => {
                     <button
                         onClick={changeButton}
                         type={'button'}
-                        className={`shadow cursor-pointer text-[13px] ${coffeeState ? 'bg-[#3C3C3C]' : 'bg-white'} font-normal px-4 text-center h-full font-round ` +
-                            `rounded-3xl hover:${!coffeeState && 'bg-gray-200'} active:border-gray-300 ` +
-                            `active:${!coffeeState && 'bg-gray-300'} cursor-default text-${coffeeState ? 'white' : 'gray-500'} border-[1px] border-gray-300 `}>
-                        Coffee
+                        className={`w-20 h-10 cursor-pointer text-[13px] ${coffeeState ? 'bg-[#3C3C3C] text-white rounded-xl' : 'border-[1px] border-gray-300 rounded-[25px]'} 
+                         font-round hover:rounded-xl transition-all ease-linear duration-200`}>Coffee
                     </button>
                     <button
                         onClick={changeButton}
                         type={'button'}
-                        className={`shadow cursor-pointer text-[13px] ${dessertState ? 'bg-[#3C3C3C]' : 'bg-white'} font-normal px-4 text-center font-round ` +
-                            `rounded-3xl hover:${!dessertState && 'bg-gray-200'} active:border-gray-300 ` +
-                            `active:${!dessertState && 'bg-gray-300'} cursor-default text-${dessertState ? 'white' : 'gray-500'} border-[1px] border-gray-300`}>
-                        Dessert
+                        className={`w-20 h-10 cursor-pointer text-[13px] ${dessertState ? 'bg-[#3C3C3C] text-white rounded-xl' : 'border-[1px] border-gray-300 rounded-[25px]'} 
+                         font-round hover:rounded-xl transition-all ease-linear duration-200`}>Dessert
                     </button>
                 </div>
                 <div
@@ -112,8 +125,9 @@ const Item = (): JSX.Element => {
                         coffeeState ?
                                 coffeeData.length > 0 ? coffeeData.map(value => {
                                     return <ItemCard
+                                        cardType={"coffee"}
                                         onLoadAction={fetchData}
-                                        setCoffee={setCoffee}
+                                        setCardData={setCardDataToRef}
                                         qty={value.qty}
                                         key={value._id}
                                         smallSize={value.smallSize}
@@ -128,15 +142,15 @@ const Item = (): JSX.Element => {
 
                             :
 
-                            dessertData.length > 0 ?
-                            coffeeData.length > 0 && coffeeData.map(value => {
+                                dessertData.length > 0 ? dessertData.map(value => {
                                 return <ItemCard
+                                    cardType={"dessert"}
                                     onLoadAction={fetchData}
-                                    setCoffee={setCoffee}
+                                    setCardData={setCardDataToRef}
                                     qty={value.qty}
                                     key={value._id}
-                                    smallSize={value.smallSize}
-                                    largeSize={value.largeSize}
+                                    size={value.size}
+                                    price={value.price}
                                     name={value.name}
                                     _id={value._id}
                                     desc={value.desc}
@@ -150,8 +164,8 @@ const Item = (): JSX.Element => {
 
             <div className={'w-[22%] h-full border-l-2 border-gray-200 bg-white px-5 pt-20'}>
                 {
-                    coffeeState ? <AddCoffee ref={addCoffeeRef} onLoadAction={fetchData} onSetCoffee={setCoffee}/> :
-                        <AddDessert/>
+                    coffeeState ? <AddCoffee ref={coffeeRef} onLoadAction={fetchData} onSetCoffee={setCoffee}/> :
+                        <AddDessert ref={dessertRef} onLoadAction={fetchData} onSetDessert={setDessert}/>
                 }
             </div>
 

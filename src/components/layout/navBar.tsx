@@ -80,7 +80,7 @@ const NavBar = (): JSX.Element => {
                     </Link>
 
                 </ul>
-                <Link to={'/'}>
+                <Link to={'/login'}>
                     <div
                         className={`w-full absolute bottom-[40px] flex items-center cursor-pointer justify-center text-gray-400 rotate-180`}>
                         <HiOutlineLogout className="text-lg hover:text-white"/>

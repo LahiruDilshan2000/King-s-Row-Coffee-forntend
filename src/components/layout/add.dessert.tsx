@@ -1,9 +1,24 @@
 import {GrUpload} from "react-icons/gr";
 import CustomInput from "../input/customInput.tsx";
-import {useReducer, useState} from "react";
+import {forwardRef, useImperativeHandle, useReducer, useRef, useState} from "react";
 import * as validator from "../../util/validator.ts";
+import axios from "axios";
+import Swal from "sweetalert2";
+
+interface Data {
+    _id: string;
+    name: string;
+    desc: string;
+    size: number;
+    price: number;
+    qty: number;
+    image: string;
+}
 
 interface FormState {
+
+    dessertId: string;
+    dessertIdError: string | null;
 
     dessertName: string;
     dessertNameError: string | null;
@@ -11,29 +26,37 @@ interface FormState {
     description: string;
     descriptionError: string | null;
 
-    size: any;
+    size: number | string;
     sizeError: string | null;
 
-    price: number;
+    price: number | string;
     priceError: string | null;
 
-    qty: number;
+    qty: number | string;
     qtyError: string | null;
 }
 
 interface FormFieldSetAction {
     formFieldName: string;
-    formFieldValue: any/*string | number*/;
+    formFieldValue: string | number;
 }
 
 const formFieldSetReducer = (state: FormState, action: FormFieldSetAction): FormState => {
 
     switch (action.formFieldName) {
 
+        case "DessertId": {
+            return {
+                ...state,
+                dessertId: String(action.formFieldValue),
+                dessertIdError: null
+            };
+        }
+
         case "Dessert": {
             return {
                 ...state,
-                dessertName: String(action.formFieldValue) ,
+                dessertName: String(action.formFieldValue),
                 dessertNameError: validator.validateItemName(String(action.formFieldValue))
             };
         }
@@ -47,21 +70,21 @@ const formFieldSetReducer = (state: FormState, action: FormFieldSetAction): Form
         case "Size": {
             return {
                 ...state,
-                size:  +action.formFieldValue,
+                size: action.formFieldValue,
                 sizeError: validator.validateNumber(+action.formFieldValue)
             };
         }
         case "Price": {
             return {
                 ...state,
-                price: +action.formFieldValue,
+                price: action.formFieldValue,
                 priceError: validator.validateNumber(+action.formFieldValue)
             };
         }
         case "Qty": {
             return {
                 ...state,
-                qty: +action.formFieldValue,
+                qty: action.formFieldValue,
                 qtyError: validator.validateNumber(+action.formFieldValue)
             };
         }
@@ -71,14 +94,49 @@ const formFieldSetReducer = (state: FormState, action: FormFieldSetAction): Form
     }
 };
 
+interface Props {
+    onLoadAction: () => void;
+    onSetDessert: (dessert: Data) => void;
+}
 
+const AddDessert = forwardRef((props: Props, ref): JSX.Element => {
 
+    const [dessertImg, setDessertImg] = useState<any>('');
+    const [oldDessertImg, setOldDessertImg] = useState<string>('');
+    const fileInputRef = useRef();
+    const [dessertState, setDessertState] = useState<'Add' | 'Update'>("Add");
 
-const AddDessert = (): JSX.Element => {
+    useImperativeHandle(ref, () => {
+        return {
+            setDessert: (dessert: Data) => {
+                setDessertState("Update");
+                dispatch({formFieldName: "DessertId", formFieldValue: dessert._id});
+                dispatch({formFieldName: "Dessert", formFieldValue: dessert.name});
+                dispatch({formFieldName: "Desc", formFieldValue: dessert.desc});
+                dispatch({formFieldName: "Size", formFieldValue: dessert.size});
+                dispatch({formFieldName: "Price", formFieldValue: dessert.price});
+                dispatch({formFieldName: "Qty", formFieldValue: dessert.qty});
+                setOldDessertImg(`http://localhost:8080/images/${dessert.image}`);
+                setDessertImg('')
+            },
+        };
+    });
+
+    const handleClick = (): void => {
+        fileInputRef.current?.click();
+    };
+
+    const handleFileChange = (event: any) => {
+        setDessertImg(event.target.files[0]);
+    };
 
     const [state, dispatch] = useReducer<(state: FormState, action: FormFieldSetAction) => FormState>(
         formFieldSetReducer,
         {
+
+            dessertId: '',
+            dessertIdError: null,
+
             dessertName: '',
             dessertNameError: null,
 
@@ -88,45 +146,192 @@ const AddDessert = (): JSX.Element => {
             size: '',
             sizeError: null,
 
-            price: +'',
+            price: '',
             priceError: null,
 
-            qty: +'',
+            qty: '',
             qtyError: null
         }
     );
 
-    const isEmpty = ():void => {
+    const isEmpty = (): void => {
 
-        if (state.dessertName){
+        if (state.dessertName) {
 
             dispatch({formFieldName: 'dessert', formFieldValue: 'value'})
             console.log("wadwa")
-            state.dessertNameError= "aaaaa";
+            state.dessertNameError = "aaaaa";
 
             console.log(state.dessertNameError)
         }
     }
 
-    const [dessertImg, setDessertImg] = useState(null);
+    const handleAddDessert = () => {
 
-    const clearAll = () => {
-        console.log(state.dessertName);
-        dispatch({formFieldName: "Size", formFieldValue: undefined});
-        console.log(state.dessertName);
+        const config = {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            }
+        };
+
+        let dessertData = JSON.stringify({
+            name: state.dessertName,
+            desc: state.description,
+            size: state.size,
+            price:state.price,
+            qty: state.qty
+        });
+
+        const formData = new FormData();
+
+        // @ts-ignore
+        formData.append('file', dessertImg);
+        formData.append('dessert', dessertData);
+
+        axios.post('http://localhost:8080/dessert', formData, config)
+            .then(res => {
+                clearAll();
+                props.onLoadAction();
+                Swal.fire({
+                    title: "Success !",
+                    text: res.data.message,
+                    icon: "success"
+                });
+
+            })
+            .catch(err => {
+                console.log(err)
+                Swal.fire({
+                    title: err.response.data.status,
+                    text: err.response.data.message,
+                    icon: 'error',
+                    confirmButtonText: 'Cool'
+                })
+            });
     }
 
+    const handleUpdateDessert = () => {
+
+        const config = {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            }
+        };
+        let dessertData = JSON.stringify({
+            _id: state.dessertId,
+            name: state.dessertName,
+            desc: state.description,
+            size: state.size,
+            price:state.price,
+            qty: state.qty
+        });
+
+        const formData = new FormData();
+
+        formData.append('file', dessertImg);
+        formData.append('dessert', dessertData);
+
+        axios.put('http://localhost:8080/dessert', formData, config)
+            .then(res => {
+                clearAll();
+                props.onLoadAction();
+                Swal.fire({
+                    title: "Success !",
+                    text: res.data.message,
+                    icon: "success"
+                });
+            })
+            .catch(err => {
+                console.log(err)
+                Swal.fire({
+                    title: err.response.data.status,
+                    text: err.response.data.message,
+                    icon: 'error',
+                    confirmButtonText: 'Cool'
+                })
+            });
+    }
+
+    const handleUpdateDessertWithoutImg = () => {
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        };
+
+        let coffeeData = JSON.stringify({
+            _id: state.dessertId,
+            name: state.dessertName,
+            desc: state.description,
+            size: state.size,
+            price:state.price,
+            qty: state.qty
+        });
+
+        axios.put('http://localhost:8080/dessert/withoutImage', coffeeData, config)
+            .then(res => {
+                clearAll();
+                props.onLoadAction();
+                Swal.fire({
+                    title: "Success !",
+                    text: res.data.message,
+                    icon: "success"
+                });
+            })
+            .catch(err => {
+                console.log(err)
+                Swal.fire({
+                    title: err.response.data.status,
+                    text: err.response.data.message,
+                    icon: 'error',
+                    confirmButtonText: 'Cool'
+                })
+            });
+    }
+
+    const handleValidation = () => {
+
+        /*if (state.coffeeNameError === null && state.descriptionError === null && state.largeSizeError ===
+            null && state.smallSizeError === null && state.qtyError === null) {*/
+
+        if (dessertState === "Add") {
+            handleAddDessert();
+        } else {
+            if (dessertImg) {
+                handleUpdateDessert();
+            } else {
+                handleUpdateDessertWithoutImg();
+            }
+        }
+        //}
+    }
+
+    const clearAll = () => {
+
+        dispatch({formFieldName: "DessertId", formFieldValue: ''});
+        dispatch({formFieldName: "Dessert", formFieldValue: ''});
+        dispatch({formFieldName: "Desc", formFieldValue: ''});
+        dispatch({formFieldName: "Size", formFieldValue: ''});
+        dispatch({formFieldName: "Price", formFieldValue: ''});
+        dispatch({formFieldName: "Qty", formFieldValue: ''});
+        setDessertImg('');
+        setOldDessertImg('');
+        setDessertState("Add");
+    }
 
     return (
         <section className={'w-full px-2 pt-1'}>
             <div className={'w-full h-[20vh] my-3'}>
-                <input type={'file'} className={'hidden'}/>
+                <input type={'file'} className={'hidden'} ref={fileInputRef} onChange={handleFileChange}/>
                 {
-                    dessertImg ?
-                        <img src={''} title={'coffee-img'} alt={'coffee-img'} className={'object-cover w-full h-full' +
-                            'rounded-xl'}/> :
-                        <div className={'w-full h-full border-dashed border-[2px] border-[#ffcaa9] rounded-xl ' +
-                            'flex justify-center items-center flex-col cursor-pointer'}>
+                    dessertImg || oldDessertImg ?
+                        <img src={!dessertImg ? oldDessertImg : URL.createObjectURL(dessertImg)} onClick={handleClick}
+                             title={'coffee-img'}
+                             alt={'coffee-img'} className={'object-cover w-full h-full rounded-xl'}/> :
+                        <div onClick={handleClick}
+                             className={'w-full h-full border-dashed border-[2px] border-[#ffcaa9] rounded-xl ' +
+                                 'flex justify-center items-center flex-col cursor-pointer'}>
                             <h1 className={'font-round text-gray-400 text-[12px] m-2'}>Click for Upload</h1>
                             <GrUpload className={'text-gray-400 text-xl'}/>
                         </div>
@@ -144,6 +349,7 @@ const AddDessert = (): JSX.Element => {
                     callBack={(value, name) => dispatch({formFieldName: name, formFieldValue: value})}/>
 
                 <CustomInput
+                    value={state.description}
                     type={'text'}
                     name={'Desc'}
                     placeholder={'Description for flavours.. '}
@@ -162,6 +368,7 @@ const AddDessert = (): JSX.Element => {
                     </div>
                     <div className={'w-[50%] pr-1'}>
                         <CustomInput
+                            value={state.price}
                             type={'number'}
                             name={'Price'}
                             placeholder={'00.00'}
@@ -170,20 +377,21 @@ const AddDessert = (): JSX.Element => {
                     </div>
                 </div>
                 <CustomInput
+                    value={state.qty}
                     type={'number'}
                     name={'Qty'}
                     placeholder={'10'}
                     errorMsg={state.qtyError}
                     callBack={(value, name) => dispatch({formFieldName: name, formFieldValue: value})}/>
                 <button
-                     onClick={isEmpty}
+                    onClick={handleValidation}
                     className={`w-full h-[40px] font-round text-sm bg-[#3C3C3C] ` +
                         `hover:bg-[#5d5d5d] text-white rounded-full my-2 ` +
-                        `active:bg-[#262626]`}>Add to stock
+                        `active:bg-[#262626]`}>{dessertState}
                 </button>
 
                 <button
-                    onClick={ () => clearAll()}
+                    onClick={() => clearAll()}
                     className={`w-full h-[38px] font-round text-sm  ` +
                         ` border-[1px] border-gray-400 rounded-full  ` +
                         `active:bg-[#b0b0b0]`}>Clear All
@@ -191,6 +399,6 @@ const AddDessert = (): JSX.Element => {
             </div>
         </section>
     );
-}
+});
 
 export default AddDessert;

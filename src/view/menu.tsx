@@ -1,20 +1,99 @@
 import {IoAdd} from "react-icons/io5";
 import {HiMinusSmall} from "react-icons/hi2";
 import MenuCard from "../components/card/menuCard.tsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import axios from "axios";
+import EmptyOrderItem from "../components/componet/empty.order.item.tsx";
 
+
+interface CoffeeData {
+    _id: string;
+    name: string;
+    desc: string;
+    largeSize: number;
+    smallSize: number;
+    qty: number;
+    image: string;
+}
+
+interface DessertData {
+    _id: string;
+    name: string;
+    desc: string;
+    size: number;
+    price: number;
+    qty: number;
+    image: string;
+}
 
 const Menu = (): JSX.Element => {
 
     const [options, setOptions] = useState<boolean[]>([true, false, false])
+    const [coffeeData, setCoffeeData] = useState<CoffeeData[]>([]);
+    const [dessertData, setDessertData] = useState<DessertData[]>([]);
+    const [allArray, setAllArray] = useState<(DessertData | CoffeeData) []>([])
 
-    const showMenu = (index:number) => {
+    const fetchData = (): void => {
+
+        if (options[1]) {
+            handleGetCoffeeData();
+            return;
+        }
+        if (options[2]) {
+            handleGetDessertData();
+        }
+    }
+
+    const handleGetCoffeeData = () => {
+
+        // 'http://localhost:8080/emplaoyee?size=100&page=1'
+         axios.get('http://localhost:8080/coffee/getAll')
+            .then(response => {
+                setCoffeeData(response.data.data);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+
+    const handleGetDessertData =  () => {
+
+        // 'http://localhost:8080/emplaoyee?size=100&page=1'
+        axios.get('http://localhost:8080/dessert/getAll')
+            .then(response => {
+                setDessertData(response.data.data);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+    useEffect(() => {
+        handleGetCoffeeData();
+        handleGetDessertData();
+    }, []);
+
+    useEffect(() => {
+        setAllArray([...coffeeData, ...dessertData]);
+    }, [coffeeData]);
+
+    useEffect(() => {
+        fetchData();
+    }, [options]);
+
+    useEffect(() => {
+        if (options[0]) {
+            setAllArray([...coffeeData, ...dessertData]);
+        }
+    }, [options[0]]);
+
+    const showMenu = (index: number) => {
         const array = [false, false, false];
         array[index] = true;
         setOptions(array);
     }
+
     return (
-        <section className={'w-full h-full bg-[#f2f6fc] flex'}>
+        <section className={'w-full h-full  flex bg-white'}>
             {/*Menu*/}
             <div className={'w-[78%] h-full'}>
                 <div className={'pl-10 py-4 font-Index tracking-wider'}>
@@ -23,27 +102,69 @@ const Menu = (): JSX.Element => {
                 </div>
                 {/*nav*/}
                 <div className={'w-full h-10 px-10'}>
-                    <ul className={'w-full h-full border-b-2  border-gray-200 flex pl-4 font-Index text-[13px] text-gray-400'}>
+                    <ul className={'w-full h-full flex font-Index text-[13px] text-gray-400 gap-2'}>
                         <li onClick={() => showMenu(0)}
-                            className={`w-6 relative top-[2px] h-full flex items-center cursor-pointer justify-center mr-6 border-b-2 ${options[0] && 'text-[#3c3c3c] border-[#3c3c3c]'}`}>All</li>
+                            className={`w-20 h-9 flex justify-center items-center cursor-pointer transition-all 
+                            ease-linear duration-200 hover:rounded-xl 
+                            ${options[0] ? 'text-white bg-[#3c3c3c] rounded-xl' : 'rounded-[25px] border-[1px] border-gray-300'}`}>All
+                        </li>
                         <li onClick={() => showMenu(1)}
-                            className={`relative top-[2px] h-full flex items-center cursor-pointer justify-center mr-6 border-b-2 ${options[1] && 'text-[#3c3c3c] border-[#3c3c3c]'}`}>Coffee</li>
+                            className={`w-20 h-9 flex justify-center items-center cursor-pointer transition-all 
+                            ease-linear duration-200 hover:rounded-xl 
+                            ${options[1] ? 'text-white bg-[#3c3c3c] rounded-xl' : 'rounded-[25px] border-[1px] border-gray-300'}`}>Coffee
+                        </li>
                         <li onClick={() => showMenu(2)}
-                            className={`relative top-[2px] h-full flex items-center cursor-pointer justify-center border-b-2 ${options[2] && 'text-[#3c3c3c] border-[#3c3c3c]'}`}>Dessert</li>
+                            className={`w-20 h-9 flex justify-center items-center cursor-pointer transition-all 
+                            ease-linear duration-200 hover:rounded-xl 
+                            ${options[2] ? 'text-white bg-[#3c3c3c] rounded-xl' : 'rounded-[25px] border-[1px] border-gray-300'}`}>Dessert
+                        </li>
                     </ul>
                 </div>
 
                 {/*cards*/}
 
-                <div className={'w-full h-[80vh] flex flex-wrap mt-4 overflow-y-scroll px-10 pt-5 pb-12'}>
-                    <MenuCard/>
-                    <MenuCard/>
-                    <MenuCard/>
-                    <MenuCard/>
-                    <MenuCard/>
-                    <MenuCard/>
-                </div>
+                <div className={'w-full h-[80vh] flex flex-wrap mt-4 overflow-y-scroll px-10 pt-5 pb-12 bg-[#f2f6fc]'}>
 
+                    {
+                        options[1] ?
+                            coffeeData.length > 0 ?
+                                coffeeData.map(value => {
+                                    return <MenuCard
+                                        cardType={"coffee"}
+                                        key={value._id}
+                                        item={value}
+                                    />
+                                })
+                                :
+                                <EmptyOrderItem/>
+                            :
+                            options[2] ?
+                                dessertData.length > 0 ?
+                                    dessertData.map(value => {
+                                        return <MenuCard
+                                            cardType={"dessert"}
+                                            key={value._id}
+                                            item={value}
+                                        />
+                                    })
+                                    :
+                                    <EmptyOrderItem/>
+                                :
+                                options[0] ? allArray.length > 0 ?
+                                    allArray.map((value: (CoffeeData | DessertData), index: number) => {
+                                        return <MenuCard
+                                            cardType={index < coffeeData.length ? "coffee" : "dessert"}
+                                            key={value._id}
+                                            item={value}
+                                        />
+                                    })
+                                    :
+                                    <EmptyOrderItem/>
+                                    :
+                                    <div>111111</div>
+
+                    }
+                </div>
             </div>
 
             {/*Cart*/}
@@ -59,9 +180,10 @@ const Menu = (): JSX.Element => {
                 <div className={'w-full h-[50vh] py-3 overflow-y-scroll'}>
 
                     {/*card*/}
-                    <div className={'w-full h-full bg-gray-100 rounded-xl flex justify-center items-center flex-col'}>
-                        <img src="src/assets/Emptycart (2).png" className={'opacity-70'} alt="empty-cart"/>
-                        <h1 className={'font-pop text-[13px] tracking-wide font-bold text-gray-500'}>Opss.. no item's for cart yet .</h1>
+                    <div className={'w-full h-full rounded-2xl flex justify-center items-center flex-col'}>
+                        <img src="src/assets/EmptyOrder-removebg-preview.png" alt="empty-cart"/>
+                        <h1 className={'font-pop text-[13px] tracking-wide font-bold text-gray-500'}>No item's for cart
+                            yet .</h1>
                     </div>
                     {/*<div className={'w-full h-[24vh] flex py-4 border-b-2 border-gray-200'}>
                         <div className={'w-[40%] h-full bg-gray-100 rounded-xl'}>
