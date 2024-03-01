@@ -1,11 +1,11 @@
 import {/*BrowserRouter, Navigate,*/ Route, Routes} from "react-router-dom";
 import NavBar from "./navBar.tsx";
 import Header from "./header.tsx";
-import Menu from "../../view/menu.tsx";
-import Item from "../../view/item.tsx";
-import Dashboard from "../../view/dashboard.tsx";
-import Employee from "../../view/employee.tsx";
-import History from "../../view/history.tsx";
+import Menu from "../../../view/menu.tsx";
+import Item from "../../../view/item.tsx";
+import Dashboard from "../../../view/dashboard.tsx";
+import Employee from "../../../view/employee.tsx";
+import History from "../../../view/history.tsx";
 
 const Home = (): JSX.Element => {
 

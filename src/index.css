@@ -17,18 +17,16 @@
     .animation-btn {
         @apply transition: all 0.5s;
     }
-
-    .toast {
-        @apply h-full border-l-8 border-green-500
+    .toast-class{
+        @apply h-full px-0 py-0 w-full
     }
-    .toast-body {
-     /*   @apply p-0 h-full border-l-8 border-green-300*/
+    .toast-body{
+        @apply h-full m-0 p-0 w-full
     }
-
 }
 
 .Toastify__close-button {
-   /* @apply w-4 h-4  text-white; !* Apply Tailwind utility classes *!*/
+    @apply w-4 h-4 my-5 mx-1; /* Apply Tailwind utility classes */
 }
 
 .animate2 {

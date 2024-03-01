@@ -5,7 +5,7 @@ import axios from "axios";
 import {GrNext} from "react-icons/gr";
 import {MdOutlineArrowBackIosNew} from "react-icons/md";
 import Search from "../components/search/search.tsx";
-import AddEmployee from "../components/layout/add.employee.tsx";
+import AddEmployee from "../components/layout/add/add.employee.tsx";
 
 
 interface Data {

@@ -1,6 +1,6 @@
 import './App.css';
 import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
-import Home from "./components/layout/home.tsx";
+import Home from "./components/layout/main/home.tsx";
 import Login from "./view/login.tsx";
 import {useEffect, useState} from "react";
 

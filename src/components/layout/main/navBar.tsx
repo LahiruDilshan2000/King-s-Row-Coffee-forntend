@@ -7,7 +7,7 @@ import {HiOutlineLogout} from "react-icons/hi";
 import {PiCoffee} from "react-icons/pi";
 import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
-import SidebarIcon from "../icon/sidebarIcon.tsx";
+import SidebarIcon from "../../icon/sidebarIcon.tsx";
 
 
 const NavBar = (): JSX.Element => {

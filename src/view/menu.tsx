@@ -1,9 +1,10 @@
 import {IoAdd} from "react-icons/io5";
 import {HiMinusSmall} from "react-icons/hi2";
 import MenuCard from "../components/card/menuCard.tsx";
-import {useEffect, useState} from "react";
+import {createRef, useEffect, useState} from "react";
 import axios from "axios";
-import EmptyOrderItem from "../components/componet/empty.order.item.tsx";
+import EmptyOrderItem from "../components/component/empty/empty.order.item.tsx";
+import AddOrder from "../components/layout/add/add.order.tsx";
 
 
 interface CoffeeData {
@@ -26,12 +27,24 @@ interface DessertData {
     image: string;
 }
 
+interface CartData {
+    _id: string;
+    name: string;
+    size:string | number;
+    qty: number;
+    image: string;
+    total:number;
+    maxQty:number;
+}
+
 const Menu = (): JSX.Element => {
 
-    const [options, setOptions] = useState<boolean[]>([true, false, false])
+
+    const [options, setOptions] = useState<boolean[]>([true, false, false]);
     const [coffeeData, setCoffeeData] = useState<CoffeeData[]>([]);
     const [dessertData, setDessertData] = useState<DessertData[]>([]);
-    const [allArray, setAllArray] = useState<(DessertData | CoffeeData) []>([])
+    const [allArray, setAllArray] = useState<(DessertData | CoffeeData) []>([]);
+    const orderCartRef = createRef();
 
     const fetchData = (): void => {
 
@@ -47,7 +60,7 @@ const Menu = (): JSX.Element => {
     const handleGetCoffeeData = () => {
 
         // 'http://localhost:8080/emplaoyee?size=100&page=1'
-         axios.get('http://localhost:8080/coffee/getAll')
+        axios.get('http://localhost:8080/coffee/getAll')
             .then(response => {
                 setCoffeeData(response.data.data);
             })
@@ -56,7 +69,7 @@ const Menu = (): JSX.Element => {
             });
     }
 
-    const handleGetDessertData =  () => {
+    const handleGetDessertData = () => {
 
         // 'http://localhost:8080/emplaoyee?size=100&page=1'
         axios.get('http://localhost:8080/dessert/getAll')
@@ -67,6 +80,7 @@ const Menu = (): JSX.Element => {
                 console.log(err);
             });
     }
+
     useEffect(() => {
         handleGetCoffeeData();
         handleGetDessertData();
@@ -90,6 +104,10 @@ const Menu = (): JSX.Element => {
         const array = [false, false, false];
         array[index] = true;
         setOptions(array);
+    }
+
+    const addItemForCart = (data:CartData) => {
+        orderCartRef?.current?.setData(data);
     }
 
     return (
@@ -123,7 +141,7 @@ const Menu = (): JSX.Element => {
 
                 {/*cards*/}
 
-                <div className={'w-full h-[80vh] flex flex-wrap mt-4 overflow-y-scroll px-10 pt-5 pb-12 bg-[#f2f6fc]'}>
+                <div className={'w-full h-[80vh] flex flex-wrap mt-4 overflow-y-scroll px-24 pt-5 pb-12 bg-[#f2f6fc]'}>
 
                     {
                         options[1] ?
@@ -133,6 +151,7 @@ const Menu = (): JSX.Element => {
                                         cardType={"coffee"}
                                         key={value._id}
                                         item={value}
+                                        addForCart={addItemForCart}
                                     />
                                 })
                                 :
@@ -145,105 +164,30 @@ const Menu = (): JSX.Element => {
                                             cardType={"dessert"}
                                             key={value._id}
                                             item={value}
+                                            addForCart={addItemForCart}
                                         />
                                     })
                                     :
                                     <EmptyOrderItem/>
                                 :
-                                options[0] ? allArray.length > 0 ?
+                                allArray.length > 0 ?
                                     allArray.map((value: (CoffeeData | DessertData), index: number) => {
                                         return <MenuCard
                                             cardType={index < coffeeData.length ? "coffee" : "dessert"}
                                             key={value._id}
                                             item={value}
+                                            addForCart={addItemForCart}
                                         />
                                     })
                                     :
                                     <EmptyOrderItem/>
-                                    :
-                                    <div>111111</div>
-
                     }
                 </div>
             </div>
 
             {/*Cart*/}
             <div className={'w-[22%] h-full border-l-2 bg-white border-gray-200 px-5 pt-24'}>
-                <div className={'flex w-full font-round'}>
-                    <h1 className={'text-xl font-[400] text-gray-800'}>Cart</h1>
-                    <h3 className={'w-full text-end  text-[12px] font-[500] text-gray-800 flex items-end justify-end'}>Order#3242</h3>
-                </div>
-                <div className={'flex w-full font-round py-1'}>
-                    <h1 className={'text-sm text-gray-400'}>Date</h1>
-                    <h3 className={'w-full text-end text-[13px] font-[500] text-gray-400 flex items-end justify-end'}>2024/01/04</h3>
-                </div>
-                <div className={'w-full h-[50vh] py-3 overflow-y-scroll'}>
-
-                    {/*card*/}
-                    <div className={'w-full h-full rounded-2xl flex justify-center items-center flex-col'}>
-                        <img src="src/assets/EmptyOrder-removebg-preview.png" alt="empty-cart"/>
-                        <h1 className={'font-pop text-[13px] tracking-wide font-bold text-gray-500'}>No item's for cart
-                            yet .</h1>
-                    </div>
-                    {/*<div className={'w-full h-[24vh] flex py-4 border-b-2 border-gray-200'}>
-                        <div className={'w-[40%] h-full bg-gray-100 rounded-xl'}>
-                            <img src="" alt=""/>
-                        </div>
-                        <div className={'w-[60%] h-full px-5 py-2 font-round justify-center items-center'}>
-                            <h1 className={'text-gray-800'}>Cappucino</h1>
-                            <h3 className={'text-[12px] text-gray-400'}>Small</h3>
-                            <div className={'w-full flex mt-5'}>
-                                <h1 className={'flex items-center mr-3 text-gray-500'}>$ <span>14.94</span></h1>
-                                <div className={'flex justify-center items-center'}>
-                                    <HiMinusSmall
-                                        className={'w-6 h-6 py-1 m-1 rounded-full border-[1px] border-gray-400 hover:bg-gray-300 active:bg-gray-400 cursor-pointer'}/>
-                                    <div className={'text-black mx-2'}>
-                                        {3}
-                                    </div>
-                                    <IoAdd className={'w-6 h-6 py-1 m-1 rounded-full border-[1px] border-gray-400 hover:bg-gray-300 active:bg-gray-400 cursor-pointer'}/>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className={'w-full h-[24vh] flex py-4 '}>
-                        <div className={'w-[40%] h-full bg-gray-100 rounded-xl'}>
-                            <img src="" alt=""/>
-                        </div>
-                        <div className={'w-[60%] h-full px-5 py-2 font-round justify-center items-center'}>
-                            <h1 className={''}>Cappucino</h1>
-                            <h3 className={'text-[12px] text-gray-400'}>Small</h3>
-                            <div className={'w-full flex mt-5'}>
-                                <h1 className={'flex items-center mr-3'}>$ <span>14.94</span></h1>
-                                <div className={'flex justify-center items-center'}>
-                                    <HiMinusSmall
-                                        className={'w-6 h-6 py-1 m-1 rounded-full border-2 border-gray-200 text-gray-500  hover:bg-gray-100 active:bg-gray-200 cursor-pointer'}/>
-                                    {3}
-                                    <IoAdd className={'w-6 h-6 py-1  m-1 rounded-full border-2 border-gray-200 text-gray-500 hover:bg-gray-100 active:bg-gray-200 cursor-pointer'}/>
-                                </div>
-                            </div>
-                        </div>
-                    </div>*/}
-
-                </div>
-                <div className={'flex w-full font-round py-1'}>
-                    <h3 className={'text-sm text-gray-500 '}>Items</h3>
-                    <h3 className={'w-full text-end text-[12px] flex items-end justify-end text-green-500'}>$ <span
-                        className={'font-cde text-green-500'}> 20.92</span></h3>
-                </div>
-                <div className={'flex w-full font-round  border-b-2 border-gray-200 pb-3'}>
-                    <h3 className={'text-sm text-gray-500'}>Discounts</h3>
-                    <h3 className={'w-full text-end text-[12px] flex items-end justify-end text-red-500'}>$ -<span
-                        className={'font-cde text-red-500'}> 3.00</span></h3>
-                </div>
-                <div className={'flex w-full font-round pt-3 pb-2'}>
-                    <h3 className={'text-sm text-gray-700'}>Total</h3>
-                    <h3 className={'w-full text-end text-[12px] text-[#FFA16C] flex items-end justify-end'}>$ <span
-                        className={'font-cde text-[14px]'}> 17.92</span></h3>
-                </div>
-                <button
-                    className={'mt-2 w-full py-3 rounded-3xl font-cde text-sm text-white bg-[#ffa16c] font-[500] hover:bg-[#fe7439]'}>Place
-                    an order
-                </button>
+                <AddOrder ref={orderCartRef}/>
             </div>
         </section>
     );

@@ -1,7 +1,7 @@
 import {GrUpload} from "react-icons/gr";
-import CustomInput from "../input/customInput.tsx";
+import CustomInput from "../../input/customInput.tsx";
 import {forwardRef, useImperativeHandle, useReducer, useRef, useState} from "react";
-import * as validator from "../../util/validator.ts";
+import * as validator from "../../../util/validator.ts";
 import axios from "axios";
 import Swal from "sweetalert2";
 

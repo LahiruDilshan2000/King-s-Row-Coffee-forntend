@@ -1,6 +1,6 @@
 import {forwardRef, useImperativeHandle, useReducer, useRef, useState} from "react";
 import {GrUpload} from "react-icons/gr";
-import CustomInput from "../input/customInput.tsx";
+import CustomInput from "../../input/customInput.tsx";
 import axios from "axios";
 import Swal from "sweetalert2";
 

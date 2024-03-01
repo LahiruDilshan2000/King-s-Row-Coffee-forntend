@@ -1,11 +1,11 @@
 import {HiMinusSmall} from "react-icons/hi2";
-import {IoAdd} from "react-icons/io5";
-import {useState} from "react";
-import * as ToastUtil from "../../util/toastUtil.ts"
+import {IoAdd, IoCheckmark, IoCloseOutline} from "react-icons/io5";
+import React, {useState} from "react";
+import * as ToastUtil from "../../util/toastUtil.tsx"
 import axios from "axios";
-import {ToastContainer, Slide, toast} from "react-toastify";
+import {toast, ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import CustomToast from "../componet/custom.toast.tsx";
+import cartCard from "./cartCard.tsx";
 
 interface CoffeeData {
     _id: string;
@@ -27,44 +27,84 @@ interface DessertData {
     image: string;
 }
 
-interface Props {
-    cardType:string;
-    item:(CoffeeData | DessertData);
+interface CartData {
+    _id: string;
+    name: string;
+    size:string | number;
+    qty: number;
+    image: string;
+    total:number;
+    unitPrice:number;
+    maxQty:number;
 }
 
-const MenuCard = (props:Props): JSX.Element => {
+interface Props {
+    cardType: string;
+    item: (CoffeeData | DessertData);
+    addForCart(data:CartData):void;
+}
+
+const MenuCard = (props: Props): JSX.Element => {
 
     const [selected, setSelected] = useState([false, false])
     const [qty, setQty] = useState(0);
     const [added, setAdded] = useState(false);
+    const [toastBodyClassType, setToastBodyClassType] = useState("none");
+    const toastId = React.useRef<any>(null);
 
-    const setSelectedItem = (index:number) => {
-         const newArr = [false, false];
-         newArr[index] = true;
-         setSelected(newArr);
+    const setSelectedItem = (index: number) => {
+        const newArr = [false, false];
+        newArr[index] = true;
+        setSelected(newArr);
+        setQty(0);
+        setAdded(false);
+    }
+    const showToastNotify = (title: string, message: string, icon: any) => {
+
+        toast.dismiss(toastId.current);
+
+        setTimeout(() => {
+            toastId.current = ToastUtil.error(title, message, icon);
+        }, 200)
+
     }
 
     const handleAddItem = () => {
 
-        //toast("Wow so easy!")
-        toast(<CustomToast/>,
-            {
-                transition:Slide,
-                hideProgressBar:true,
-                autoClose:false
-            });
-       //ToastUtil.error();
-        /*if (qty > 0){
-            setAdded(!added);
-        }else {
-            setAdded(false)
-        }*/
-
+        if (props.cardType === "coffee" && ((!selected[0] || selected[1]) && (selected[0] || !selected[1]))) {
+            setToastBodyClassType("toast-body-error");
+            showToastNotify(
+                "Error",
+                `Please Select the ${props.item.name} size`,
+                <IoCloseOutline className={'text-red-500 text-lg'}/>
+            );
+            return;
+        }
+        if (qty === 0) {
+            setToastBodyClassType("toast-body-error");
+            showToastNotify(
+                "Error",
+                `Please Select the ${props.item.name} quantity`,
+                <IoCloseOutline className={'text-red-500 text-lg'}/>
+            );
+            return;
+        }
+        setAdded(!added);
+        props.addForCart({
+            _id: props.item._id,
+            name: props.item.name,
+            size: props.cardType === "coffee" ? selected[0] ? "Small": "Large" : props.item?.size,
+            qty: qty,
+            image: props.item.image,
+            total:props.cardType === "coffee" ? selected[0] ? (qty * props.item?.smallSize): (qty * props.item?.largeSize) : eval(qty + props.item?.price),
+            unitPrice:props.cardType === "coffee" ? selected[0] ? props.item?.smallSize : props.item?.largeSize : props.item.price,
+            maxQty:props.item.qty
+        });
     }
 
     return (
         <div className={'w-[330px] h-[215px] bg-white rounded-[20px] m-2 flex'}>
-            <ToastContainer toastClassName={"toast"} bodyClassName={"toast-body"} />
+            <ToastContainer toastClassName={"toast-class"} bodyClassName={"toast-body"}/>
             {/*pic div*/}
             <div className={'w-[35%] h-full p-2 '}>
                 <div className={'w-full h-[70%] bg-gray-100 rounded-xl flex justify-center items-center'}>
@@ -75,20 +115,24 @@ const MenuCard = (props:Props): JSX.Element => {
                     <HiMinusSmall onClick={() => {
                         qty !== 0 && setQty(qty - 1);
                     }}
-                        className={`w-7 h-7 p-1.5 border-[1px] border-gray-200 rounded-full text-black hover:bg-gray-100 active:text-white active:bg-[#3c3c3c] cursor-pointer`}/>
-                    <div className={'text-black mx-2'}>
+                                  className={`w-7 h-7 p-1.5 border-[1px] border-gray-200 rounded-full text-black hover:bg-gray-100 active:text-white active:bg-[#3c3c3c] cursor-pointer`}/>
+                    <div className={'text-black mx-2 cursor-default'}>
                         {qty}
                     </div>
-                    <IoAdd onClick={() => setQty(qty + 1)}
-                        className={`w-7 h-7 p-1.5 border-[1px] border-gray-200 rounded-full text-black hover:bg-gray-100 active:text-white active:bg-[#3c3c3c] cursor-pointer`}/>
+                    <IoAdd onClick={() => qty < props.item.qty && setQty(qty + 1)}
+                           className={`w-7 h-7 p-1.5 ${qty === props.item.qty ? 'cursor-not-allowed bg-gray-500 text-white hover:bg-gray-500 active:bg-gray-500' : 'active:bg-[#3c3c3c]'} 
+                        border-[1px] border-gray-200 rounded-full text-black hover:bg-gray-100 active:text-white cursor-pointer`}/>
                 </div>
             </div>
             {/*content*/}
             <div className={'w-[65%] h-full py-4 px-3 '}>
                 <div className={'w-full relative'}>
                     <h3 className={'text-[15px] text-gray-800 tracking-wide font-bold font-Index'}>{props.item.name}</h3>
-                    <h3 className={'font-round absolute right-2 top-[-4px] text-lg text-[#FFA16C]'}>$ <span
-                        className={''}> 4.98</span></h3>
+                    <h3 className={'font-round absolute right-2 top-[-4px] text-[18px] text-[#FFA16C]'}>{
+                        props.cardType === "coffee" ? props?.item?.largeSize : props.item.price
+                        }
+                        <span className={'pl-1 text-xs'}>USD</span>
+                    </h3>
                 </div>
                 <p className={'text-gray-400 py-2 leading-1 text-[13px] font-Index'}>{props.item.desc} </p>
 
@@ -114,14 +158,13 @@ const MenuCard = (props:Props): JSX.Element => {
                             mr-1 bg-[#3c3c3c] text-white`}>{props.item.size + " g"}
                             </span>
                         </div>
-
                 }
 
                 <button onClick={() => handleAddItem()}
-                    className={`mt-2 w-full py-2 rounded-3xl font-Index text-[12px] font-[400] border-[1px] 
+                        className={`mt-2 w-full py-2 rounded-3xl font-Index text-[12px] font-[400] border-[1px] 
                     border-opacity-60 border-[#FFA16C] ${qty > 0 && 'active:bg-[#FFA16C] active:text-white'}  transition-all
-                     duration-100 ease-linear ${added ? 'bg-[#FFA16C] text-white': 'bg-white text-[#FFA16C]'}`}>{
-                    added ? 'Added to Cart':'Add to Cart'
+                     duration-100 ease-linear ${added ? 'bg-[#FFA16C] text-white' : 'bg-white text-[#FFA16C]'}`}>{
+                    added ? 'Added to Cart' : 'Add to Cart'
                 }
                 </button>
             </div>

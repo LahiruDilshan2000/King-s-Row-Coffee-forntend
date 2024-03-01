@@ -1,9 +1,9 @@
 import ItemCard from "../components/card/itemCard.tsx";
 import {createRef, useEffect, useState} from "react";
-import AddCoffee from "../components/layout/add.coffee.tsx";
-import AddDessert from "../components/layout/add.dessert.tsx";
+import AddCoffee from "../components/layout/add/add.coffee.tsx";
+import AddDessert from "../components/layout/add/add.dessert.tsx";
 import axios from "axios";
-import EmptyItem from "../components/componet/empty.item.tsx";
+import EmptyItem from "../components/component/empty/empty.item.tsx";
 
 interface CoffeeData {
     _id: string;
