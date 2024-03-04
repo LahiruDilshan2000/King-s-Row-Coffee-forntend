@@ -1,10 +1,10 @@
-import {IoAdd} from "react-icons/io5";
-import {HiMinusSmall} from "react-icons/hi2";
 import MenuCard from "../components/card/menuCard.tsx";
-import {createRef, useEffect, useState} from "react";
+import React, {createRef, useEffect, useState} from "react";
 import axios from "axios";
 import EmptyOrderItem from "../components/component/empty/empty.order.item.tsx";
 import AddOrder from "../components/layout/add/add.order.tsx";
+import {toast, ToastContainer} from "react-toastify";
+import * as ToastUtil from "../util/toastUtil.tsx";
 
 
 interface CoffeeData {
@@ -45,6 +45,7 @@ const Menu = (): JSX.Element => {
     const [dessertData, setDessertData] = useState<DessertData[]>([]);
     const [allArray, setAllArray] = useState<(DessertData | CoffeeData) []>([]);
     const orderCartRef = createRef();
+    const toastId = React.useRef<any>(null);
 
     const fetchData = (): void => {
 
@@ -110,6 +111,12 @@ const Menu = (): JSX.Element => {
         orderCartRef?.current?.setData(data);
     }
 
+    const showNotify = (title:string, message:string) => {
+        console.log(title, message);
+        toast.dismiss(toastId.current);
+        toastId.current = ToastUtil.error(title, message);
+    }
+
     return (
         <section className={'w-full h-full  flex bg-white'}>
             {/*Menu*/}
@@ -142,7 +149,7 @@ const Menu = (): JSX.Element => {
                 {/*cards*/}
 
                 <div className={'w-full h-[80vh] flex flex-wrap mt-4 overflow-y-scroll px-24 pt-5 pb-12 bg-[#f2f6fc]'}>
-
+                    <ToastContainer toastClassName={"toast-class"} bodyClassName={"toast-body"}/>
                     {
                         options[1] ?
                             coffeeData.length > 0 ?
@@ -152,6 +159,7 @@ const Menu = (): JSX.Element => {
                                         key={value._id}
                                         item={value}
                                         addForCart={addItemForCart}
+                                        showNotification={showNotify}
                                     />
                                 })
                                 :
@@ -165,6 +173,7 @@ const Menu = (): JSX.Element => {
                                             key={value._id}
                                             item={value}
                                             addForCart={addItemForCart}
+                                            showNotification={showNotify}
                                         />
                                     })
                                     :
@@ -177,6 +186,7 @@ const Menu = (): JSX.Element => {
                                             key={value._id}
                                             item={value}
                                             addForCart={addItemForCart}
+                                            showNotification={showNotify}
                                         />
                                     })
                                     :
@@ -187,7 +197,7 @@ const Menu = (): JSX.Element => {
 
             {/*Cart*/}
             <div className={'w-[22%] h-full border-l-2 bg-white border-gray-200 px-5 pt-24'}>
-                <AddOrder ref={orderCartRef}/>
+                <AddOrder ref={orderCartRef} showNotify={showNotify} resetOption={setOptions} selected={options}/>
             </div>
         </section>
     );

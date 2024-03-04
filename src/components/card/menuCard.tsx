@@ -1,11 +1,7 @@
 import {HiMinusSmall} from "react-icons/hi2";
-import {IoAdd, IoCheckmark, IoCloseOutline} from "react-icons/io5";
-import React, {useState} from "react";
-import * as ToastUtil from "../../util/toastUtil.tsx"
-import axios from "axios";
-import {toast, ToastContainer} from "react-toastify";
+import {useState} from "react";
 import 'react-toastify/dist/ReactToastify.css';
-import cartCard from "./cartCard.tsx";
+import {IoAdd} from "react-icons/io5";
 
 interface CoffeeData {
     _id: string;
@@ -42,6 +38,7 @@ interface Props {
     cardType: string;
     item: (CoffeeData | DessertData);
     addForCart(data:CartData):void;
+    showNotification(title:string, message:string):void;
 }
 
 const MenuCard = (props: Props): JSX.Element => {
@@ -49,8 +46,6 @@ const MenuCard = (props: Props): JSX.Element => {
     const [selected, setSelected] = useState([false, false])
     const [qty, setQty] = useState(0);
     const [added, setAdded] = useState(false);
-    const [toastBodyClassType, setToastBodyClassType] = useState("none");
-    const toastId = React.useRef<any>(null);
 
     const setSelectedItem = (index: number) => {
         const newArr = [false, false];
@@ -59,34 +54,15 @@ const MenuCard = (props: Props): JSX.Element => {
         setQty(0);
         setAdded(false);
     }
-    const showToastNotify = (title: string, message: string, icon: any) => {
-
-        toast.dismiss(toastId.current);
-
-        setTimeout(() => {
-            toastId.current = ToastUtil.error(title, message, icon);
-        }, 200)
-
-    }
 
     const handleAddItem = () => {
 
         if (props.cardType === "coffee" && ((!selected[0] || selected[1]) && (selected[0] || !selected[1]))) {
-            setToastBodyClassType("toast-body-error");
-            showToastNotify(
-                "Error",
-                `Please Select the ${props.item.name} size`,
-                <IoCloseOutline className={'text-red-500 text-lg'}/>
-            );
+            props.showNotification("Error", `Please Select the ${props.item.name} size`);
             return;
         }
         if (qty === 0) {
-            setToastBodyClassType("toast-body-error");
-            showToastNotify(
-                "Error",
-                `Please Select the ${props.item.name} quantity`,
-                <IoCloseOutline className={'text-red-500 text-lg'}/>
-            );
+            props.showNotification("Error", `Please Select the ${props.item.name} quantity`);
             return;
         }
         setAdded(!added);
@@ -104,7 +80,6 @@ const MenuCard = (props: Props): JSX.Element => {
 
     return (
         <div className={'w-[330px] h-[215px] bg-white rounded-[20px] m-2 flex'}>
-            <ToastContainer toastClassName={"toast-class"} bodyClassName={"toast-body"}/>
             {/*pic div*/}
             <div className={'w-[35%] h-full p-2 '}>
                 <div className={'w-full h-[70%] bg-gray-100 rounded-xl flex justify-center items-center'}>

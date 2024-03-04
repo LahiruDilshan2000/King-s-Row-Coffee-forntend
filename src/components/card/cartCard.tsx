@@ -1,7 +1,6 @@
 import {HiMinusSmall} from "react-icons/hi2";
 import {IoAdd} from "react-icons/io5";
 import { AiOutlineDelete } from "react-icons/ai";
-import {useState} from "react";
 
 interface Props {
     _id: string;
@@ -15,7 +14,6 @@ interface Props {
 }
 const CartCard = (props:Props):JSX.Element => {
 
-    const [qty, setQty] = useState(props.qty);
 
     return (
         <div className={'w-full h-[20vh] flex py-4 border-b-[1px] border-gray-200'}>
