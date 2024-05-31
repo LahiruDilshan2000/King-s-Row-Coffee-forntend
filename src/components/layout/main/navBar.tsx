@@ -36,42 +36,42 @@ const NavBar = (): JSX.Element => {
                 <h1 className={'text-[1.9rem] text-[#FFA16C] font-[800] text-center font-round'}>Urr</h1>
 
                 <ul className={'w-full mt-[80px] flex justify-center items-center flex-col'}>
-                    <Link to={'/'}>
+                    <Link to={'/'} className={'cursor-default'}>
                         <SidebarIcon
                             icon={<RiHome6Line className="text-lg"/>}
                             flag={myArray[0]}
                             index={0}
                             handleOption={handleSelectStyle}/>
                     </Link>
-                    <Link to={'/menu'}>
+                    <Link to={'/menu'} className={'cursor-default'}>
                         <SidebarIcon
                             icon={<AiOutlineAppstore className="text-lg"/>}
                             flag={myArray[1]}
                             index={1}
                             handleOption={handleSelectStyle}/>
                     </Link>
-                    <Link to={'/history'}>
+                    <Link to={'/history'} className={'cursor-default'}>
                         <SidebarIcon
                             icon={<TiDocumentText className="text-lg"/>}
                             flag={myArray[2]}
                             index={2}
                             handleOption={handleSelectStyle}/>
                     </Link>
-                    <Link to={'/item'}>
+                    <Link to={'/item'} className={'cursor-default'}>
                         <SidebarIcon
                             icon={<PiCoffee className="text-lg"/>}
                             flag={myArray[3]}
                             index={3}
                             handleOption={handleSelectStyle}/>
                     </Link>
-                    <Link to={'/employee'}>
+                    <Link to={'/employee'} className={'cursor-default'}>
                         <SidebarIcon
                             icon={<BsPersonAdd className="text-lg"/>}
                             flag={myArray[4]}
                             index={4}
                             handleOption={handleSelectStyle}/>
                     </Link>
-                    <Link to={'/profile'}>
+                    <Link to={'/profile'} className={'cursor-default'}>
                         <SidebarIcon
                             icon={<IoSettingsOutline className="text-lg"/>}
                             flag={myArray[5]}

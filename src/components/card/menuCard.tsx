@@ -2,6 +2,7 @@ import {HiMinusSmall} from "react-icons/hi2";
 import {useState} from "react";
 import 'react-toastify/dist/ReactToastify.css';
 import {IoAdd} from "react-icons/io5";
+import {animated, useSpring, useTransition} from "@react-spring/web";
 
 interface CoffeeData {
     _id: string;
@@ -26,19 +27,21 @@ interface DessertData {
 interface CartData {
     _id: string;
     name: string;
-    size:string | number;
+    size: string | number;
     qty: number;
     image: string;
-    total:number;
-    unitPrice:number;
-    maxQty:number;
+    total: number;
+    unitPrice: number;
+    maxQty: number;
 }
 
 interface Props {
     cardType: string;
     item: (CoffeeData | DessertData);
-    addForCart(data:CartData):void;
-    showNotification(title:string, message:string):void;
+
+    addForCart(data: CartData): void;
+
+    showNotification(title: string, message: string): void;
 }
 
 const MenuCard = (props: Props): JSX.Element => {
@@ -46,6 +49,7 @@ const MenuCard = (props: Props): JSX.Element => {
     const [selected, setSelected] = useState([false, false])
     const [qty, setQty] = useState(0);
     const [added, setAdded] = useState(false);
+    const [isDelete, setIsDelete] = useState(false);
 
     const setSelectedItem = (index: number) => {
         const newArr = [false, false];
@@ -69,17 +73,29 @@ const MenuCard = (props: Props): JSX.Element => {
         props.addForCart({
             _id: props.item._id,
             name: props.item.name,
-            size: props.cardType === "coffee" ? selected[0] ? "Small": "Large" : props.item?.size,
+            size: props.cardType === "coffee" ? selected[0] ? "Small" : "Large" : props.item?.size,
             qty: qty,
             image: props.item.image,
-            total:props.cardType === "coffee" ? selected[0] ? (qty * props.item?.smallSize): (qty * props.item?.largeSize) : eval(qty + props.item?.price),
-            unitPrice:props.cardType === "coffee" ? selected[0] ? props.item?.smallSize : props.item?.largeSize : props.item.price,
-            maxQty:props.item.qty
+            total: props.cardType === "coffee" ? selected[0] ? (qty * props.item?.smallSize) : (qty * props.item?.largeSize) : eval(qty + props.item?.price),
+            unitPrice: props.cardType === "coffee" ? selected[0] ? props.item?.smallSize : props.item?.largeSize : props.item.price,
+            maxQty: props.item.qty
         });
     }
 
+
+    const styles = useSpring({
+        from: {
+            opacity: 0
+        },
+        to: {
+            opacity: 1
+        }
+    });
+
     return (
-        <div className={'w-[330px] h-[215px] bg-white rounded-[20px] m-2 flex'}>
+
+        <animated.div style={styles}
+                      className={'w-[330px]  h-[215px]  bg-white rounded-[20px] m-2 flex'}>
             {/*pic div*/}
             <div className={'w-[35%] h-full p-2 '}>
                 <div className={'w-full h-[70%] bg-gray-100 rounded-xl flex justify-center items-center'}>
@@ -105,7 +121,7 @@ const MenuCard = (props: Props): JSX.Element => {
                     <h3 className={'text-[15px] text-gray-800 tracking-wide font-bold font-Index'}>{props.item.name}</h3>
                     <h3 className={'font-round absolute right-2 top-[-4px] text-[18px] text-[#FFA16C]'}>{
                         props.cardType === "coffee" ? props?.item?.largeSize : props.item.price
-                        }
+                    }
                         <span className={'pl-1 text-xs'}>USD</span>
                     </h3>
                 </div>
@@ -143,7 +159,9 @@ const MenuCard = (props: Props): JSX.Element => {
                 }
                 </button>
             </div>
-        </div>
+        </animated.div>
+
+
     );
 }
 

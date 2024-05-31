@@ -2,16 +2,11 @@ import './App.css';
 import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
 import Home from "./components/layout/main/home.tsx";
 import Login from "./view/login.tsx";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 
 function App(): JSX.Element {
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-    useEffect(() => {
-        console.log(isLoggedIn);
-
-    }, [isLoggedIn]);
 
     return (
         <section className={'w-full h-[100vh] flex'}>

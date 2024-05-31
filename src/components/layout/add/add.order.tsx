@@ -136,10 +136,10 @@ const AddOrder = forwardRef((props: Props, ref): JSX.Element => {
 
     const handlePlaceOrder = () => {
 
-        if (detailsArray.length === 0) {
+        /*if (detailsArray.length === 0) {
             props.showNotify("Error", "Please select the item for order");
             return;
-        }
+        }*/
         saveOrder();
     }
 

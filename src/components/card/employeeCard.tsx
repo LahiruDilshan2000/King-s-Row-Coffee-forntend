@@ -1,5 +1,6 @@
 import Swal from "sweetalert2";
 import axios from "axios";
+import {useSpring, animated} from "@react-spring/web";
 
 interface Data {
     _id: string;
@@ -21,6 +22,7 @@ interface Props {
     setEmployee(employee:Data):void;
     handleOnLoad():void;
 }
+
 
 const EmployeeCard = (props: Props): JSX.Element => {
 
@@ -85,8 +87,17 @@ const EmployeeCard = (props: Props): JSX.Element => {
         });
     }
 
+    const styles = useSpring({
+        from: {
+            opacity: 0
+        },
+        to: {
+            opacity: 1
+        }
+    });
+
     return (
-        <div
+        <animated.div style={styles}
             className={'w-full relative rounded-[5px] flex bg-white text-[13px] font-[500] items-center h-16 px-5 border-b-[1px] border-gray-200 cursor-default'}>
             <div className={'flex h-full items-center'}>
                 <img src={props.image} alt="profile"
@@ -119,7 +130,7 @@ const EmployeeCard = (props: Props): JSX.Element => {
                     Update
                 </button>
             </div>
-        </div>
+        </animated.div>
     );
 }
 

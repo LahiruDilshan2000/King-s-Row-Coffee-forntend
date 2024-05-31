@@ -1,6 +1,7 @@
 import {HiMinusSmall} from "react-icons/hi2";
 import {IoAdd} from "react-icons/io5";
 import { AiOutlineDelete } from "react-icons/ai";
+import {useSpring, animated} from "@react-spring/web";
 
 interface Props {
     _id: string;
@@ -12,11 +13,21 @@ interface Props {
     maxQty:number;
     editQty(qty:number, option:string, _id:string, size:string | number):void;
 }
+
+
 const CartCard = (props:Props):JSX.Element => {
 
+    const styles = useSpring({
+        from: {
+            opacity: 0
+        },
+        to: {
+            opacity: 1
+        }
+    });
 
     return (
-        <div className={'w-full h-[20vh] flex py-4 border-b-[1px] border-gray-200'}>
+        <animated.div style={styles} className={'w-full h-[20vh] flex py-4 border-b-[1px] border-gray-200'}>
             <div className={'w-[30%] h-full bg-gray-100 rounded-xl flex justify-center items-center'}>
                 <img src={`http://localhost:8080/images/${props.image}`} alt={"image"}/>
             </div>
@@ -43,7 +54,7 @@ const CartCard = (props:Props):JSX.Element => {
                     </div>
                 </div>
             </div>
-        </div>
+        </animated.div>
     );
 }
 

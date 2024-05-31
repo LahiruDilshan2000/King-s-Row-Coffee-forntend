@@ -5,6 +5,8 @@ import EmptyOrderItem from "../components/component/empty/empty.order.item.tsx";
 import AddOrder from "../components/layout/add/add.order.tsx";
 import {toast, ToastContainer} from "react-toastify";
 import * as ToastUtil from "../util/toastUtil.tsx";
+import { animated, useSpring } from '@react-spring/web'
+
 
 
 interface CoffeeData {
@@ -117,6 +119,8 @@ const Menu = (): JSX.Element => {
         toastId.current = ToastUtil.error(title, message);
     }
 
+
+
     return (
         <section className={'w-full h-full  flex bg-white'}>
             {/*Menu*/}
@@ -148,7 +152,7 @@ const Menu = (): JSX.Element => {
 
                 {/*cards*/}
 
-                <div className={'w-full h-[80vh] flex flex-wrap mt-4 overflow-y-scroll px-24 pt-5 pb-12 bg-[#f2f6fc]'}>
+                <div className={'w-full h-[80vh] flex flex-wrap mt-4 overflow-y-scroll px-10 pt-5 pb-12 bg-[#f2f6fc]'}>
                     <ToastContainer toastClassName={"toast-class"} bodyClassName={"toast-body"}/>
                     {
                         options[1] ?
