@@ -36,7 +36,7 @@ const History = ():JSX.Element => {
     }
 
     return (
-        <section className={'w-full h-full bg-[#f2f6fc]'}>
+        <section className={'w-full h-full bg-[#f6f6f6]'}>
             <div className={'pl-10 py-4 font-Index tracking-wider bg-white'}>
                 <h1 className={'text-2xl font-bold text-[#3c3c3c]'}>You Order History</h1>
                 <h4 className={'text-[12px] text-gray-400'}>Good morning kasun. You have placed 4 order's for now .</h4>
@@ -45,7 +45,7 @@ const History = ():JSX.Element => {
                 <div className={' px-4 w-fit pl-2 pr-3 py-2 rounded-xl font-Index text-[12px] text-gray-400 bg-green-100 '}>You have new 3 orders</div>
                 <div className={' px-4 w-fit pl-2 pr-3 py-2 rounded-xl font-Index text-[12px] text-gray-400 bg-purple-100 '}>You last 3 orders</div>
             </div>
-            <div className={'w-full h-14 pt-3 px-4 bg-white'}>
+            <div className={'w-full h-14 pt-3 px-4 bg-white border-b-[1px] border-gray-200'}>
                 <ul className={'w-full h-full flex pl-4 font-Index text-[13px] text-gray-400'}>
                     <li onClick={() => showMenu(0)}
                         className={`w-6 h-full flex items-center cursor-pointer justify-center mr-6 border-b-[3px] ${options[0] ? 'text-[#3c3c3c] border-[#3c3c3c]': 'border-white '}`}>All</li>
@@ -56,9 +56,9 @@ const History = ():JSX.Element => {
                 </ul>
             </div>
             <section className={'px-4 py-4'}>
-                <div className={'w-[70%] bg-white shadow-[rgba(7,_65,_210,_0.1)_0px_9px_30px]'}>
+                <div className={'w-[70%] shadow-[rgba(7,_65,_210,_0.1)_0px_9px_30px]'}>
                     <HistoryTable/>
-                    <div className={'h-[50vh] overflow-y-scroll'}>
+                    <div className={'h-[50vh] overflow-y-scroll bg-white'}>
                         {data.map((value:Data, index:number) => {
                             return <TableColum key={index} _id={value._id} date={value.date} orderDetails={value.orderDetails}>
                             </TableColum>

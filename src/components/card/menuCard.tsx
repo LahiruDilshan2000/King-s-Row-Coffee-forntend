@@ -95,7 +95,7 @@ const MenuCard = (props: Props): JSX.Element => {
     return (
 
         <animated.div style={styles}
-                      className={'w-[330px] h-[215px] border-[1px] border-gray-200 bg-white rounded-[20px] m-2 flex shadow-[rgba(50,_50,_105,_0.01)_0px_2px_1px_0px,_rgba(0,_0,_0,_0.1)_0px_1px_2px_0px]'}>
+                      className={'w-[330px] h-[215px] border-[1px] border-gray-200 bg-white rounded-[20px] m-2 flex shadow-[rgba(17,_17,_26,_0.05)_0px_0px_10px]'}>
             {/*pic div*/}
             <div className={'w-[35%] h-full p-2 '}>
                 <div className={'w-full h-[70%] bg-gray-100 rounded-xl flex justify-center items-center'}>

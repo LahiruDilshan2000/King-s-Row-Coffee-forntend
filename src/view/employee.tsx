@@ -47,57 +47,48 @@ const Employee = (): JSX.Element => {
     }, []);
 
     return (
-        <section className={'w-full h-full bg-[#f2f6fc] flex'}>
+        <section className={'w-full h-full bg-[#f6f6f6] flex'}>
 
             {/*bg-[#fff4ed]*/}
-            <div className={'w-[78%] h-full px-10'}>
-                <div className={'pt-8 font-Index tracking-wider'}>
+            <div className={'w-[78%] h-full'}>
+                <div className={'py-4 px-10  font-Index tracking-wider bg-white border-b-[1px] border-gray-200'}>
                     <h1 className={'text-2xl font-bold text-[#3c3c3c]'}>Employee's</h1>
-                    <h4 className={'text-[12px] text-gray-400'}>Good morning kasun. You have update 4 employee details
-                        .</h4>
-                </div>
-                <div className={'flex gap-2 py-3'}>
-                    <div
-                        className={' px-4 w-fit pl-2 pr-3 py-2 rounded-xl font-Index text-[12px] text-gray-400 bg-blue-100 '}>You
-                        have new 3 orders
+                    <h4 className={'text-[12px] text-gray-400'}>Good morning kasun. You have update 4 employee details .</h4>
+                    <div className={'flex gap-2 py-3'}>
+                        <div className={' px-4 w-fit pl-2 pr-3 py-2 rounded-xl font-Index text-[12px] text-gray-400 bg-blue-100 '}>You
+                            have new 3 orders
+                        </div>
+                        <div className={' px-4 w-fit pl-2 pr-3 py-2 rounded-xl font-Index text-[12px] text-gray-400 bg-red-100 '}>No
+                            updated employee's
+                        </div>
                     </div>
-                    <div
-                        className={' px-4 w-fit pl-2 pr-3 py-2 rounded-xl font-Index text-[12px] text-gray-400 bg-red-100 '}>No
-                        updated employee's
-                    </div>
-                </div>
-                <div className={'pb-4 flex'}>
                     <Search/>
-                    <div
-                        className={'w-full mt-2 h-10 flex justify-end items-center font-round text-[12px] text-gray-500 gap-2'}>
-                        <div
-                            className={'hover:bg-gray-100 transition-all flex justify-center items-center w-9 h-9 rounded-full bg-white shadow border-[1px] border-gray-200 cursor-pointer'}>
-                            <MdOutlineArrowBackIosNew/></div>
-                        <div
-                            className={'hover:bg-gray-100 transition-all flex justify-center items-center w-9 h-9 rounded-full bg-white shadow border-[1px] border-gray-200 cursor-pointer'}>
-                            <GrNext/></div>
+                </div>
+                <div className={'pt-4 px-4'}>
+                    <div className={'bg-white px-10 py-2 w-full h-full rounded-xl border-[1px] border-gray-200'}>
+                        <div className={'w-full min-h-[60vh] flex flex-col overflow-y-scroll'}>
+                            {
+                                data.length > 0 &&
+                                data.map((value) => {
+                                    return <EmployeeCard
+                                        key={value._id}
+                                        _id={value._id}
+                                        name={value.name}
+                                        email={value.email}
+                                        address={value.address}
+                                        age={value.age}
+                                        contact={value.contact}
+                                        setEmployee={handleSetEmployee}
+                                        handleOnLoad={fetchData}
+                                        image={`http://localhost:8080/images/${value.image}`}/>
+                                })
+
+                            }
+                        </div>
                     </div>
-                </div>
-                <div className={'w-full min-h-[70vh] flex flex-col overflow-y-scroll pt-2'}>
 
-                    {
-                        data.length > 0 &&
-                        data.map((value) => {
-                            return <EmployeeCard
-                                key={value._id}
-                                _id={value._id}
-                                name={value.name}
-                                email={value.email}
-                                address={value.address}
-                                age={value.age}
-                                contact={value.contact}
-                                setEmployee={handleSetEmployee}
-                                handleOnLoad={fetchData}
-                                image={`http://localhost:8080/images/${value.image}`}/>
-                        })
-
-                    }
                 </div>
+
             </div>
 
             <div className={'w-[22%] h-full border-l-2 pt-16 bg-white border-gray-200 '}>

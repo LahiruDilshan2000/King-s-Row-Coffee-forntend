@@ -99,7 +99,7 @@ const Item = (): JSX.Element => {
     }
 
     return (
-        <section className={'w-full h-full bg-[#f2f6fc] flex'}>
+        <section className={'w-full h-full bg-white flex'}>
             <div className={'w-[78%] h-full'}>
                 <div className={'pl-10 py-4 font-Index tracking-wider'}>
                     <h1 className={'text-2xl font-bold text-[#3c3c3c]'}>Items</h1>
@@ -120,7 +120,7 @@ const Item = (): JSX.Element => {
                     </button>
                 </div>
                 <div
-                    className={'w-full h-[80vh] flex flex-wrap mt-4 overflow-y-scroll px-10 pt-5 pb-12'}>
+                    className={'w-full h-[80vh] flex flex-wrap mt-4 overflow-y-scroll px-10 pt-3 pb-12 bg-[#f6f6f6] border-t-[1px] border-gray-200'}>
                     {
                         coffeeState ?
                                 coffeeData.length > 0 ? coffeeData.map(value => {

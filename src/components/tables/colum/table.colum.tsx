@@ -62,7 +62,8 @@ const TableColum = (props: Props): JSX.Element => {
             </div>
             <div ref={iconRef} className={'w-12'}><FiMoreVertical
                 onClick={() => setOpenOption(!openOption)}
-                className={`text-sm text-gray-500 cursor-pointer active:bg-gray-100 rounded-full w-6 h-6 px-1`}/></div>
+                className={`text-sm text-gray-500 cursor-pointer active:bg-gray-100 rounded-full w-6 h-6 px-1`}/>
+            </div>
             <div className={`${openOption && 'opacity-100'} z-50 shadow-[rgba(17,_17,_26,_0.1)_0px_0px_16px] opacity-0 transition-all w-28 h-14 rounded-md absolute right-[110px] py-1 top-6 flex items-center border-[1px] border-gray-200 bg-white`}>
                 <span className={'w-full py-2 text-gray-400 flex items-center gap-1 justify-center hover:bg-[#FFA16C] hover:bg-opacity-10 hover:text-[#FFA16C] hover:cursor-pointer'}>
                     <TiDocumentText className="text-lg"/><h4>Details</h4></span>

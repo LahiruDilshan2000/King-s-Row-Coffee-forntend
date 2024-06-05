@@ -33,7 +33,7 @@ const AddEmployee = forwardRef((props: Props, ref):JSX.Element => {
     const [address, setAddress] = useState<string>('');
     const [age, setAge] = useState<number | string>('');
     const [contact, setContact] = useState<string>('');
-    const [employeeState, setEmployeeState] = useState<'Add' | 'Update'>( "Add");
+    const [employeeState, setEmployeeState] = useState<'Save' | 'Update'>( "Save");
 
 
     useImperativeHandle(ref, () => {
@@ -95,7 +95,7 @@ const AddEmployee = forwardRef((props: Props, ref):JSX.Element => {
         setOldImage('')
         setImage('')
         setId(null);
-        setEmployeeState('Add')
+        setEmployeeState('Save')
     }
 
     const handleEmployee = () => {
@@ -280,7 +280,7 @@ const AddEmployee = forwardRef((props: Props, ref):JSX.Element => {
 
     return (
         <section>
-            <div className={'w-full h-[22vh] bg-[#ffcaa9] py-2 px-8'}>
+            <div className={'w-full h-[20vh] bg-[#ffcaa9] py-4 px-14'}>
                 {
                     image || oldImage ? <img src={oldImage ? oldImage : URL.createObjectURL(image)} alt="profile"
                                              onClick={handleClick}
@@ -295,7 +295,7 @@ const AddEmployee = forwardRef((props: Props, ref):JSX.Element => {
 
                 <input type={"file"} className={'hidden'} ref ={fileInputRef} onChange={handleFileChange}/>
             </div>
-            <div className={'px-8 pt-[20px]'}>
+            <div className={'px-8 pt-[10px]'}>
                 <Input id={0} value={name} type={'text'} name={'Name'} placeholder={'Insert your name'}
                        errorMsg={"Name must be 3-16 characters and shouldn' t include special characters."}
                        option={errorSate[0]}
@@ -316,18 +316,14 @@ const AddEmployee = forwardRef((props: Props, ref):JSX.Element => {
                        errorMsg={"Phone number must be 10 characters and shouldn' t include special characters."}
                        option={errorSate[4]}
                        callBack={handleInput}/>
-                <div className={'w-full flex flex-col pt-4'}>
-                    <button
-                        onClick={handleEmployee}
-                        className={`w-full h-[40px] font-round text-sm bg-[#3C3C3C] ` +
-                            `hover:bg-[#5d5d5d] text-white rounded-full my-2 ` +
-                            `active:bg-[#262626]`}>{employeeState}
-                    </button>
+                <div className={'w-full flex items-center justify-content-evenly py-4 font-cde text-[13px]'}>
                     <button
                         onClick={() => clearAll()}
-                        className={`w-full h-[38px] font-round text-sm  ` +
-                            ` border-[1px] border-gray-400 rounded-full  ` +
-                            `active:bg-[#b0b0b0]`}>Dismiss All
+                        className={`py-2 w-28 transition-all duration-200 hover: active:text-white active:bg-gray-700 hover:bg-gray-300 bg-gray-200 text-gray-500 rounded`}>Dismiss All
+                    </button>
+                    <button
+                        onClick={handleEmployee}
+                        className={`py-2 w-28 transition-all duration-200 bg-[#454545] rounded hover:bg-[#2c2c2c] hover:text-white text-white active:bg-[#fc4f13]`}>{employeeState}
                     </button>
                 </div>
             </div>

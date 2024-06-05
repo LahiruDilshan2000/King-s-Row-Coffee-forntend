@@ -88,7 +88,7 @@ const ApexLineChart = ({ direction, warning }) => {
           <CardSubtitle className={'text-[13px] text-gray-400'}>Commercial networks & enterprises</CardSubtitle>
         </div>
         <div className='d-flex align-items-center flex-wrap mt-sm-0 mt-1'>
-          <h5 className='fw-bolder mb-0 me-1'>$ 100,000</h5>
+          <h5 className='fw-bolder mb-0 me-1 font-cde text-gray-500'>$ 100,000</h5>
           <Badge color='light-secondary'>
             <ArrowDown size={13} className='text-danger' />
             <span className='align-middle ms-25'>20%</span>

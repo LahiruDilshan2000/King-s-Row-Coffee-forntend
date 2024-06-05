@@ -356,8 +356,8 @@ const AddDessert = forwardRef((props: Props, ref): JSX.Element => {
                     errorMsg={state.descriptionError}
                     callBack={(value, name) => dispatch({formFieldName: name, formFieldValue: value})}/>
 
-                <div className={'w-full flex'}>
-                    <div className={'w-[50%] pr-1'}>
+                <div className={'row'}>
+                    <div className={'col-md-6'}>
                         <CustomInput
                             value={state.size}
                             type={'number'}
@@ -366,7 +366,7 @@ const AddDessert = forwardRef((props: Props, ref): JSX.Element => {
                             errorMsg={state.sizeError}
                             callBack={(value, name) => dispatch({formFieldName: name, formFieldValue: value})}/>
                     </div>
-                    <div className={'w-[50%] pr-1'}>
+                    <div className={'col-md-6'}>
                         <CustomInput
                             value={state.price}
                             type={'number'}
@@ -383,7 +383,18 @@ const AddDessert = forwardRef((props: Props, ref): JSX.Element => {
                     placeholder={'10'}
                     errorMsg={state.qtyError}
                     callBack={(value, name) => dispatch({formFieldName: name, formFieldValue: value})}/>
-                <button
+
+                <div className={'w-full flex items-center justify-content-evenly py-4 font-cde text-[13px]'}>
+                    <button
+                        onClick={() => clearAll()}
+                        className={`py-2 w-28 transition-all duration-200 hover: active:text-white active:bg-gray-700 hover:bg-gray-300 bg-gray-200 text-gray-500 rounded`}>Dismiss All
+                    </button>
+                    <button
+                        onClick={handleValidation}
+                        className={`py-2 w-28 transition-all duration-200 bg-[#454545] rounded hover:bg-[#2c2c2c] hover:text-white text-white active:bg-[#fc4f13]`}>{dessertState}
+                    </button>
+                </div>
+                {/*<button
                     onClick={handleValidation}
                     className={`w-full h-[40px] font-round text-sm bg-[#3C3C3C] ` +
                         `hover:bg-[#5d5d5d] text-white rounded-full my-2 ` +
@@ -395,7 +406,7 @@ const AddDessert = forwardRef((props: Props, ref): JSX.Element => {
                     className={`w-full h-[38px] font-round text-sm  ` +
                         ` border-[1px] border-gray-400 rounded-full  ` +
                         `active:bg-[#b0b0b0]`}>Clear All
-                </button>
+                </button>*/}
             </div>
         </section>
     );

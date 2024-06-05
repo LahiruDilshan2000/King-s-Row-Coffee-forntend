@@ -174,7 +174,7 @@ const ItemCard = (props: Props): JSX.Element => {
     return  (
 
         <animated.div style={isDelete ? leavingAnimation : styles}
-                      className={`${isVisible ? 'transition-all ease-in-out w-0 m-0 h-0' : 'm-2'} ${isDelete && 'transition-all'} w-[330px] h-[225px] bg-white rounded-[20px]  flex relative`}>
+                      className={`${isVisible ? 'transition-all ease-in-out w-0 m-0 h-0' : 'm-2'} ${isDelete && 'transition-all'} w-[330px] h-[225px] bg-white rounded-[20px]  flex relative border-[1px] border-gray-200 m-2 shadow-[rgba(17,_17,_26,_0.05)_0px_0px_10px]`}>
             <div ref={iconRef}>
                 <FiMoreVertical
                     onClick={() => setOpenOption(!openOption)}
