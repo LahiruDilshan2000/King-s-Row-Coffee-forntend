@@ -245,7 +245,7 @@ const AddOrder = forwardRef((props: Props, ref): JSX.Element => {
                     className={'ml-2 text-[14px] text-gray-500'}>USD</span></h3>
             </div>
             <button onClick={() => handlePlaceOrder()}
-                    className={'mt-2 w-full py-3 rounded-3xl font-cde text-sm text-white bg-[#ffa16c] font-[500] hover:bg-[#fe7439]'}>Place
+                    className={'mt-2 w-full py-2.5 rounded-3xl font-cde text-sm text-white bg-[#ffa16c] font-[500] hover:bg-[#fe7439]'}>Place
                 an order
             </button>
         </section>

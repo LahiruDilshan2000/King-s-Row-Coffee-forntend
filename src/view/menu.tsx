@@ -122,9 +122,9 @@ const Menu = (): JSX.Element => {
 
 
     return (
-        <section className={'w-full h-full  flex bg-white'}>
+        <section className={'w-full h-full flex bg-white'}>
             {/*Menu*/}
-            <div className={'w-[78%] h-full'}>
+            <div className={'w-[78%] h-full '}>
                 <div className={'pl-10 py-4 font-Index tracking-wider'}>
                     <h1 className={'text-2xl font-bold text-[#3c3c3c]'}>Orders</h1>
                     <h4 className={'text-[12px] text-gray-400'}>Good morning kasun. You 4 pending orders .</h4>
@@ -152,7 +152,7 @@ const Menu = (): JSX.Element => {
 
                 {/*cards*/}
 
-                <div className={'w-full h-[80vh] flex flex-wrap mt-4 overflow-y-scroll px-10 pt-5 pb-12 bg-[#f2f6fc]'}>
+                <div className={'w-full h-[80vh] flex flex-wrap mt-4  px-4 overflow-y-scroll justify-center pt-3 pb-12 bg-[#f6f6f6] border-t-[1px] border-gray-200'}>
                     <ToastContainer toastClassName={"toast-class"} bodyClassName={"toast-body"}/>
                     {
                         options[1] ?
@@ -200,7 +200,7 @@ const Menu = (): JSX.Element => {
             </div>
 
             {/*Cart*/}
-            <div className={'w-[22%] h-full border-l-2 bg-white border-gray-200 px-5 pt-24'}>
+            <div className={'w-[22%] h-full border-l-2 bg-white border-gray-200 px-4 pt-24'}>
                 <AddOrder ref={orderCartRef} showNotify={showNotify} resetOption={setOptions} selected={options}/>
             </div>
         </section>
