@@ -1,5 +1,5 @@
 import ItemCard from "../components/card/itemCard.tsx";
-import {createRef, useEffect, useState} from "react";
+import React, {createRef, useEffect, useState} from "react";
 import AddCoffee from "../components/layout/add/add.coffee.tsx";
 import AddDessert from "../components/layout/add/add.dessert.tsx";
 import axios from "axios";
@@ -105,19 +105,13 @@ const Item = (): JSX.Element => {
                     <h1 className={'text-2xl font-bold text-[#3c3c3c]'}>Items</h1>
                     <h4 className={'text-[12px] text-gray-400'}>Good morning kasun. You have added new 4 items .</h4>
                 </div>
-                <div className={'w-full h-8 flex px-10 gap-2'}>
-                    <button
-                        onClick={changeButton}
-                        type={'button'}
-                        className={`w-20 h-10 cursor-pointer text-[13px] ${coffeeState ? 'bg-[#3C3C3C] text-white rounded-xl' : 'border-[1px] border-gray-300 rounded-[25px]'} 
-                         font-round hover:rounded-xl transition-all ease-linear duration-200`}>Coffee
-                    </button>
-                    <button
-                        onClick={changeButton}
-                        type={'button'}
-                        className={`w-20 h-10 cursor-pointer text-[13px] ${dessertState ? 'bg-[#3C3C3C] text-white rounded-xl' : 'border-[1px] border-gray-300 rounded-[25px]'} 
-                         font-round hover:rounded-xl transition-all ease-linear duration-200`}>Dessert
-                    </button>
+                <div className={'mx-10 border-[1px] w-fit border-gray-300 bg-gray-100 rounded-lg text-gray-500 text-[13px] font-cde'}>
+                    <button onClick={changeButton}
+                            type={'button'} className={`py-2 w-[70px] border-r-[1px] border-gray-300 transition-all ease-in-out duration-200 delay-200
+                            ${coffeeState && 'w-[85px] text-white bg-[#2c2c2c] rounded-lg shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]'}`}>Coffee</button>
+                    <button onClick={changeButton}
+                            type={'button'} className={`py-2 w-[70px] transition-all ease-in-out duration-200 delay-200
+                            ${dessertState && 'w-[85px] text-white bg-[#2c2c2c] rounded-lg shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]'}`}>Dessert</button>
                 </div>
                 <div
                     className={'w-full h-[80vh] flex flex-wrap mt-4 overflow-y-scroll px-10 pt-3 pb-12 bg-[#f6f6f6] border-t-[1px] border-gray-200'}>
