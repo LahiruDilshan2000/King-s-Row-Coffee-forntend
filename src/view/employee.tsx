@@ -6,6 +6,7 @@ import {GrNext} from "react-icons/gr";
 import {MdOutlineArrowBackIosNew} from "react-icons/md";
 import Search from "../components/search/search.tsx";
 import AddEmployee from "../components/layout/add/add.employee.tsx";
+import PaginationCard from "../components/component/pagination/paginationCard.tsx";
 
 
 interface Data {
@@ -85,6 +86,7 @@ const Employee = (): JSX.Element => {
 
                             }
                         </div>
+                        <PaginationCard/>
                     </div>
 
                 </div>
