@@ -89,11 +89,14 @@ const ItemCard = (props: Props): JSX.Element => {
         Swal.fire({
             title: "Are you sure?",
             text: "Are you sure do you to delete this item !",
-            icon: "question",
             showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete it!"
+            confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "No, saved it!",
+            customClass: {
+                popup: 'swal-popup',
+                confirmButton: 'swal-confirm',
+                cancelButton: 'swal-cancel'
+            }
         }).then((result) => {
             if (result.isConfirmed) {
 
@@ -201,7 +204,7 @@ const ItemCard = (props: Props): JSX.Element => {
                 </ul>
             }
             {/*pic div*/}
-            <div className={'w-[38%] h-full p-3 '}>
+            <div className={'w-[38%] h-full p-2.5'}>
                 <div className={'w-full h-full bg-gray-100 rounded-xl flex justify-center items-center'}>
                     <img src={props.image} alt="coffee-image"/>
                 </div>
@@ -212,7 +215,7 @@ const ItemCard = (props: Props): JSX.Element => {
                 <div className={'w-full flex'}>
                     <h3 className={'font-round text-[18px] text-gray-700 font-bold'}>{props.name}</h3>
                 </div>
-                <p className={'font-round text-gray-400 pt-1 leading-5 text-[13px] min-h-[65px] overflow-y-scroll'}>{props.desc} </p>
+                <p className={'font-cde pr-3 text-gray-400 pt-1 leading-5 text-[12px] min-h-[65px] overflow-y-scroll'}>{props.desc} </p>
                 <div className={'font-Robot min-h-10 relative text-sm text-black text-[17px]'}>
                     {
                         props.largeSize ? <h1 className={'text-[#FFA16C] mb-1'}>Price</h1> :

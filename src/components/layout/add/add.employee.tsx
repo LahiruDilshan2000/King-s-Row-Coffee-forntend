@@ -296,26 +296,40 @@ const AddEmployee = forwardRef((props: Props, ref):JSX.Element => {
                 <input type={"file"} className={'hidden'} ref ={fileInputRef} onChange={handleFileChange}/>
             </div>
             <div className={'px-8 pt-[10px]'}>
-                <Input id={0} value={name} type={'text'} name={'Name'} placeholder={'Insert your name'}
+                <Input id={0} value={name} type={'text'} name={'Name'} placeholder={'Ryen rod'}
                        errorMsg={"Name must be 3-16 characters and shouldn' t include special characters."}
                        option={errorSate[0]}
                        callBack={handleInput}/>
-                <Input id={1} value={mail} type={'email'} name={'Email'} placeholder={'Insert your mail'}
+                <Input id={1} value={mail} type={'email'} name={'Email'} placeholder={'example@gnail,com'}
                        errorMsg={"It should be valid email address."}
                        option={errorSate[1]}
                        callBack={handleInput}/>
-                <Input id={2} value={address} type={'text'} name={'Address'} placeholder={'Address'}
+                <Input id={2} value={address} type={'text'} name={'Address'} placeholder={'No .15 Colombo'}
                        errorMsg={"Address must be 3-25 characters."}
                        option={errorSate[2]}
                        callBack={handleInput}/>
-                <Input id={3} value={age} type={'number'} name={'Age'} placeholder={'your age'}
+                <div className={'row'}>
+                    <div className={'col-md-4'}>
+                        <Input id={3} value={age} type={'number'} name={'Age'} placeholder={'25'}
+                               errorMsg={"Age must greater than 17 and 50 less than."}
+                               option={errorSate[3]}
+                               callBack={handleInput}/>
+                    </div>
+                    <div className={'col-md-8 pl-5'}>
+                        <Input id={4} value={contact} type={'tel'} name={'Contact'} placeholder={'phone number'}
+                               errorMsg={"Phone number must be 10 characters and shouldn' t include special characters."}
+                               option={errorSate[4]}
+                               callBack={handleInput}/>
+                    </div>
+                </div>
+            {/*    <Input id={3} value={age} type={'number'} name={'Age'} placeholder={'your age'}
                        errorMsg={"Age must greater than 17 and 50 less than."}
                        option={errorSate[3]}
                        callBack={handleInput}/>
                 <Input id={4} value={contact} type={'tel'} name={'Contact'} placeholder={'phone number'}
                        errorMsg={"Phone number must be 10 characters and shouldn' t include special characters."}
                        option={errorSate[4]}
-                       callBack={handleInput}/>
+                       callBack={handleInput}/>*/}
                 <div className={'w-full flex items-center justify-content-evenly py-4 font-cde text-[13px]'}>
                     <button
                         onClick={() => clearAll()}

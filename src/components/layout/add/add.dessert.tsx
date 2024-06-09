@@ -97,6 +97,7 @@ const formFieldSetReducer = (state: FormState, action: FormFieldSetAction): Form
 interface Props {
     onLoadAction: () => void;
     onSetDessert: (dessert: Data) => void;
+    showTosty: (title: string, message: string) => void;
 }
 
 const AddDessert = forwardRef((props: Props, ref): JSX.Element => {
@@ -168,6 +169,11 @@ const AddDessert = forwardRef((props: Props, ref): JSX.Element => {
 
     const handleAddDessert = () => {
 
+        if (dessertImg === null || dessertImg === '') {
+            props.showTosty('Warning', 'Image cannot be empty')
+            return;
+        }
+
         const config = {
             headers: {
                 'Content-Type': 'multipart/form-data',
@@ -192,21 +198,12 @@ const AddDessert = forwardRef((props: Props, ref): JSX.Element => {
             .then(res => {
                 clearAll();
                 props.onLoadAction();
-                Swal.fire({
-                    title: "Success !",
-                    text: res.data.message,
-                    icon: "success"
-                });
+                props.showTosty('Success', res.data.message);
 
             })
             .catch(err => {
                 console.log(err)
-                Swal.fire({
-                    title: err.response.data.status,
-                    text: err.response.data.message,
-                    icon: 'error',
-                    confirmButtonText: 'Cool'
-                })
+                props.showTosty('Error', err.response.data.message);
             });
     }
 
@@ -235,20 +232,11 @@ const AddDessert = forwardRef((props: Props, ref): JSX.Element => {
             .then(res => {
                 clearAll();
                 props.onLoadAction();
-                Swal.fire({
-                    title: "Success !",
-                    text: res.data.message,
-                    icon: "success"
-                });
+                props.showTosty('Success', res.data.message);
             })
             .catch(err => {
                 console.log(err)
-                Swal.fire({
-                    title: err.response.data.status,
-                    text: err.response.data.message,
-                    icon: 'error',
-                    confirmButtonText: 'Cool'
-                })
+                props.showTosty('Error', err.response.data.message);
             });
     }
 
@@ -273,27 +261,36 @@ const AddDessert = forwardRef((props: Props, ref): JSX.Element => {
             .then(res => {
                 clearAll();
                 props.onLoadAction();
-                Swal.fire({
-                    title: "Success !",
-                    text: res.data.message,
-                    icon: "success"
-                });
+                props.showTosty('Success', res.data.message);
             })
             .catch(err => {
                 console.log(err)
-                Swal.fire({
-                    title: err.response.data.status,
-                    text: err.response.data.message,
-                    icon: 'error',
-                    confirmButtonText: 'Cool'
-                })
+                props.showTosty('Error', err.response.data.message);
             });
     }
 
     const handleValidation = () => {
 
-        /*if (state.coffeeNameError === null && state.descriptionError === null && state.largeSizeError ===
-            null && state.smallSizeError === null && state.qtyError === null) {*/
+        if (state.dessertName === null || state.dessertName === '') {
+            props.showTosty('Warning', 'Name cannot be empty')
+            return;
+        }
+        if (state.description === null || state.description === '') {
+            props.showTosty('Warning', 'Description cannot be empty')
+            return;
+        }
+        if (state.size === null || state.size === '') {
+            props.showTosty('Warning', 'Size cannot be empty')
+            return;
+        }
+        if (state.price === null || state.price === '') {
+            props.showTosty('Warning', 'Price cannot be empty')
+            return;
+        }
+        if (state.qty === null || state.qty === '') {
+            props.showTosty('Warning', 'Quantity cannot be empty')
+            return;
+        }
 
         if (dessertState === "Add") {
             handleAddDessert();
@@ -345,7 +342,6 @@ const AddDessert = forwardRef((props: Props, ref): JSX.Element => {
                     type={'text'}
                     name={'Dessert'}
                     placeholder={'Cheesecake...'}
-                    errorMsg={state.dessertNameError}
                     callBack={(value, name) => dispatch({formFieldName: name, formFieldValue: value})}/>
 
                 <CustomInput
@@ -353,7 +349,6 @@ const AddDessert = forwardRef((props: Props, ref): JSX.Element => {
                     type={'text'}
                     name={'Desc'}
                     placeholder={'Description for flavours.. '}
-                    errorMsg={state.descriptionError}
                     callBack={(value, name) => dispatch({formFieldName: name, formFieldValue: value})}/>
 
                 <div className={'row'}>
@@ -363,7 +358,6 @@ const AddDessert = forwardRef((props: Props, ref): JSX.Element => {
                             type={'number'}
                             name={'Size'}
                             placeholder={'100g'}
-                            errorMsg={state.sizeError}
                             callBack={(value, name) => dispatch({formFieldName: name, formFieldValue: value})}/>
                     </div>
                     <div className={'col-md-6'}>
@@ -372,7 +366,6 @@ const AddDessert = forwardRef((props: Props, ref): JSX.Element => {
                             type={'number'}
                             name={'Price'}
                             placeholder={'00.00'}
-                            errorMsg={state.priceError}
                             callBack={(value, name) => dispatch({formFieldName: name, formFieldValue: value})}/>
                     </div>
                 </div>
@@ -381,7 +374,6 @@ const AddDessert = forwardRef((props: Props, ref): JSX.Element => {
                     type={'number'}
                     name={'Qty'}
                     placeholder={'10'}
-                    errorMsg={state.qtyError}
                     callBack={(value, name) => dispatch({formFieldName: name, formFieldValue: value})}/>
 
                 <div className={'w-full flex items-center justify-content-evenly py-4 font-cde text-[13px]'}>
@@ -394,19 +386,6 @@ const AddDessert = forwardRef((props: Props, ref): JSX.Element => {
                         className={`py-2 w-28 transition-all duration-200 bg-[#454545] rounded hover:bg-[#2c2c2c] hover:text-white text-white active:bg-[#fc4f13]`}>{dessertState}
                     </button>
                 </div>
-                {/*<button
-                    onClick={handleValidation}
-                    className={`w-full h-[40px] font-round text-sm bg-[#3C3C3C] ` +
-                        `hover:bg-[#5d5d5d] text-white rounded-full my-2 ` +
-                        `active:bg-[#262626]`}>{dessertState}
-                </button>
-
-                <button
-                    onClick={() => clearAll()}
-                    className={`w-full h-[38px] font-round text-sm  ` +
-                        ` border-[1px] border-gray-400 rounded-full  ` +
-                        `active:bg-[#b0b0b0]`}>Clear All
-                </button>*/}
             </div>
         </section>
     );

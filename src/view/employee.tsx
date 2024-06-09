@@ -1,9 +1,6 @@
 import EmployeeCard from "../components/card/employeeCard.tsx";
 import {createRef, useEffect, useState} from "react";
-
 import axios from "axios";
-import {GrNext} from "react-icons/gr";
-import {MdOutlineArrowBackIosNew} from "react-icons/md";
 import Search from "../components/search/search.tsx";
 import AddEmployee from "../components/layout/add/add.employee.tsx";
 import PaginationCard from "../components/component/pagination/paginationCard.tsx";
@@ -55,18 +52,12 @@ const Employee = (): JSX.Element => {
                 <div className={'py-4 px-10  font-Index tracking-wider bg-white border-b-[1px] border-gray-200'}>
                     <h1 className={'text-2xl font-bold text-[#3c3c3c]'}>Employee's</h1>
                     <h4 className={'text-[12px] text-gray-400'}>Good morning kasun. You have update 4 employee details .</h4>
-                    <div className={'flex gap-2 py-3'}>
-                        <div className={' px-4 w-fit pl-2 pr-3 py-2 rounded-xl font-Index text-[12px] text-gray-400 bg-blue-100 '}>You
-                            have new 3 orders
-                        </div>
-                        <div className={' px-4 w-fit pl-2 pr-3 py-2 rounded-xl font-Index text-[12px] text-gray-400 bg-red-100 '}>No
-                            updated employee's
-                        </div>
+                    <div className={'flex pt-4'}>
+                        <Search/>
                     </div>
-                    <Search/>
                 </div>
-                <div className={'pt-4 px-4'}>
-                    <div className={'bg-white px-10 py-2 w-full h-full rounded-xl border-[1px] border-gray-200'}>
+                <div className={'pt-3 px-4'}>
+                    <div className={'bg-white pt-10 py-2 w-full h-full rounded-xl border-[1px] border-gray-200'}>
                         <div className={'w-full min-h-[60vh] flex flex-col overflow-y-scroll'}>
                             {
                                 data.length > 0 &&
@@ -86,7 +77,9 @@ const Employee = (): JSX.Element => {
 
                             }
                         </div>
-                        <PaginationCard/>
+                        <div className={'w-full flex justify-content-end pt-2.5 px-3'}>
+                            <PaginationCard/>
+                        </div>
                     </div>
 
                 </div>

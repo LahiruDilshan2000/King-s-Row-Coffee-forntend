@@ -57,8 +57,8 @@ const Login = (props: Props): JSX.Element => {
                         <span className={'text-sm font-round text-gray-500 px-2 pb-1'}>or</span>
                         <hr className={'w-full border-gray-400'}></hr>
                     </div>
-                    <div className={'w-full flex items-center justify-center'}>
-                        <h1 className={'mt-2 font-round text-sm text-gray-400 cursor-default '}>New on our platform ?
+                    <div className={'w-full flex items-center text-sm  justify-center'}>
+                        <h1 className={'mt-2 font-round text-gray-400 cursor-default '}>New on our platform ?
                             <span className={'ml-1 cursor-pointer text-[#ffa16c] active:text-red-500'}> Create an account </span>
                         </h1>
                     </div>

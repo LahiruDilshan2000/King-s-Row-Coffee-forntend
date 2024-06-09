@@ -1,36 +1,30 @@
-import { Pagination, PaginationItem, PaginationLink } from 'reactstrap'
-import { ChevronLeft, ChevronRight } from 'react-feather'
+import {ChevronLeft, ChevronRight} from 'react-feather'
 
 const PaginationCard = () => {
     return (
-        <Pagination className='d-flex mt-3'>
-            <PaginationItem>
-                <PaginationLink href='#' first>
-                    <ChevronLeft size={15} /> Prev
-                </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-                <PaginationLink href='#'>1</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-                <PaginationLink href='#'>2</PaginationLink>
-            </PaginationItem>
-            <PaginationItem active>
-                <PaginationLink href='#'>3</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-                <PaginationLink href='#'>4</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-                <PaginationLink href='#'>5</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-                <PaginationLink href='#' last>
-                    Next
-                    <ChevronRight size={15} />
-                </PaginationLink>
-            </PaginationItem>
-        </Pagination>
+        <div className={'cursor-pointer flex flex-row w-fit bg-gray-200 rounded-2xl text-sm font-round text-gray-500'}>
+            <div className={'flex justify-center items-center px-[9px]'}>
+                <ChevronLeft size={16}/><span className={'pb-[1px]'}>Prev</span>
+            </div>
+            <div className={'h-8 aspect-square flex items-center justify-content-center rounded-full bg-[#2c2c2c] text-white'}>
+                <span>1</span>
+            </div>
+            <div className={'h-8 aspect-square flex items-center justify-content-center rounded-full bg-[#2c2c2c] text-white'}>
+                <span>2</span>
+            </div>
+            <div className={'h-8 aspect-square flex items-center justify-content-center rounded-full bg-[#2c2c2c] text-white'}>
+                <span>3</span>
+            </div>
+            <div className={'h-8 aspect-square flex items-center justify-content-center rounded-full bg-[#2c2c2c] text-white'}>
+                <span>4</span>
+            </div>
+            <div className={'h-8 aspect-square flex items-center justify-content-center rounded-full bg-[#2c2c2c] text-white'}>
+                <span>5</span>
+            </div>
+            <div className={'flex justify-center items-center px-[9px]'}>
+                <span className={'pb-[1px]'}>Next</span><ChevronRight size={16}/>
+            </div>
+        </div>
     )
 }
 export default PaginationCard
