@@ -1,7 +1,6 @@
 import {FiMoreVertical} from "react-icons/fi";
-import {RiDeleteBinLine} from "react-icons/ri";
-import {BiEditAlt} from "react-icons/bi";
 import {useEffect, useRef, useState} from "react";
+import {Edit, Trash} from "react-feather";
 import Swal from "sweetalert2";
 import axios from "axios";
 import {useSpring, animated} from "@react-spring/web";
@@ -39,11 +38,12 @@ interface Props {
     image: string;
     onLoadAction: () => void;
     setCardData: (data: CoffeeData | DessertData, cardType: string) => void;
+    showTosty: (title: string, message: string) => void;
 }
 
 const ItemCard = (props: Props): JSX.Element => {
 
-    const options: string[] = ["Update", "Delete"];
+    const options: string[] = ["Update", "", "Delete"];
     const [openOption, setOpenOption] = useState(false);
     const [bottom, setBottom] = useState(-120);
     const [isDelete, setIsDelete] = useState(false);
@@ -60,6 +60,7 @@ const ItemCard = (props: Props): JSX.Element => {
 
     const handleWindowClick = (e: any): void => {
         if (openOption) {
+            // @ts-ignore
             if (iconRef.current && !iconRef.current.contains(e.target)) {
                 //console.log("dawdawdawd")
                 resetOption(false);
@@ -69,19 +70,35 @@ const ItemCard = (props: Props): JSX.Element => {
     }
     const handleUpdateDetails = (_id: string, url: string) => {
 
-        axios.get(url + _id)
-            .then(response => {
-                props.setCardData(response.data.data, props.cardType);
-            })
-            .catch(err => {
-                Swal.fire({
-                    title: err.response.data.status,
-                    text: err.response.data.message,
-                    icon: 'error',
-                    confirmButtonText: 'Cool'
-                });
+        Swal.fire({
+            title: "Are you sure?",
+            text: "Are you sure do you to Edit this item!",
+            showCancelButton: true,
+            confirmButtonText: "Yes, edit it!",
+            cancelButtonText: "No, cancel it!",
+            customClass: {
+                title: 'swal-title',
+                popup: 'swal-popup',
+                confirmButton: 'swal-confirm',
+                cancelButton: 'swal-cancel'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
 
-            });
+                /*const config = {
+                    headers: {
+                        'Authorization': Cookies.get('token')
+                    }
+                };*/
+                axios.get(url + _id)
+                    .then(response => {
+                        props.setCardData(response.data.data, props.cardType);
+                    })
+                    .catch(err => {
+                        props.showTosty('Error', err.response.data.message);
+                    });
+            }
+        });
     }
 
     const handleDeleteItem = (_id: string, url: string) => {
@@ -93,6 +110,7 @@ const ItemCard = (props: Props): JSX.Element => {
             confirmButtonText: "Yes, delete it!",
             cancelButtonText: "No, saved it!",
             customClass: {
+                title: 'swal-title',
                 popup: 'swal-popup',
                 confirmButton: 'swal-confirm',
                 cancelButton: 'swal-cancel'
@@ -107,21 +125,12 @@ const ItemCard = (props: Props): JSX.Element => {
                 };*/
                 axios.delete(url + _id, /*config*/)
                     .then(res => {
-                        Swal.fire({
-                            title: "Deleted!",
-                            text: res.data.message,
-                            icon: "success"
-                        });
+                        props.showTosty('Success', res.data.message);
                         setIsDelete(true);
                         props.onLoadAction();
                     })
                     .catch(err => {
-                        Swal.fire({
-                            title: err.response.data.status,
-                            text: err.response.data.message,
-                            icon: 'error',
-                            confirmButtonText: 'Cool'
-                        })
+                        props.showTosty('Error', err.response.data.message);
                     });
             }
         });
@@ -187,16 +196,15 @@ const ItemCard = (props: Props): JSX.Element => {
             {
                 openOption &&
                 <ul
-                    className={'w-full h-full z-30 absolute rounded-[20px] overflow-hidden '}>
+                    className={'w-full h-full z-30 absolute rounded-[20px] overflow-hidden flex justify-center'}>
                     <div
-                        className={`w-full bg-[#3c3c3c] absolute ${bottom === -120 && 'bottom-[-120px]'} ${bottom === 0 && 'bottom-[0px]'} py-2 px-3 flex justify-center items-center gap-3     transition-all duration-300 ease-linear`}>
+                        className={`w-44 bg-gray-50 gap-2 rounded-3xl border-[1px] border-gray-100 shadow-[rgba(50,_50,_105,_0.15)_0px_2px_5px_0px,_rgba(0,_0,_0,_0.05)_0px_1px_1px_0px] absolute ${bottom === -120 && 'bottom-[-120px]'} ${bottom === 0 && 'bottom-[10px]'} py-2 px-3 flex justify-center items-center transition-all duration-300 ease-linear`}>
                         {
                             options.map(option => {
                                 return <li key={option}
                                            onClick={() => handleOptions(option, props._id)}
-                                           className={`rounded-full px-2 py-1 active:bg-gray-50 active:bg-opacity-30 hover:text-white transition ease-in-out duration-100 cursor-pointer text-gray-300 flex text-xl font-light justify-center items-center flex-col`}>{option === "Update" ?
-                                    <BiEditAlt/> : <RiDeleteBinLine/>}
-                                    <h3 className={'font-Robot text-[9px] tracking-wider leading-none mt-1 '}>{option === "Update" ? "Edite" : "Delete"}</h3>
+                                           className={`hover:text-[#FFA16C] transition-all ease-linear duration-100 cursor-pointer text-gray-500 flex justify-center items-center `}>{option === "Update" ?
+                                    <Edit size={19} className={'border-r-[1px] border-gray-200'}/> : option === "" ? <hr className={'w-5 border-gray-500 rotate-90'}></hr> : <Trash size={19}/> }
                                 </li>
                             })
                         }
@@ -272,8 +280,6 @@ const ItemCard = (props: Props): JSX.Element => {
                 </div>
             </div>
         </animated.div>
-
     )
 }
-
 export default ItemCard;

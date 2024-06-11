@@ -19,8 +19,8 @@ const Login = (props: Props): JSX.Element => {
     return (
         <section
             className={'row w-full h-[100vh]'}>
-            <div className={'col-md-8 bg-gray-100'}>
-
+            <div className={'col-md-8 bg-gray-100 flex items-center justify-content-center'}>
+                <img src="src/assets/9462908_35973-removebg-preview.png" alt="login image" className={'w-80'}/>
             </div>
             <div className={'col-md-4 bg-white px-[85px] py-[120px]'}>
                 <div className={''}>
@@ -30,6 +30,7 @@ const Login = (props: Props): JSX.Element => {
                         account</h1>
                     <div className={'pl-2 pr-4 py-3'}>
                         <Input
+                            value={''}
                             id={1} option={false}
                             type={'text'}
                             name={'Email'}
@@ -38,6 +39,7 @@ const Login = (props: Props): JSX.Element => {
                             callBack={handleLogin}/>
 
                         <Input
+                            value={''}
                             id={2} option={false}
                             type={'password'}
                             name={'Password'}

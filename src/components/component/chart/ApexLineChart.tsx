@@ -1,13 +1,38 @@
 // ** Third Party Components
 import Chart from 'react-apexcharts'
 import { ArrowDown } from 'react-feather'
-
-// ** Reactstrap Imports
+import axios from "axios";
 import { Card, CardHeader, CardTitle, CardBody, CardSubtitle, Badge } from 'reactstrap'
+import {useEffect, useRef, useState} from "react";
 
 // @ts-ignore
 const ApexLineChart = ({ direction, warning }) => {
-  // ** Chart Options
+
+  const hasFetchedData = useRef(false);
+  const [date, setDate] = useState([])
+  const [tot, setTot] = useState([])
+
+
+  const fetchData = () => {
+    if (hasFetchedData.current) return;
+    hasFetchedData.current = true;
+    axios.get('http://localhost:8080/dashboard/get-monthly/revenue-chart')
+        .then(response => {
+          console.log(response.data.data);
+          setDate(response.data.data.date);
+          setTot(response.data.data.value);
+
+        })
+        .catch(err => {
+          console.log(err);
+        });
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+
   const options = {
     chart: {
       zoom: {
@@ -48,7 +73,7 @@ const ApexLineChart = ({ direction, warning }) => {
       }
     },
     xaxis: {
-      categories: [
+      categories: date/*[
         '7/12',
         '8/12',
         '9/12',
@@ -64,7 +89,7 @@ const ApexLineChart = ({ direction, warning }) => {
         '19/12',
         '20/12',
         '21/12'
-      ]
+      ]*/
     },
     yaxis: {
       opposite: direction === 'rtl'
@@ -74,7 +99,7 @@ const ApexLineChart = ({ direction, warning }) => {
   // ** Chart Series
   const series = [
     {
-      data: [280, 200, 220, 180, 270, 250, 70, 90, 200, 150, 160, 100, 150, 100, 50]
+      data: tot/*[280, 200, 220, 180, 270, 250, 70, 90, 200, 150, 160, 100, 150, 100, 50]*/
     }
   ]
 

@@ -41,10 +41,7 @@ const History = ():JSX.Element => {
                 <h1 className={'text-2xl font-bold text-[#3c3c3c]'}>You Order History</h1>
                 <h4 className={'text-[12px] text-gray-400'}>Good morning kasun. You have placed 4 order's for now .</h4>
             </div>
-            <div className={'flex w-full px-10 gap-2 bg-white'}>
-                <div className={' px-4 w-fit pl-2 pr-3 py-2 rounded-xl font-Index text-[12px] text-gray-400 bg-green-100 '}>You have new 3 orders</div>
-                <div className={' px-4 w-fit pl-2 pr-3 py-2 rounded-xl font-Index text-[12px] text-gray-400 bg-purple-100 '}>You last 3 orders</div>
-            </div>
+
             <div className={'w-full h-14 pt-3 px-4 bg-white border-b-[1px] border-gray-200'}>
                 <ul className={'w-full h-full flex pl-4 font-Index text-[13px] text-gray-400'}>
                     <li onClick={() => showMenu(0)}

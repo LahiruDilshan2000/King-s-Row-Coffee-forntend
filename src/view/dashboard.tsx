@@ -5,7 +5,7 @@ import Earnings from "../components/card/Earnings.tsx";
 
 const Dashboard = ():JSX.Element => {
 
-    const getHex = (color: string) => window.getComputedStyle(document.body).getPropertyValue(color).trim()
+    const getHex = (color: string) => window.getComputedStyle(document.body).getPropertyValue(color).trim();
 
     return (
         <section className={'w-full h-full bg-[#f6f6f6] overflow-y-scroll'}>

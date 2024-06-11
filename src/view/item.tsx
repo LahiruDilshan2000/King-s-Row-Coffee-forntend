@@ -102,7 +102,6 @@ const Item = (): JSX.Element => {
     }
 
     const showNotify = (title: string, message: string) => {
-        console.log(title, message);
         toast.dismiss(toastId.current);
         toastId.current = ToastUtil.error(title, message);
     }
@@ -117,8 +116,7 @@ const Item = (): JSX.Element => {
                 </div>
                 <div
                     className={'mx-10 border-[1px] w-fit border-gray-300 bg-gray-100 rounded-lg text-gray-500 text-[13px] font-cde'}>
-                    <button onClick={() => showNotify("Success", "Hello")}
-                            // onClick={changeButton}
+                    <button onClick={changeButton}
                             type={'button'} className={`py-2 w-[70px] border-r-[1px] border-gray-300 transition-all ease-linear duration-200 delay-100
                             ${coffeeState && 'w-[85px] text-white bg-[#2c2c2c] rounded-lg shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]'}`}>Coffee
                     </button>
@@ -133,6 +131,7 @@ const Item = (): JSX.Element => {
                         coffeeState ?
                             coffeeData.length > 0 ? coffeeData.map(value => {
                                     return <ItemCard
+                                        showTosty={showNotify}
                                         cardType={"coffee"}
                                         onLoadAction={fetchData}
                                         setCardData={setCardDataToRef}
@@ -162,6 +161,7 @@ const Item = (): JSX.Element => {
                                         name={value.name}
                                         _id={value._id}
                                         desc={value.desc}
+                                        showTosty={showNotify}
                                         image={`http://localhost:8080/images/${value.image}`}/>
                                 })
                                 :

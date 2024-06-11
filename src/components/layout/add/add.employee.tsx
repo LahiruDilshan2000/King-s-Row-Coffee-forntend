@@ -19,6 +19,7 @@ interface Data {
 interface Props {
     onLoadAction: () => void;
     onSetEmployee: (Employee: Data) => void;
+    showTosty: (title: string, message: string) => void;
 }
 
 const AddEmployee = forwardRef((props: Props, ref):JSX.Element => {
@@ -57,8 +58,6 @@ const AddEmployee = forwardRef((props: Props, ref):JSX.Element => {
         // @ts-ignore
         fileInputRef?.current?.click();
     };
-
-    // Function to handle file selection
     const handleFileChange = (event: any) => {
         setOldImage('')
         setImage(event.target.files[0]);
@@ -178,20 +177,11 @@ const AddEmployee = forwardRef((props: Props, ref):JSX.Element => {
                 .then(res => {
                     clearAll();
                     props.onLoadAction();
-                    Swal.fire({
-                        title: "Success !",
-                        text: res.data.message,
-                        icon: "success"
-                    });
+                    props.showTosty('Success', res.data.message);
                 })
                 .catch(err => {
                     console.log(err)
-                    Swal.fire({
-                        title: err.response.data.status,
-                        text: err.response.data.message,
-                        icon: 'error',
-                        confirmButtonText: 'Cool'
-                    })
+                    props.showTosty('Error', err.response.data.message);
                 });
         } else {
             const config = {
@@ -212,20 +202,11 @@ const AddEmployee = forwardRef((props: Props, ref):JSX.Element => {
                 .then(res => {
                     clearAll();
                     props.onLoadAction();
-                    Swal.fire({
-                        title: "Success !",
-                        text: res.data.message,
-                        icon: "success"
-                    });
+                    props.showTosty('Success', res.data.message);
                 })
                 .catch(err => {
                     console.log(err)
-                    Swal.fire({
-                        title: err.response.data.status,
-                        text: err.response.data.message,
-                        icon: 'error',
-                        confirmButtonText: 'Cool'
-                    })
+                    props.showTosty('Error', err.response.data.message);
                 });
         }
     }
@@ -260,21 +241,12 @@ const AddEmployee = forwardRef((props: Props, ref):JSX.Element => {
             .then(res => {
                 clearAll();
                 props.onLoadAction();
-                Swal.fire({
-                    title: "Success !",
-                    text: res.data.message,
-                    icon: "success"
-                });
+                props.showTosty('Success', res.data.message);
 
             })
             .catch(err => {
                 console.log(err)
-                Swal.fire({
-                    title: err.response.data.status,
-                    text: err.response.data.message,
-                    icon: 'error',
-                    confirmButtonText: 'Cool'
-                })
+                props.showTosty('Error', err.response.data.message);
             });
     }
 
@@ -322,7 +294,7 @@ const AddEmployee = forwardRef((props: Props, ref):JSX.Element => {
                                callBack={handleInput}/>
                     </div>
                 </div>
-            {/*    <Input id={3} value={age} type={'number'} name={'Age'} placeholder={'your age'}
+            {/* <Input id={3} value={age} type={'number'} name={'Age'} placeholder={'your age'}
                        errorMsg={"Age must greater than 17 and 50 less than."}
                        option={errorSate[3]}
                        callBack={handleInput}/>
