@@ -4,7 +4,6 @@ import PaginationItem from "./paginationItem.tsx";
 
 interface Props {
     setPage: (value: number) => void;
-    getData: (value: number) => void;
     selectOption: (page: number) => void;
     pageTotal: number;
 }

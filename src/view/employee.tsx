@@ -25,7 +25,7 @@ const Employee = (): JSX.Element => {
     const toastId = React.useRef<any>(null);
     const [pageTotal, setPageTotal] = useState(0);
     const hasFetchedData = useRef(false);
-    const [selectedPage, setSelectedPage] = useState(1)
+    const [selectedPage, setSelectedPage] = useState(1);
 
     const handleSetEmployee = (employee: Data) => {
         // @ts-ignore
@@ -51,7 +51,6 @@ const Employee = (): JSX.Element => {
         if (page < 1)
             return;
 
-        console.log(page)
         await axios.get('http://localhost:8080/employee/getAll?size=7&page='+page)
             .then(response => {
                 setSelectedPage(page);
@@ -100,7 +99,6 @@ const Employee = (): JSX.Element => {
                         <div className={'w-full flex justify-content-end pt-2.5 px-3'}>
                             <PaginationCard setPage={setPageTotal}
                                             pageTotal={pageTotal}
-                                            getData={fetchData}
                                             selectOption={getData}
                             />
                         </div>

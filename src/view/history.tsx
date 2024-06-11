@@ -1,7 +1,8 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
 import HistoryTable from "../components/tables/history.table.tsx";
 import TableColum from "../components/tables/colum/table.colum.tsx";
+import PaginationCard from "../components/component/pagination/paginationCard.tsx";
 
 interface Data{
     _id:string;
@@ -12,6 +13,9 @@ const History = ():JSX.Element => {
 
     const [options, setOptions] = useState<boolean[]>([true, false, false])
     const [data, setData] = useState<Data[]>([]);
+    const [pageTotal, setPageTotal] = useState(0);
+    const [selectedPage, setSelectedPage] = useState(1)
+
     const showMenu = (index:number) => {
         const array = [false, false, false];
         array[index] = true;
@@ -19,14 +23,17 @@ const History = ():JSX.Element => {
     }
 
     useEffect(() => {
-        getAll();
+        getData(selectedPage);
     }, []);
 
-    const getAll = () => {
+    const getData = async (page:number) => {
+        if (page < 1)
+            return;
 
-        axios.get('http://localhost:8080/order/getAll')
+        await axios.get('http://localhost:8080/order/getAll?size=6&page='+page)
             .then(response => {
-                console.log(response.data)
+                setSelectedPage(page);
+                setPageTotal(response.data["totalPages"])
                 setData(response.data.data);
 
             })
@@ -53,7 +60,7 @@ const History = ():JSX.Element => {
                 </ul>
             </div>
             <section className={'px-4 py-4'}>
-                <div className={'w-[70%] shadow-[rgba(7,_65,_210,_0.1)_0px_9px_30px]'}>
+                <div className={'w-[70%] rounded-bl-xl rounded-br-xl overflow-hidden shadow-[rgba(7,_65,_210,_0.1)_0px_9px_30px]'}>
                     <HistoryTable/>
                     <div className={'h-[50vh] overflow-y-scroll bg-white'}>
                         {data.map((value:Data, index:number) => {
@@ -61,7 +68,12 @@ const History = ():JSX.Element => {
                             </TableColum>
                         })}
                     </div>
-                    <div className={'w-full h-12 bg-gray-500'}></div>
+                    <div className={'w-full  flex bg-white justify-content-end py-2.5 px-3'}>
+                        <PaginationCard setPage={setPageTotal}
+                                        pageTotal={pageTotal}
+                                        selectOption={getData}
+                        />
+                    </div>
                 </div>
             </section>
         </section>
