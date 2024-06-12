@@ -2,6 +2,7 @@ import {useState} from "react";
 
 const HistoryTable = ():JSX.Element => {
 
+    // @ts-ignore
     const [headers, setHeaders] = useState(['ID', 'Date', 'QTY', 'Total', 'Status', 'Action']);
 
     return (

@@ -169,7 +169,7 @@ const Item = (): JSX.Element => {
                 </div>
             </div>
 
-            <div className={'w-[22%] h-full border-l-2 border-gray-200 bg-white px-4 pt-20'}>
+            <div className={'w-[22%] h-full border-l-2 border-gray-200 bg-white px-4 py-12'}>
                 {
                     coffeeState ? <AddCoffee ref={coffeeRef}
                                              onLoadAction={fetchData}

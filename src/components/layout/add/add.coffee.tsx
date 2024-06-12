@@ -377,7 +377,7 @@ const AddCoffee = forwardRef((props: Props, ref): JSX.Element => {
 
     return (
         <section className={'w-full px-2 pt-1'}>
-            <div className={'w-full h-[20vh] my-3'}>
+            <div className={'w-full h-[20vh] mt-3 mb-8'}>
                 <input type={"file"} className={'hidden'} ref={fileInputRef} onChange={handleFileChange}/>
                 {
                     coffeeImg || oldCoffeeImg ?

@@ -1,7 +1,7 @@
 import moment from 'moment';
 import {FiMoreVertical} from "react-icons/fi";
 import {TiDocumentText} from "react-icons/ti";
-import {useEffect, useRef, useState} from "react";
+import {useRef, useState} from "react";
 
 interface Props {
     _id: string;
@@ -37,7 +37,7 @@ const getTotal = (array:Obj[]) => {
 const TableColum = (props: Props): JSX.Element => {
 
     const [openOption, setOpenOption] = useState(false);
-    const iconRef = useRef();
+    const iconRef = useRef<any>();
 
     const handleWindowClick = (e: any): void => {
         if (openOption) {

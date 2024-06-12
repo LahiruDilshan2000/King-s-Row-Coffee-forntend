@@ -59,7 +59,7 @@ const Earnings = ({success}) => {
                         },
                         value: {
                             offsetY: -15,
-                            formatter(val) {
+                            formatter(val: string) {
                                 return `${parseInt(val)} %`
                             }
                         },

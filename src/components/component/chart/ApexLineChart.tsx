@@ -66,7 +66,7 @@ const ApexLineChart = ({ direction, warning }) => {
       }
     },
     tooltip: {
-      custom(data) {
+      custom(data: { series: { [x: string]: { [x: string]: any; }; }; seriesIndex: string | number; dataPointIndex: string | number; }) {
         return `<div class='px-1 py-50'>
               <span>${data.series[data.seriesIndex][data.dataPointIndex]}%</span>
             </div>`
@@ -103,6 +103,7 @@ const ApexLineChart = ({ direction, warning }) => {
     }
   ]
 
+
   return (
     <Card>
       <CardHeader className='bg-white d-flex flex-sm-row flex-column justify-content-md-between align-items-start justify-content-start'>
@@ -121,6 +122,7 @@ const ApexLineChart = ({ direction, warning }) => {
         </div>
       </CardHeader>
       <CardBody>
+        {/*// @ts-ignore*/}
         <Chart options={options} series={series} type='line' height={280} />
       </CardBody>
     </Card>

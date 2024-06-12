@@ -5,7 +5,6 @@ import EmptyOrderItem from "../components/component/empty/empty.order.item.tsx";
 import AddOrder from "../components/layout/add/add.order.tsx";
 import {toast, ToastContainer} from "react-toastify";
 import * as ToastUtil from "../util/toastUtil.tsx";
-import { animated, useSpring } from '@react-spring/web'
 
 
 
@@ -110,6 +109,7 @@ const Menu = (): JSX.Element => {
     }
 
     const addItemForCart = (data:CartData) => {
+        // @ts-ignore
         orderCartRef?.current?.setData(data);
     }
 
@@ -210,7 +210,7 @@ const Menu = (): JSX.Element => {
             </div>
 
             {/*Cart*/}
-            <div className={'w-[22%] h-full border-l-2 bg-white border-gray-200 px-4 pt-24'}>
+            <div className={'w-[22%] h-full border-l-2 bg-white border-gray-200 px-4 py-12'}>
                 <AddOrder ref={orderCartRef} showNotify={showNotify} resetOption={setOptions} selected={options}/>
             </div>
         </section>

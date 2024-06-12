@@ -20,7 +20,7 @@ const EmptyOrderItem = ():JSX.Element => {
             {
 
                 defaultState ?
-                        defaultArray.map( (value, index) => <MyLoader key={index}/>)
+                        defaultArray.map( (_value, index) => <MyLoader key={index}/>)
                     :
                     <div className={'w-full flex justify-center items-center flex-col'}>
                         <img src="../../../assets/Emptycart%20(2).png" className={'w-[400px]'} alt="empty_order"/>

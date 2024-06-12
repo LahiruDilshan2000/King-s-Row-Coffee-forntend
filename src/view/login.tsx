@@ -13,7 +13,6 @@ interface Props {
 
 const Login = (props: Props): JSX.Element => {
 
-    const [isLogin, setIsLogin] = useState(false);
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -181,7 +180,7 @@ const Login = (props: Props): JSX.Element => {
 
                                     <Input
                                         value={email}
-                                        id={1} option={false}
+                                        id={1}
                                         type={'email'}
                                         name={'Email'}
                                         placeholder={"example@gmail.com"}
@@ -189,7 +188,7 @@ const Login = (props: Props): JSX.Element => {
 
                                     <Input
                                         value={password}
-                                        id={2} option={false}
+                                        id={2}
                                         type={'password'}
                                         name={'Password'}
                                         placeholder={".........."}
@@ -224,7 +223,7 @@ const Login = (props: Props): JSX.Element => {
 
                                     <Input
                                         value={email}
-                                        id={1} option={false}
+                                        id={1}
                                         type={'email'}
                                         name={'Email'}
                                         placeholder={"example@gmail.com"}
@@ -234,7 +233,6 @@ const Login = (props: Props): JSX.Element => {
                                             <Input
                                                 value={fName}
                                                 id={2}
-                                                option={false}
                                                 type={'text'}
                                                 name={'First name'}
                                                 placeholder={"example@gmail.com"}
@@ -244,7 +242,6 @@ const Login = (props: Props): JSX.Element => {
                                             <Input
                                                 value={lName}
                                                 id={3}
-                                                option={false}
                                                 type={'text'}
                                                 name={'Last name'}
                                                 placeholder={"example@gmail.com"}
@@ -253,14 +250,14 @@ const Login = (props: Props): JSX.Element => {
                                     </div>
                                     <Input
                                         value={password}
-                                        id={4} option={false}
+                                        id={4}
                                         type={'password'}
                                         name={'Password'}
                                         placeholder={".........."}
                                         callBack={handleInput}/>
                                     <Input
                                         value={confirmPass}
-                                        id={5} option={false}
+                                        id={5}
                                         type={'password'}
                                         name={'Confirm Password'}
                                         placeholder={".........."}
