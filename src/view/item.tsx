@@ -146,7 +146,6 @@ const Item = (): JSX.Element => {
                                 })
                                 :
                                 <EmptyItem/>
-
                             :
 
                             dessertData.length > 0 ? dessertData.map(value => {

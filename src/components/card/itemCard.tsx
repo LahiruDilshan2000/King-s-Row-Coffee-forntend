@@ -4,6 +4,9 @@ import {Edit, Trash} from "react-feather";
 import Swal from "sweetalert2";
 import axios from "axios";
 import {useSpring, animated} from "@react-spring/web";
+// @ts-ignore
+import Cookies from "js-cookie";
+import {useNavigate} from "react-router-dom";
 
 interface CoffeeData {
     _id: string;
@@ -48,7 +51,8 @@ const ItemCard = (props: Props): JSX.Element => {
     const [bottom, setBottom] = useState(-120);
     const [isDelete, setIsDelete] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
-    const iconRef = useRef();
+    const iconRef = useRef<any>();
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (bottom === -120 && openOption) {
@@ -62,9 +66,7 @@ const ItemCard = (props: Props): JSX.Element => {
         if (openOption) {
             // @ts-ignore
             if (iconRef.current && !iconRef.current.contains(e.target)) {
-                //console.log("dawdawdawd")
                 resetOption(false);
-                // setOpenOption(false)
             }
         }
     }
@@ -79,7 +81,7 @@ const ItemCard = (props: Props): JSX.Element => {
             customClass: {
                 title: 'swal-title',
                 popup: 'swal-popup',
-                confirmButton: 'swal-confirm',
+                confirmButton: 'swal-update',
                 cancelButton: 'swal-cancel'
             }
         }).then((result) => {
@@ -101,7 +103,33 @@ const ItemCard = (props: Props): JSX.Element => {
         });
     }
 
+    const getToken = ():string|null => {
+        const token = Cookies.get('token');
+        if (!token) {
+            Swal.fire({
+                title: "Login expire !",
+                text: "Please log in to continue!",
+                showCancelButton: false,
+                confirmButtonText: "OK!",
+                customClass: {
+                    title: 'swal-title',
+                    popup: 'swal-popup',
+                    confirmButton: 'swal-confirm',
+                    cancelButton: 'swal-cancel'
+                }
+            });
+            navigate('/login');
+            return null;
+        }else {
+            return token;
+        }
+    }
+
     const handleDeleteItem = (_id: string, url: string) => {
+
+        const token = getToken();
+        if (token === null)
+            return;
 
         Swal.fire({
             title: "Are you sure?",
@@ -118,12 +146,12 @@ const ItemCard = (props: Props): JSX.Element => {
         }).then((result) => {
             if (result.isConfirmed) {
 
-                /*const config = {
+                const config = {
                     headers: {
-                        'Authorization': Cookies.get('token')
+                        'Authorization': token
                     }
-                };*/
-                axios.delete(url + _id, /*config*/)
+                };
+                axios.delete(url + _id, config)
                     .then(res => {
                         props.showTosty('Success', res.data.message);
                         setIsDelete(true);

@@ -4,6 +4,9 @@ import {useSpring, animated} from "@react-spring/web";
 import {useRef, useState} from "react";
 import {Edit, Trash} from "react-feather";
 import {FiMoreVertical} from "react-icons/fi";
+// @ts-ignore
+import Cookies from "js-cookie";
+import {useNavigate} from "react-router-dom";
 
 interface Data {
     _id: string;
@@ -33,6 +36,7 @@ const EmployeeCard = (props: Props): JSX.Element => {
 
     const [openOption, setOpenOption] = useState(false);
     const iconRef = useRef();
+    const navigate = useNavigate();
 
     const handleGetEmployeeById = (_id: string): void => {
 
@@ -45,7 +49,7 @@ const EmployeeCard = (props: Props): JSX.Element => {
             customClass: {
                 title: 'swal-title',
                 popup: 'swal-popup',
-                confirmButton: 'swal-confirm',
+                confirmButton: 'swal-update',
                 cancelButton: 'swal-cancel'
             }
         }).then((result) => {
@@ -70,6 +74,10 @@ const EmployeeCard = (props: Props): JSX.Element => {
 
     const handleDeleteEmployee = (_id: string): void => {
 
+        const token = getToken();
+        if (token === null)
+            return;
+
         Swal.fire({
             title: "Are you sure?",
             text: "Are you sure do you to delete this Employee !",
@@ -85,12 +93,12 @@ const EmployeeCard = (props: Props): JSX.Element => {
         }).then((result) => {
             if (result.isConfirmed) {
 
-                /*const config = {
+                const config = {
                     headers: {
-                        'Authorization': Cookies.get('token')
+                        'Authorization': token
                     }
-                };*/
-                axios.delete(`http://localhost:8080/employee/${_id}`, /*config*/)
+                };
+                axios.delete(`http://localhost:8080/employee/${_id}`, config)
 
                     .then(res => {
                         props.showTosty('Success', "Deleted successful");
@@ -98,8 +106,9 @@ const EmployeeCard = (props: Props): JSX.Element => {
                         console.log(res)
                     })
                     .catch(err => {
-                        props.showTosty('Error', err.response.data.message);
-                        console.log(err.message)
+                        console.log(err)
+                        props.showTosty('Error', err.response.data);
+                        console.log(err.response.data)
                     });
             }
         });
@@ -113,6 +122,28 @@ const EmployeeCard = (props: Props): JSX.Element => {
             opacity: 1
         }
     });
+
+    const getToken = ():string|null => {
+        const token = Cookies.get('token');
+        if (!token) {
+            Swal.fire({
+                title: "Login expire !",
+                text: "Please log in to continue!",
+                showCancelButton: false,
+                confirmButtonText: "OK!",
+                customClass: {
+                    title: 'swal-title',
+                    popup: 'swal-popup',
+                    confirmButton: 'swal-confirm',
+                    cancelButton: 'swal-cancel'
+                }
+            });
+            navigate('/login');
+            return null;
+        }else {
+            return token;
+        }
+    }
 
     const handleWindowClick = (e: any): void => {
         if (openOption) {

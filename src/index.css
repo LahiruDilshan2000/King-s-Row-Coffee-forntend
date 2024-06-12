@@ -51,6 +51,11 @@
     padding: 0 0 20px 0;
     border-bottom: 2px solid rgba(0, 0, 0, 0.1);
 }
+.swal-update{
+    background: #FFA16C!important;
+    border-radius: 8px !important;
+    box-shadow: none !important;
+}
 .Toastify__close-button {
     @apply w-4 h-4 my-5 mx-1;
     /* Apply Tailwind utility classes */
