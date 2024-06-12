@@ -35,7 +35,7 @@ interface Props {
 const EmployeeCard = (props: Props): JSX.Element => {
 
     const [openOption, setOpenOption] = useState(false);
-    const iconRef = useRef();
+    const iconRef = useRef<any>();
     const navigate = useNavigate();
 
     const handleGetEmployeeById = (_id: string): void => {
@@ -147,6 +147,7 @@ const EmployeeCard = (props: Props): JSX.Element => {
 
     const handleWindowClick = (e: any): void => {
         if (openOption) {
+            // @ts-ignore
             if (iconRef.current && !iconRef.current.contains(e.target)) {
                 setOpenOption(false);
             }

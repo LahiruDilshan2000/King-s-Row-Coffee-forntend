@@ -3,6 +3,9 @@ import CustomInput from "../../input/customInput.tsx";
 import {forwardRef, useImperativeHandle, useReducer, useRef, useState} from "react";
 import * as validator from "../../../util/validator.ts";
 import axios from "axios";
+// @ts-ignore
+import Cookies from "js-cookie";
+import {useNavigate} from "react-router-dom";
 import Swal from "sweetalert2";
 
 interface Data {
@@ -104,8 +107,9 @@ const AddDessert = forwardRef((props: Props, ref): JSX.Element => {
 
     const [dessertImg, setDessertImg] = useState<any>('');
     const [oldDessertImg, setOldDessertImg] = useState<string>('');
-    const fileInputRef = useRef();
+    const fileInputRef = useRef<any>();
     const [dessertState, setDessertState] = useState<'Add' | 'Update'>("Add");
+    const navigate = useNavigate();
 
     useImperativeHandle(ref, () => {
         return {
@@ -131,6 +135,28 @@ const AddDessert = forwardRef((props: Props, ref): JSX.Element => {
         setDessertImg(event.target.files[0]);
     };
 
+    const getToken = (): string | null => {
+        const token = Cookies.get('token');
+        if (!token) {
+            Swal.fire({
+                title: "Login expire !",
+                text: "Please log in to continue!",
+                showCancelButton: false,
+                confirmButtonText: "OK!",
+                customClass: {
+                    title: 'swal-title',
+                    popup: 'swal-popup',
+                    confirmButton: 'swal-confirm',
+                    cancelButton: 'swal-cancel'
+                }
+            });
+            navigate('/login');
+            return null;
+        } else {
+            return token;
+        }
+    }
+
     const [state, dispatch] = useReducer<(state: FormState, action: FormFieldSetAction) => FormState>(
         formFieldSetReducer,
         {
@@ -155,18 +181,6 @@ const AddDessert = forwardRef((props: Props, ref): JSX.Element => {
         }
     );
 
-    const isEmpty = (): void => {
-
-        if (state.dessertName) {
-
-            dispatch({formFieldName: 'dessert', formFieldValue: 'value'})
-            console.log("wadwa")
-            state.dessertNameError = "aaaaa";
-
-            console.log(state.dessertNameError)
-        }
-    }
-
     const handleAddDessert = () => {
 
         if (dessertImg === null || dessertImg === '') {
@@ -174,8 +188,13 @@ const AddDessert = forwardRef((props: Props, ref): JSX.Element => {
             return;
         }
 
+        const token = getToken();
+        if (token === null)
+            return;
+
         const config = {
             headers: {
+                'Authorization': token,
                 'Content-Type': 'multipart/form-data',
             }
         };
@@ -209,8 +228,13 @@ const AddDessert = forwardRef((props: Props, ref): JSX.Element => {
 
     const handleUpdateDessert = () => {
 
+        const token = getToken();
+        if (token === null)
+            return;
+
         const config = {
             headers: {
+                'Authorization': token,
                 'Content-Type': 'multipart/form-data',
             }
         };
@@ -242,8 +266,13 @@ const AddDessert = forwardRef((props: Props, ref): JSX.Element => {
 
     const handleUpdateDessertWithoutImg = () => {
 
+        const token = getToken();
+        if (token === null)
+            return;
+
         const config = {
             headers: {
+                'Authorization': token,
                 'Content-Type': 'application/json',
             }
         };
@@ -291,7 +320,6 @@ const AddDessert = forwardRef((props: Props, ref): JSX.Element => {
             props.showTosty('Warning', 'Quantity cannot be empty')
             return;
         }
-
         if (dessertState === "Add") {
             handleAddDessert();
         } else {
@@ -301,7 +329,6 @@ const AddDessert = forwardRef((props: Props, ref): JSX.Element => {
                 handleUpdateDessertWithoutImg();
             }
         }
-        //}
     }
 
     const clearAll = () => {

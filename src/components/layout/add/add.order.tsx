@@ -3,6 +3,10 @@ import EmptyCart from "../../component/empty/empty.cart.tsx";
 import CartCard from "../../card/cartCard.tsx";
 import {ToastContainer} from "react-toastify";
 import axios from "axios";
+// @ts-ignore
+import Cookies from "js-cookie";
+import {useNavigate} from "react-router-dom";
+import Swal from "sweetalert2";
 
 interface itemData {
     _id: string;
@@ -28,6 +32,7 @@ const AddOrder = forwardRef((props: Props, ref): JSX.Element => {
     const [lastTotal, setLastTotal] = useState(0);
     const [date, setDate] = useState("03/04/2024");
     const [detailsArray, setDetailsArray] = useState<itemData[]>([]);
+    const navigate = useNavigate();
 
     useImperativeHandle(ref, () => {
 
@@ -63,9 +68,30 @@ const AddOrder = forwardRef((props: Props, ref): JSX.Element => {
     }, [detailsArray]);
 
     useEffect(() => {
-
         setNewDataAndId();
     }, []);
+
+    const getToken = (): string | null => {
+        const token = Cookies.get('token');
+        if (!token) {
+            Swal.fire({
+                title: "Login expire !",
+                text: "Please log in to continue!",
+                showCancelButton: false,
+                confirmButtonText: "OK!",
+                customClass: {
+                    title: 'swal-title',
+                    popup: 'swal-popup',
+                    confirmButton: 'swal-confirm',
+                    cancelButton: 'swal-cancel'
+                }
+            });
+            navigate('/login');
+            return null;
+        } else {
+            return token;
+        }
+    }
 
     const setNewDataAndId = () => {
 
@@ -145,6 +171,10 @@ const AddOrder = forwardRef((props: Props, ref): JSX.Element => {
 
     const saveOrder = () => {
 
+        const token = getToken();
+        if (token === null)
+            return;
+
         const orderDetail: {
             productId: string;
             name: string;
@@ -174,6 +204,7 @@ const AddOrder = forwardRef((props: Props, ref): JSX.Element => {
 
         const config = {
             headers: {
+                'Authorization': token,
                 'Content-Type': 'application/json',
             }
         };

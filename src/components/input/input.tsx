@@ -4,7 +4,6 @@ interface Props {
     type: string;
     name: string;
     placeholder?: string;
-    option: boolean
     callBack: Function;
     value:string | number;
 }

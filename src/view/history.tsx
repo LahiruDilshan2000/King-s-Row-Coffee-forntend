@@ -71,7 +71,7 @@ const History = (): JSX.Element => {
                         data.length > 0 && <HistoryTable/>
                     }
 
-                    <div className={'h-[50vh] overflow-y-scroll bg-white'}>
+                    <div className={'h-[50vh] bg-white'}>
                         {
                             data.length > 0 ? data.map((value: Data, index: number) => {
                                     return <TableColum key={index} _id={value._id} date={value.date}

@@ -2,6 +2,9 @@ import {forwardRef, useImperativeHandle, useReducer, useRef, useState} from "rea
 import {GrUpload} from "react-icons/gr";
 import CustomInput from "../../input/customInput.tsx";
 import axios from "axios";
+// @ts-ignore
+import Cookies from "js-cookie";
+import {useNavigate} from "react-router-dom";
 import Swal from "sweetalert2";
 
 
@@ -102,10 +105,12 @@ const AddCoffee = forwardRef((props: Props, ref): JSX.Element => {
 
     const [coffeeImg, setCoffeeImg] = useState<any>('');
     const [oldCoffeeImg, setOldCoffeeImg] = useState<string>('');
-    const fileInputRef = useRef();
+    const fileInputRef = useRef<any>();
     const [coffeeState, setCoffeeState] = useState<'Add' | 'Update'>("Add");
+    const navigate = useNavigate();
 
     const handleClick = (): void => {
+        // @ts-ignore
         fileInputRef.current?.click();
     };
 
@@ -152,14 +157,42 @@ const AddCoffee = forwardRef((props: Props, ref): JSX.Element => {
         }
     );
 
+    const getToken = ():string|null => {
+        const token = Cookies.get('token');
+        if (!token) {
+            Swal.fire({
+                title: "Login expire !",
+                text: "Please log in to continue!",
+                showCancelButton: false,
+                confirmButtonText: "OK!",
+                customClass: {
+                    title: 'swal-title',
+                    popup: 'swal-popup',
+                    confirmButton: 'swal-confirm',
+                    cancelButton: 'swal-cancel'
+                }
+            });
+            navigate('/login');
+            return null;
+        }else {
+            return token;
+        }
+    }
+
     const handleAddCoffee = () => {
+
         if (coffeeImg === null || coffeeImg === '') {
             props.showTosty('Warning', 'Image cannot be empty')
             return;
         }
 
+        const token = getToken();
+        if (token === null)
+            return;
+
         const config = {
             headers: {
+                'Authorization': token,
                 'Content-Type': 'multipart/form-data',
             }
         };
@@ -204,8 +237,13 @@ const AddCoffee = forwardRef((props: Props, ref): JSX.Element => {
 
     const handleUpdateCoffee = () => {
 
+        const token = getToken();
+        if (token === null)
+            return;
+
         const config = {
             headers: {
+                'Authorization': token,
                 'Content-Type': 'multipart/form-data',
             }
         };
@@ -248,8 +286,13 @@ const AddCoffee = forwardRef((props: Props, ref): JSX.Element => {
 
     const handleUpdateCoffeeWithoutImg = () => {
 
+        const token = getToken();
+        if (token === null)
+            return;
+
         const config = {
             headers: {
+                'Authorization': token,
                 'Content-Type': 'application/json',
             }
         };

@@ -7,9 +7,6 @@ import PaginationCard from "../components/component/pagination/paginationCard.ts
 import {toast, ToastContainer} from "react-toastify";
 import * as ToastUtil from "../util/toastUtil.tsx";
 import EmptyItem from "../components/component/empty/empty.item.tsx";
-// @ts-ignore
-import Cookies from "js-cookie";
-
 
 interface Data {
     _id: string;
@@ -80,7 +77,7 @@ const Employee = (): JSX.Element => {
                 </div>
                 <div className={'pt-3 px-4'}>
                     <div className={'bg-white pt-10 pb-2 mb-2 py-2 w-full rounded-xl border-[1px] border-gray-200'}>
-                        <div className={'w-full h-[62vh] px-4 flex flex-col'}>
+                        <div className={'w-full overflow-hidden overflow-y-scroll h-[62vh] px-4 flex flex-col'}>
                             {
                                 data.length > 0 ?
                                 data.map((value) => {
@@ -101,7 +98,7 @@ const Employee = (): JSX.Element => {
                                     <EmptyItem/>
                             }
                         </div>
-                        <div className={'w-full flex justify-content-end pt-2.5 px-3'}>
+                        <div className={'w-full flex  justify-content-end pt-2.5 px-3'}>
                             {
                                 data.length > 0 && <PaginationCard setPage={setPageTotal}
                                                                    pageTotal={pageTotal}
