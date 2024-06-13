@@ -65,7 +65,7 @@ const DashboardRevenue = () => {
     }
 
     return (
-        <div className={'w-full min-h-48 border-[1px] border-gray-200'}>
+        <div className={'w-full min-h-48'}>
             <div className={'row'}>
                 <h4 className={'col-md-6 col-xm-12 pl-10 pt-3 tracking-wide font-cd text-xl'}>Statistics</h4>
                 <span className={'col-md-6 col-xs-12 text-xs text-gray-400 flex items-center justify-end pr-10'}>Updated 1 month ago</span>

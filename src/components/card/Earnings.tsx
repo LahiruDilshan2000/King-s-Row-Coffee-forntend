@@ -112,7 +112,7 @@ const Earnings = ({success}) => {
     }
 
     return (
-        <Card className='earnings-card min-h-48 px-3'>
+        <Card className='earnings-card min-h-48 px-3 bg-white border-0 rounded-xl shadow-[rgba(17,_17,_26,_0.1)_0px_0px_16px]'>
             <CardBody>
                 <Row>
                     <Col xs='6'>

@@ -43,7 +43,6 @@ const ApexLineChart = ({ direction, warning }) => {
         show: false
       }
     },
-
     markers: {
       strokeWidth: 2,
       strokeOpacity: 1,
@@ -61,7 +60,7 @@ const ApexLineChart = ({ direction, warning }) => {
     grid: {
       xaxis: {
         lines: {
-          show: false
+          show: false,
         }
       }
     },
@@ -73,7 +72,7 @@ const ApexLineChart = ({ direction, warning }) => {
       }
     },
     xaxis: {
-      categories: date/*[
+      categories: date,/*[
         '7/12',
         '8/12',
         '9/12',
@@ -105,8 +104,8 @@ const ApexLineChart = ({ direction, warning }) => {
 
 
   return (
-    <Card>
-      <CardHeader className='bg-white d-flex flex-sm-row flex-column justify-content-md-between align-items-start justify-content-start'>
+    <Card className={'border-0 shadow-[rgba(17,_17,_26,_0.1)_0px_0px_16px] rounded-xl overflow-hidden'}>
+      <CardHeader className='bg-white border-gray-200 d-flex flex-sm-row flex-column justify-content-md-between align-items-start justify-content-start'>
         <div className={''}>
           <CardTitle className={'mb-75 text-xl m-0'} tag='h4'>
             Balance
