@@ -82,7 +82,7 @@ const formFieldSetReducer = (state: FormState, action: FormFieldSetAction): Form
                 smallSizeError: null
             };
         }
-        case "Qty": {
+        case "Quantity on hand": {
             return {
                 ...state,
                 qty: action.formFieldValue,
@@ -127,7 +127,7 @@ const AddCoffee = forwardRef((props: Props, ref): JSX.Element => {
                 dispatch({formFieldName: 'Desc', formFieldValue: coffee.desc});
                 dispatch({formFieldName: 'Large size', formFieldValue: coffee.largeSize});
                 dispatch({formFieldName: 'Small size', formFieldValue: coffee.smallSize});
-                dispatch({formFieldName: 'Qty', formFieldValue: coffee.qty});
+                dispatch({formFieldName: 'Quantity on hand', formFieldValue: coffee.qty});
                 setOldCoffeeImg(`http://localhost:8080/images/${coffee.image}`);
                 setCoffeeImg('')
             },
@@ -363,13 +363,12 @@ const AddCoffee = forwardRef((props: Props, ref): JSX.Element => {
     }
 
     const clearAll = () => {
-
         dispatch({formFieldName: "CoffeeId", formFieldValue: ''});
         dispatch({formFieldName: "Coffee", formFieldValue: ''});
         dispatch({formFieldName: "Desc", formFieldValue: ''});
         dispatch({formFieldName: "Large size", formFieldValue: ''});
         dispatch({formFieldName: "Small size", formFieldValue: ''});
-        dispatch({formFieldName: "Qty", formFieldValue: ''});
+        dispatch({formFieldName: "Quantity on hand", formFieldValue: ''});
         setCoffeeImg('')
         setOldCoffeeImg('')
         setCoffeeState("Add")
